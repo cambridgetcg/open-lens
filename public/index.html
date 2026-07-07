@@ -237,7 +237,10 @@
 <header>
   <div class="wrap">
     <div class="brand"><span class="cc">CC</span> Captioneer <span class="sub">the subtext reader</span></div>
-    <button class="theme" id="theme" aria-label="Toggle theme">◐ theme</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a class="theme" href="/lexicon" style="text-decoration:none;display:inline-block">the lexicon</a>
+      <button class="theme" id="theme" aria-label="Toggle theme">◐ theme</button>
+    </div>
   </div>
 </header>
 
@@ -367,11 +370,11 @@
 <footer>
   <div class="wrap">
     <div><b>Captioneer</b> — captions for what people mean.</div>
-    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request · <a href="https://github.com/cambridgetcg/open-lens" style="color:var(--stamp);text-decoration:none">open source ↗</a></div>
+    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request · <a href="/lexicon" style="color:var(--stamp);text-decoration:none">the lexicon</a> · <a href="https://github.com/cambridgetcg/open-lens" style="color:var(--stamp);text-decoration:none">open source ↗</a></div>
   </div>
 </footer>
 
-<script src="/lexicon.gen.js?v=0.1.0"></script>
+<script src="/lexicon.gen.js?v=0.2.0"></script>
 <script>
 /* ── theme ── */
 const root = document.documentElement;
@@ -432,7 +435,7 @@ function analyze(text) {
   const counts = Object.fromEntries(Object.keys(FAMILIES).map(k => [k, 0]));
   matches.forEach(m => counts[m.dim]++);
   let html = "", i = 0;
-  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${esc(FAMILIES[m.dim].name)} — ${esc(FAMILIES[m.dim].what)}">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
+  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${esc(FAMILIES[m.dim].name)} — ${esc(FAMILIES[m.dim].what)} · click for the lexicon">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
   html += esc(text.slice(i));
   script.innerHTML = html || "<span style='color:var(--faint)'>Nothing to read yet.</span>";
 
@@ -488,7 +491,7 @@ const script = document.getElementById("script"), freq = document.getElementById
 
 const LEX_READY = Object.keys(FAMILIES).length > 0;
 if (!LEX_READY) {
-  wc.textContent = "the lexicon failed to load — marks unavailable. refresh, or check /lexicon.gen.js";
+  wc.textContent = "the lexicon failed to load — marks unavailable. refresh, or check /lexicon.gen.js?v=0.2.0";
   wc.style.color = "var(--stamp)";
   document.getElementById("mark").disabled = true;
   strip.disabled = true; aiBtn.disabled = true;
@@ -511,6 +514,10 @@ function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/
 input.addEventListener("input", count);
 document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); captionBar.classList.remove("on"); analyze(input.value); };
 aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim()); };
+script.addEventListener("click", e => {
+  const t = e.target.closest("mark.tell");
+  if (t) window.open("/lexicon#" + t.dataset.dim, "_blank", "noopener");
+});
 strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Strip it" : "Restore"; script.classList.toggle("stripped", !on); };
 
 window.addEventListener("DOMContentLoaded", () => { input.value = EXAMPLES["The non-apology"]; if (!LEX_READY) return; count(); setTimeout(() => analyze(input.value), 350); });

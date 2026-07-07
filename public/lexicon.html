@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Captioneer · The Lexicon</title>
+<meta name="description" content="The open lexicon of verbal-manipulation techniques: what each trick does, why it works, when the same construction is honest, and the names it has carried across 2,400 years. CC BY-SA 4.0." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f2f1ea; --card: #fbfaf5; --sunk: #eceadf; --ink: #18180f; --ink-soft: #55554a;
+    --faint: #8d8b7c; --rule: #dcdacd; --rule-soft: #e6e4d8; --stamp: #bd3a2c; --hl: #eac712;
+    --hl-wash: rgba(234, 199, 18, 0.34); --bar: #18180f; --bar-ink: #f2f1ea;
+    --hedge: #b07d1e; --deflect: #2b7690; --passive: #7350b8;
+    --loaded: #bd3a2c; --overclaim: #a5348a; --minimize: #367f52; --good: #367f52;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -28px rgba(0,0,0,0.35);
+    --serif: "Spectral", Georgia, serif;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #15150e; --card: #1d1d15; --sunk: #12120c; --ink: #eceadc; --ink-soft: #b1ae9d;
+      --faint: #77756a; --rule: #2c2b21; --rule-soft: #24241b; --stamp: #e0614f; --hl: #ecc824;
+      --hl-wash: rgba(236, 200, 36, 0.16); --bar: #000; --bar-ink: #eceadc;
+      --hedge: #d6a648; --deflect: #58a7c4; --passive: #a88de0; --loaded: #e0614f;
+      --overclaim: #d071ba; --minimize: #61b583; --good: #61b583;
+      --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 44px -26px rgba(0,0,0,0.7);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #f2f1ea; --card: #fbfaf5; --sunk: #eceadf; --ink: #18180f; --ink-soft: #55554a;
+    --faint: #8d8b7c; --rule: #dcdacd; --rule-soft: #e6e4d8; --stamp: #bd3a2c; --hl: #eac712;
+    --hl-wash: rgba(234,199,18,0.34); --bar: #18180f; --bar-ink: #f2f1ea;
+    --hedge:#b07d1e;--deflect:#2b7690;--passive:#7350b8;--loaded:#bd3a2c;--overclaim:#a5348a;--minimize:#367f52;--good:#367f52;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -28px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="dark"] {
+    --paper: #15150e; --card: #1d1d15; --sunk: #12120c; --ink: #eceadc; --ink-soft: #b1ae9d;
+    --faint: #77756a; --rule: #2c2b21; --rule-soft: #24241b; --stamp: #e0614f; --hl: #ecc824;
+    --hl-wash: rgba(236,200,36,0.16); --bar: #000; --bar-ink: #eceadc;
+    --hedge:#d6a648;--deflect:#58a7c4;--passive:#a88de0;--loaded:#e0614f;--overclaim:#d071ba;--minimize:#61b583;--good:#61b583;
+    --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 44px -26px rgba(0,0,0,0.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 17.5px; line-height: 1.62; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
+    background-image: radial-gradient(var(--rule) 0.5px, transparent 0.5px); background-size: 22px 22px; mix-blend-mode: multiply; }
+  @media (prefers-color-scheme: dark) { body::before { mix-blend-mode: screen; opacity: 0.25; } }
+  :root[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: 0.25; }
+  :root[data-theme="light"] body::before { mix-blend-mode: multiply; opacity: 0.5; }
+  main, header, footer { position: relative; z-index: 1; }
+  ::selection { background: var(--hl); color: #18180f; }
+  .wrap { width: 100%; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--stamp); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .brand a { color: inherit; } .brand a:hover { text-decoration: none; color: var(--stamp); }
+  .brand .cc { font-family: var(--mono); font-weight: 600; font-size: 11px; background: var(--bar); color: var(--bar-ink); padding: 3px 6px 2px; border-radius: 4px; letter-spacing: 0.06em; line-height: 1; }
+  .brand .sub { font-family: var(--mono); font-weight: 400; font-size: 11px; color: var(--faint); letter-spacing: 0.14em; text-transform: uppercase; padding-left: 4px; }
+  .hdr-actions { display: flex; gap: 8px; align-items: center; }
+  .pillbtn { background: none; border: 1px solid var(--rule); border-radius: 30px; padding: 7px 12px; cursor: pointer; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.06em; display: inline-block; }
+  .pillbtn:hover { border-color: var(--ink-soft); text-decoration: none; }
+
+  .hero { padding: 58px 0 20px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stamp); margin: 0 0 22px; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 5.6vw, 3.7rem); line-height: 1.03; letter-spacing: -0.03em; margin: 0; max-width: 18ch; text-wrap: balance; }
+  h1 .u { background: linear-gradient(transparent 62%, var(--hl-wash) 62%); padding: 0 2px; }
+  .lede { font-size: clamp(1.05rem, 1.9vw, 1.24rem); line-height: 1.58; color: var(--ink-soft); max-width: 60ch; margin: 24px 0 0; }
+  .lede em, .lede b { color: var(--ink); }
+  .meta-line { margin-top: 22px; font-family: var(--mono); font-size: 11.5px; color: var(--faint); display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 6px; }
+  .jump a { font-family: var(--mono); font-size: 12px; padding: 8px 13px; border-radius: 7px; background: var(--card); color: var(--ink-soft); border: 1px solid var(--rule); }
+  .jump a:hover { border-color: var(--stamp); color: var(--ink); text-decoration: none; }
+  .jump .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 7px; vertical-align: 0; }
+
+  .charter-strip { margin: 34px 0 0; border: 1px solid var(--rule); border-left: 3px solid var(--stamp); background: var(--card); border-radius: 0 11px 11px 0; box-shadow: var(--shadow); padding: 16px 20px; font-size: 0.98rem; color: var(--ink-soft); }
+  .charter-strip b { color: var(--ink); }
+
+  section.entries { padding: 30px 0 40px; }
+  .entry { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); padding: 26px 28px; margin: 26px 0; scroll-margin-top: 24px; }
+  .entry .top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .entry .sw { width: 11px; height: 11px; border-radius: 3px; align-self: center; }
+  .entry h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 3.2vw, 2.1rem); letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
+  .chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--rule); border-radius: 4px; padding: 2px 7px; color: var(--faint); white-space: nowrap; }
+  .chip.live { color: var(--good); border-color: var(--good); }
+  .chip.ref { color: var(--deflect); border-color: var(--deflect); }
+  .entry .what { font-size: clamp(1.05rem, 2vw, 1.2rem); color: var(--ink); margin: 10px 0 4px; line-height: 1.5; }
+  .entry .aff { font-family: var(--mono); font-size: 12px; color: var(--stamp); margin: 0 0 16px; letter-spacing: 0.02em; }
+
+  .rows { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+  .row { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: baseline; }
+  .row .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+  .row .v { font-size: 0.97rem; line-height: 1.58; color: var(--ink-soft); }
+  .row .v b { color: var(--ink); font-weight: 600; }
+  .row.honest .k { color: var(--good); }
+  .row.honest .v { color: var(--ink-soft); }
+  .row.honest .v::before { content: ""; }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr; gap: 3px; } }
+
+  .timeline { margin: 4px 0 0; border-left: 2px solid var(--rule); padding: 2px 0 0 0; list-style: none; }
+  .timeline li { position: relative; padding: 0 0 13px 20px; }
+  .timeline li:last-child { padding-bottom: 2px; }
+  .timeline li::before { content: ""; position: absolute; left: -5px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--paper); border: 2px solid var(--stamp); }
+  .timeline .when { font-family: var(--mono); font-size: 10.5px; color: var(--stamp); letter-spacing: 0.05em; margin-right: 8px; }
+  .timeline .term { font-family: var(--display); font-weight: 600; font-size: 0.98rem; color: var(--ink); }
+  .timeline .src { display: block; font-size: 0.86rem; color: var(--faint); line-height: 1.45; margin-top: 1px; }
+
+  .specimen-q { border: 1px solid var(--rule-soft); background: var(--paper); border-radius: 9px; padding: 14px 17px; margin: 0 0 10px; }
+  .specimen-q .q { font-size: 1.02rem; line-height: 1.65; color: var(--ink); }
+  .specimen-q .q u { text-decoration: none; border-bottom: 2px solid var(--stamp); padding-bottom: 1px; }
+  .specimen-q .m { font-family: var(--mono); font-size: 10.5px; color: var(--faint); margin-top: 8px; }
+  .specimen-q .m a { color: var(--faint); text-decoration: underline; }
+  .specimen-q .m a:hover { color: var(--stamp); }
+  .specimen-q.twin { border-left: 3px solid var(--good); }
+  .specimen-q.twin .q u { border-bottom-color: var(--good); }
+
+  details.pat { margin-top: 2px; }
+  details.pat summary { cursor: pointer; font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.03em; }
+  details.pat summary:hover { color: var(--stamp); }
+  .patlist { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .patlist span { font-family: var(--mono); font-size: 11.5px; background: var(--sunk); border: 1px solid var(--rule-soft); border-radius: 5px; padding: 3px 8px; color: var(--ink-soft); }
+
+  .cite { font-size: 0.85rem; color: var(--faint); line-height: 1.55; }
+  .cite li { margin-bottom: 4px; }
+  .cite ul { margin: 0; padding-left: 18px; }
+
+  footer { border-top: 1px solid var(--rule); padding: 38px 0 60px; color: var(--faint); font-size: 13.5px; margin-top: 30px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+  footer .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; }
+  footer b { color: var(--ink-soft); font-weight: 600; }
+  footer a { color: var(--stamp); }
+
+  #fail { display: none; margin: 40px 0; font-family: var(--mono); font-size: 13px; color: var(--stamp); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="cc">CC</span> <a href="/">Captioneer</a> <span class="sub">the lexicon</span></div>
+    <div class="hdr-actions">
+      <a class="pillbtn" href="/">← the reader</a>
+      <a class="pillbtn" href="https://github.com/cambridgetcg/open-lens">github ↗</a>
+      <button class="pillbtn" id="theme" aria-label="Toggle theme">◐ theme</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <p class="eyebrow">The open lexicon</p>
+      <h1>Every trick has a <span class="u">name</span>. Every name has a history.</h1>
+      <p class="lede">This is the data behind the reader: each technique with <em>what it does</em>, <em>why it works</em>, <em>when the same construction is honest</em>, and the names it has carried across traditions — from Aristotle's fallacy catalog to the Nyāyasūtra to al-Jurjānī to last decade's shared tasks. Open data, <b>CC BY-SA 4.0</b>, one technique per file, every claim cited.</p>
+      <div class="meta-line" id="metaLine"></div>
+      <div class="jump" id="jump"></div>
+      <div class="charter-strip"><b>The charter, in one line:</b> these entries describe <b>language, never speakers</b>. A mark means "this construction is present," not "this person is manipulating" — every family below documents its honest use for exactly that reason. No entry detects lies; nothing here can. <a href="https://github.com/cambridgetcg/open-lens/blob/main/CHARTER.md">Read the charter ↗</a></div>
+    </section>
+
+    <section class="entries" id="entries"></section>
+    <p id="fail">the lexicon failed to load — check /lexicon.gen.js?v=0.2.0"https://github.com/cambridgetcg/open-lens/tree/main/lexicon">github ↗</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>The Lexicon</b> — techniques as data. Lexicon CC BY-SA 4.0 · reader Apache-2.0.</div>
+    <div class="mono"><a href="/">the reader</a> · <a href="https://github.com/cambridgetcg/open-lens">open source ↗</a> · <a href="https://github.com/cambridgetcg/open-lens/blob/main/CONTRIBUTING.md">contribute ↗</a></div>
+  </div>
+</footer>
+
+<script src="/lexicon.gen.js?v=0.2.0"></script>
+<script>
+/* ── theme (shared with the reader) ── */
+const root = document.documentElement;
+try { const t = localStorage.getItem("cap-theme"); if (t) root.setAttribute("data-theme", t); } catch {}
+document.getElementById("theme").onclick = () => {
+  const cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try { localStorage.setItem("cap-theme", next); } catch {}
+};
+
+/* ── render the lexicon ── */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
+const rxEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const COLORS = { hedge:"var(--hedge)", deflect:"var(--deflect)", passive:"var(--passive)", loaded:"var(--loaded)", overclaim:"var(--overclaim)", minimize:"var(--minimize)" };
+
+// underline this family's own patterns inside a quote — the guide reads its own specimens
+function markQuote(text, t) {
+  const en = (t.realizations && t.realizations.en) || {};
+  const hits = [];
+  for (const p of en.patterns || []) {
+    const rx = new RegExp("(?<![a-z])" + rxEsc(p).replace(/ /g, "\\s+") + "(?![a-z])", "gi");
+    let m; while ((m = rx.exec(text)) !== null) { hits.push([m.index, m.index + m[0].length]); if (m.index === rx.lastIndex) rx.lastIndex++; }
+  }
+  for (const r of en.regex || []) {
+    const rx = new RegExp(r.source, r.flags.includes("g") ? r.flags : r.flags + "g");
+    let m; while ((m = rx.exec(text)) !== null) { hits.push([m.index, m.index + m[0].length]); if (m.index === rx.lastIndex) rx.lastIndex++; }
+  }
+  hits.sort((a, b) => a[0] - b[0] || (b[1] - b[0]) - (a[1] - a[0]));
+  const kept = []; let cur = -1;
+  for (const h of hits) if (h[0] >= cur) { kept.push(h); cur = h[1]; }
+  let html = "", i = 0;
+  for (const [s, e] of kept) { html += esc(text.slice(i, s)) + "<u>" + esc(text.slice(s, e)) + "</u>"; i = e; }
+  return html + esc(text.slice(i));
+}
+
+function hostOf(url) { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return "source"; } }
+
+const LEX = window.CAPTIONEER_LEXICON;
+if (!LEX || !Array.isArray(LEX.techniques) || !LEX.techniques.length) {
+  document.getElementById("fail").style.display = "block";
+} else {
+  const ts = [...LEX.techniques].sort((a, b) => (a.status === "live" ? 0 : 1) - (b.status === "live" ? 0 : 1));
+  document.getElementById("metaLine").innerHTML =
+    `<span>v${esc(LEX.version)} · ${LEX.techniques.length} techniques</span>` +
+    `<span>updated ${esc(LEX.updated)}</span>` +
+    `<span>license ${esc(LEX.license)}</span>` +
+    `<span><a href="https://github.com/cambridgetcg/open-lens/tree/main/lexicon">the raw data ↗</a></span>`;
+  document.getElementById("jump").innerHTML = ts.map(t =>
+    `<a href="#${esc(t.key)}"><span class="sw" style="background:${COLORS[t.key] || "var(--stamp)"}"></span>${esc(t.name)}</a>`).join("");
+
+  document.getElementById("entries").innerHTML = ts.map(t => {
+    const en = (t.realizations && t.realizations.en) || {};
+    const rows = [];
+    rows.push(`<div class="row"><span class="k">why it works</span><span class="v">${esc(t.mechanism)}</span></div>`);
+    rows.push(`<div class="row honest"><span class="k">when it's honest</span><span class="v">${esc(t.benign_reading)}</span></div>`);
+    rows.push(`<div class="row"><span class="k">the mark says</span><span class="v">"${esc(t.output_phrasing)}" — and never more than that.</span></div>`);
+    if (t.naming_events && t.naming_events.length) {
+      rows.push(`<div class="row"><span class="k">named, and named again</span><span class="v"><ol class="timeline">` +
+        t.naming_events.map(ev =>
+          `<li><span class="when">${esc(ev.when)}</span><span class="term">${esc(ev.term)}</span><span class="src">${esc(ev.source)}</span></li>`).join("") +
+        `</ol></span></div>`);
+    }
+    if (t.specimens && t.specimens.length) {
+      rows.push(`<div class="row"><span class="k">on the record</span><span class="v">` +
+        t.specimens.map(s =>
+          `<div class="specimen-q"><div class="q">"${markQuote(s.quote, t)}"</div><div class="m">${esc(s.speaker)} · ${esc(s.date)} · <a href="${esc(s.source)}" rel="noopener">${esc(hostOf(s.source))} ↗</a>${s.note ? " — " + esc(s.note) : ""}</div></div>`).join("") +
+        `</span></div>`);
+    }
+    if (t.honest_twins && t.honest_twins.length) {
+      rows.push(`<div class="row honest"><span class="k">the honest twin</span><span class="v">` +
+        t.honest_twins.map(h =>
+          `<div class="specimen-q twin"><div class="q">"${markQuote(h.text, t)}"</div><div class="m">${esc(h.attribution || "constructed example")} — ${esc(h.note)}</div></div>`).join("") +
+        `</span></div>`);
+    }
+    if ((en.patterns || []).length) {
+      rows.push(`<div class="row"><span class="k">surface tells</span><span class="v"><details class="pat"><summary>${en.patterns.length} English patterns${(en.regex || []).length ? " + " + en.regex.length + " grammatical rule" + (en.regex.length > 1 ? "s" : "") : ""} — show them</summary><div class="patlist">` +
+        en.patterns.map(p => `<span>${esc(p)}</span>`).join("") + `</div></details></span></div>`);
+    }
+    if (t.crosswalk) {
+      const cw = Object.entries(t.crosswalk).filter(([k, v]) => v && k !== "note").map(([k, v]) => `${k}: ${v}`).join(" · ");
+      const note = t.crosswalk.note ? (cw ? " — " : "") + t.crosswalk.note : "";
+      if (cw || note) rows.push(`<div class="row"><span class="k">crosswalk</span><span class="v">${esc(cw + note)}</span></div>`);
+    }
+    if (t.citations && t.citations.length) {
+      rows.push(`<div class="row"><span class="k">citations</span><span class="v cite"><ul>` +
+        t.citations.map(c => `<li>${esc(c)}</li>`).join("") + `</ul></span></div>`);
+    }
+    const uni = t.universality ? `<span class="chip">${t.universality}${t.universality >= 4 ? "+" : ""} independent tradition${t.universality > 1 ? "s" : ""}</span>` : "";
+    const bound = t.language_bound ? `<span class="chip">language-bound</span>` : "";
+    return `<article class="entry" id="${esc(t.key)}">
+      <div class="top">
+        <span class="sw" style="background:${COLORS[t.key] || "var(--stamp)"}"></span>
+        <h2>${esc(t.name)}</h2>
+        <span class="chip">${esc(t.id)}</span>
+        <span class="chip ${t.status === "live" ? "live" : "ref"}">${t.status === "live" ? "live in the reader" : esc(t.status)}</span>
+        ${uni}${bound}
+      </div>
+      <p class="what">${esc(t.what)}.</p>
+      <p class="aff">what the speaker gains · ${esc(t.affordance)}</p>
+      <div class="rows">${rows.join("")}</div>
+    </article>`;
+  }).join("");
+}
+</script>
+</body>
+</html>

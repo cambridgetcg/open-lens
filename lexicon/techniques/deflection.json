@@ -84,10 +84,58 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "Senator, I don't recall specifically the genesis of the idea, although in going back and looking at the documents, it appears that there was some thinking about this as early as 2004.",
+      "speaker": "Alberto Gonzales, U.S. Attorney General (R administration)",
+      "date": "2007-04-19",
+      "source": "https://www.democracynow.org/2007/4/20/gonzales_grilled_by_gops_and_dems",
+      "note": "Sen. Feinstein asked point-blank 'Whose idea was this?' about the amendment letting him replace U.S. attorneys without Senate confirmation; the memory claim steers around attribution of responsibility — Gonzales gave …"
+    },
+    {
+      "quote": "Let me be very clear about this: While I was told about the EPA process, I was not then told, nor did I have any reason to suspect or to believe, that our vehicles included such a device.",
+      "speaker": "Michael Horn, President and CEO, Volkswagen Group of America",
+      "date": "2015-10-08",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-114hhrg99793/pdf/CHRG-114hhrg99793.pdf",
+      "note": "The emphatic-candor formula fronts a personal-deniability claim in sworn testimony about the diesel defeat device; in the same hearing Horn attributed the fraud to 'a couple of software engineers who put this in, for …"
+    },
+    {
+      "quote": "Our team is moving with a sense of urgency to work with the authorities and conduct our own detailed review of what happened. We are also reaching out to this passenger to talk directly to him and further address and resolve this situation.",
+      "speaker": "Oscar Munoz, CEO, United Airlines",
+      "date": "2017-04-10",
+      "source": "https://www.boston.com/travel/business/2017/04/11/read-united-ceos-3-statements-on-passenger-dragged-off-flight/",
+      "note": "Process language plus the warm 'reaching out' softener stands in for any account of Dr. David Dao being dragged bloodied off Flight 3411; the same three-sentence statement contains the infamous 'I apologize for having…"
+    },
+    {
+      "quote": "We as a team are totally focused on moving forward to the 2020 season.",
+      "speaker": "Alex Bregman, Houston Astros (spring-training press conference on the sign-stealing scandal)",
+      "date": "2020-02-13",
+      "source": "https://www.nbcsports.com/mlb/news/astros-owner-on-sign-stealing-our-opinion-is-this-didnt-impact-the-game",
+      "note": "Closing line of a roughly 30-second scripted apology that never named what the team actually did (the electronic sign-stealing scheme); 'moving forward' declares the accountability question closed and pivots to next s…"
+    },
+    {
+      "quote": "I have not spoken with him about specifically FBI Director Wray in recent days, Peter, but I'll circle back with you if there's more to convey.",
+      "speaker": "Jen Psaki, White House Press Secretary (D administration)",
+      "date": "2021-01-20",
+      "source": "https://bidenwhitehouse.archives.gov/briefing-room/press-briefings/2021/01/20/press-briefing-by-press-secretary-jen-psaki-january-20-2021/",
+      "note": "Asked the yes/no question whether President Biden had confidence in his FBI director, the deferral formula performs responsiveness while leaving Wray's standing conspicuously unaffirmed; 'circle back' became the signa…"
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Aristotle, Sophistical Refutations.",
     "Vidyabhusana, S.C. (1913). The Nyāya Sutras of Gotama (public domain)."
+  ],
+  "honest_twins": [
+    {
+      "text": "That's a great question — I don't actually know. Let me look into it and I'll email you the answer, with my source, by Friday.",
+      "note": "Same constructions ('that's a great question', 'look into it'), but the compliment is not a stall: the speaker openly declines to answer now, names why, and commits to a specific, checkable follow-up. The question is engaged rather than steered around — the entry's benign reading (deferral as diligence, declined openly) applies.",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "Honestly, I don't recall which quarter we signed it — around March, I think — so please check the board minutes before you quote a date.",
+      "note": "Same construction ('I don't recall'), but here it is a genuine, plainly stated memory limit: the speaker gives their best partial answer and points to the authoritative record that settles it. Memory is offered as far as it goes, not deployed as a shield against a question the speaker would rather not answer.",
+      "attribution": "constructed example"
+    }
   ]
 }

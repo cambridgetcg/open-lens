@@ -42,6 +42,7 @@ lexicon/                 the data (CC BY-SA 4.0)
   techniques/*.json      one technique per file
 public/                  the reference reader (static, client-side marking)
   index.html             UI + close-reader engine
+  lexicon.html           the field guide — every technique's story, rendered from the data
   lexicon.gen.js         GENERATED from lexicon/ — do not edit by hand
 functions/api/read.js    opt-in truth caption (Cloudflare Pages Functions + Workers AI)
 tools/build-lexicon.mjs  lexicon → lexicon.gen.js, with schema validation
@@ -74,9 +75,9 @@ Full schema: [lexicon/SCHEMA.md](lexicon/SCHEMA.md).
 
 ## Status & roadmap
 
-**v0.1 — young project, honestly labeled.** Six live families (~172 English patterns, extracted from the shipped reader) + one reference entry. The six are grandfathered as `seed`; the evidence standard below applies to everything new.
+**v0.2 — young project, honestly labeled.** Six live families (172 English patterns, extracted from the shipped reader) + one reference entry, now with **29 independently verified specimens** (each quote checked verbatim against archival sources, pattern-matched, politically balanced across the set) and an honest twin per family. The [field guide](https://captioneer.io/lexicon) renders it all; every mark in the reader links to its entry. The six seed pattern-packs remain grandfathered; the evidence standard below applies to everything new.
 
-- **Next:** specimen backfill for the seed families; more reference entries from the classical catalogs; field-guide pages (every mark becomes a door into its technique's story); coverage notes in the reader ("unmarked ≠ clean").
+- **Next:** more reference entries from the classical catalogs; counter-specimen ("ham") corpus and the CI promotion gate; first community annotation on the tractable families.
 - **Then:** the contribution gate as CI — a politically balanced "ham" corpus of sincere speech, per-slice false-positive thresholds (SpamAssassin-style: a pattern crafted to flag one faction's ordinary speech fails mechanically); first community annotation on the tractable families.
 - **Later:** non-English packs owned by native-speaker teams (Cantonese and Mandarin first), morpheme-aware matching, the Lens Acquisition Test.
 

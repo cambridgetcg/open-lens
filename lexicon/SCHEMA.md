@@ -24,8 +24,9 @@ One technique = one JSON file in `techniques/`, listed in `lexicon.json`. **The 
 | `language_bound` | — | `true` if the tell's logic is language-specific (e.g. deleted subject: a marked choice in English, unmarked grammar in pro-drop languages). |
 | `crosswalk` | — | Mappings to SemEval-2023, PTC-2019, MAFALDA, DISARM where they exist; `null` + note where the family is framework-native. |
 | `realizations` | live | Per-language detection packs, keyed by BCP-47-ish tag. Each: `match` (`surface` for now; `lemma`/`morpheme` reserved for non-isolating languages), `patterns` (plain strings; matched case-insensitively with word boundaries), `regex` (`{source, flags}` — declarative only; flags **must** include `g`, may not include `y`), `provenance`. |
-| `specimens` | gate | ≥3 independent, dated, sourced real-world uses (see CONTRIBUTING). Empty allowed at `candidate`, or at `live` only for entries whose realization `provenance` begins `seed —` (grandfathered; backfill tracked in CONTRIBUTING). |
-| `counter_specimens` | gate | Sincere text the patterns must NOT flag. |
+| `specimens` | gate | ≥3 independent, dated, sourced real-world uses (see CONTRIBUTING). Shape: `{quote (≤300 chars, fair use), speaker, date, source (URL), note?}`. Empty allowed at `candidate`, or at `live` only for entries whose realization `provenance` begins `seed —` (grandfathered; backfill tracked in CONTRIBUTING). |
+| `honest_twins` | — | Sincere uses of the *same construction* where `benign_reading` applies — `{text (≤300 chars), note, attribution?}` (constructed examples allowed, labeled). The teaching layer's anti-cynicism data: every family ships with its honest twin. |
+| `counter_specimens` | gate | Sincere text the patterns must NOT flag at all (pattern-level ham; distinct from `honest_twins`, which the patterns *do* match). |
 | `citations` | ✓ | Scholarly anchors. At least one primary source per entry — the anti-SCAN rule: no criteria list spreads without validation attached. |
 
 ## Invariants (do not bend)

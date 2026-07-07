@@ -74,10 +74,57 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "I believe nicotine is not addictive, yes.",
+      "speaker": "William Campbell, President and CEO, Philip Morris USA",
+      "date": "1994-04-14",
+      "source": "https://web.archive.org/web/20260416104407/https://senate.ucsf.edu/tobacco-ceo-statement-to-congress",
+      "note": "Under oath at the Waxman hearing, the 'I believe' wrapper converts a factual claim contradicted by Philip Morris's own suppressed research into an unfalsifiable statement of personal belief — perjury insulation; all s…"
+    },
+    {
+      "quote": "I think the environmental impact of this disaster is likely to be very, very modest.",
+      "speaker": "Tony Hayward, CEO, BP (Sky News interview during the Deepwater Horizon spill)",
+      "date": "2010-05-18",
+      "source": "https://www.bbc.co.uk/news/10360084",
+      "note": "'I think' plus 'likely to be' doubly lowers commitment on a minimizing forecast BP needed the public to accept mid-crisis, keeping the claim retractable — as it had to be when the spill became the largest in US history."
+    },
+    {
+      "quote": "I'm not sure of the exact date but I probably heard about Fast and Furious for the first time over the last few weeks.",
+      "speaker": "Eric Holder, US Attorney General, testimony to the House Judiciary Committee",
+      "date": "2011-05-03",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-112hhrg66154/html/CHRG-112hhrg66154.htm",
+      "note": "The stacked hedges keep the date claim walk-backable: when memos surfaced showing his office was briefed in July 2010, DOJ recharacterized rather than retracted the answer — exactly the deniability-without-retraction …"
+    },
+    {
+      "quote": "Senator — I — I want to make sure I get this accurate, so it would probably be better to have my team follow up afterwards.",
+      "speaker": "Mark Zuckerberg, CEO, Facebook, Senate Judiciary/Commerce joint hearing (answering Sen. Wicker on tracking logged-off users)",
+      "date": "2018-04-10",
+      "source": "https://en.wikisource.org/wiki/Zuckerberg_Senate_Transcript_2018",
+      "note": "A yes/no confirmation was asked for and available (Facebook did track logged-out browsing via cookies and pixels); 'would probably be better to have my team follow up' hedges the deferral itself, so no on-record commi…"
+    },
+    {
+      "quote": "Our intelligence agencies continue to assess all information, but it could very well be that the Crown Prince had knowledge of this tragic event – maybe he did and maybe he didn't!",
+      "speaker": "President Donald J. Trump, official White House statement 'Standing with Saudi Arabia' (on the Khashoggi murder)",
+      "date": "2018-11-20",
+      "source": "https://trumpwhitehouse.archives.gov/briefings-statements/statement-president-donald-j-trump-standing-saudi-arabia/"
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Lakoff, G. (1973). Hedges. Journal of Philosophical Logic 2, 458–508.",
     "Farkas et al. (2010). The CoNLL-2010 Shared Task. (BioScope; Wikipedia weasel corpus.)"
+  ],
+  "honest_twins": [
+    {
+      "text": "I think the standup moved to 3pm, but check the calendar invite before you head over.",
+      "note": "Same 'i think' construction, but here it marks genuine uncertainty and the speaker immediately points the listener to a way to verify — epistemic honesty (the benign reading), not deniability: no commitment was asked for that the speaker is dodging.",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "To the best of my knowledge the outage never touched the payments tier — but I can only see the app-server logs, so ask infra to confirm.",
+      "note": "'To the best of my knowledge' honestly scopes the claim to the evidence the speaker actually has and names the limit of that evidence; the hedge invites checking rather than pre-building a walk-back.",
+      "attribution": "constructed example"
+    }
   ]
 }

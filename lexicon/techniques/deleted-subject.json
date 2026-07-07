@@ -75,10 +75,58 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "But we did not achieve what we wished, and serious mistakes were made in trying to do so.",
+      "speaker": "Ronald Reagan",
+      "date": "1987-01-27",
+      "source": "https://www.reaganlibrary.gov/archives/speech/address-joint-session-congress-state-union-1987",
+      "note": "State of the Union on Iran-Contra: the passive deletes the maker of the mistakes — his own administration and himself — acknowledging failure while the grammar leaves no one to blame (Safire's canonical 'past exonerat…"
+    },
+    {
+      "quote": "no one is blameless here; it costs so much money to pay for these campaigns, that mistakes were made here by people who either did it deliberately or inadvertently",
+      "speaker": "Bill Clinton",
+      "date": "1997-01-28",
+      "source": "https://www.presidency.ucsb.edu/documents/the-presidents-news-conference-1067",
+      "note": "News conference on Democratic fundraising: the nominal agent is an indefinite crowd ('people who either did it deliberately or inadvertently'), so the passive diffuses responsibility from the White House to everyone a…"
+    },
+    {
+      "quote": "Approximately 40 million credit and debit card accounts may have been impacted between Nov. 27 and Dec. 15, 2013.",
+      "speaker": "Target Corporation",
+      "date": "2013-12-19",
+      "source": "https://corporate.target.com/news-features/article/2013/12/target-confirms-unauthorized-access-to-payment-car",
+      "note": "Breach announcement: accounts arrive pre-'impacted' as if by weather — the grammar deletes both the criminals who stole the card data and Target's own custodial failure to secure it."
+    },
+    {
+      "quote": "As a result of the incident, OPM will send notifications to approximately 4 million individuals whose PII may have been compromised.",
+      "speaker": "U.S. Office of Personnel Management",
+      "date": "2015-06-04",
+      "source": "http://web.archive.org/web/20150606063136/https://www.opm.gov/news/releases/2015/06/opm-to-notify-employees-of-cybersecurity-incident/",
+      "note": "Federal breach notice: PII 'may have been compromised' with no grammatical actor — neither the intruders nor the agency whose unmodernized systems let them in appear as the subject of any failure."
+    },
+    {
+      "quote": "In addition, credit card numbers for approximately 209,000 U.S. consumers, and certain dispute documents with personal identifying information for approximately 182,000 U.S. consumers, were accessed.",
+      "speaker": "Equifax Inc.",
+      "date": "2017-09-07",
+      "source": "https://www.prnewswire.com/news-releases/equifax-announces-cybersecurity-incident-involving-consumer-information-300515960.html",
+      "note": "Breach press release (also SEC 8-K exhibit 99.1): the sentence detailing the worst data loss ends in an agentless 'were accessed,' deleting both the criminals and Equifax's unpatched web application that admitted them."
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Fausey, C.M. & Boroditsky, L. (2010). Subtle linguistic cues influence perceived blame and financial liability. Psychonomic Bulletin & Review 17, 644–650. (Replicated in English 2022; mixed results in Croatian.)",
     "Fowler, R. et al. (1979). Language and Control."
+  ],
+  "honest_twins": [
+    {
+      "text": "It was decided — unanimously, by all nine of us at Tuesday's meeting — that club dues would stay at ten dollars.",
+      "note": "Contains the surface pattern 'it was decided,' but the deciders are named in the same clause ('by all nine of us'), so no agency is hidden; the passive is pure information structure, foregrounding the decision readers care about — exactly the entry's benign_reading (agency is not at issue).",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "All evening flights were delayed by the thunderstorm; gate agents rebooked every passenger overnight.",
+      "note": "Matches the entry regex ('were delayed'), but the cause sits openly in the by-phrase and is a natural event with no responsible agent to conceal; the passive simply fronts what the reader needs (their flight), so the benign_reading — information structure, not blame diffusion — applies.",
+      "attribution": "constructed example"
+    }
   ]
 }

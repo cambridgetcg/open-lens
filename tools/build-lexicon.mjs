@@ -55,6 +55,17 @@ for (const fname of manifest.entries) {
     if (!String(r.flags || "").includes("g")) problems.push(`${fname}: regex flags "${r.flags}" must include "g" — a non-global regex never advances and hangs the reader`);
     if (String(r.flags || "").includes("y")) problems.push(`${fname}: sticky "y" flag not allowed in lexicon regexes`);
   }
+  for (const s of t.specimens || []) {
+    for (const f of ["quote", "speaker", "date", "source"]) {
+      if (!s[f]) problems.push(`${fname}: specimen missing "${f}"`);
+    }
+    if (s.quote && s.quote.length > 300) problems.push(`${fname}: specimen quote exceeds 300 chars — short fair-use quotes only`);
+    if (s.source && !/^https?:\/\//.test(s.source)) problems.push(`${fname}: specimen source must be a URL`);
+  }
+  for (const h of t.honest_twins || []) {
+    if (!h.text || !h.note) problems.push(`${fname}: honest_twin needs text + note`);
+    if (h.text && h.text.length > 300) problems.push(`${fname}: honest_twin text exceeds 300 chars`);
+  }
   const banned = /\b(liar|lying|deceptive person|gaslighter|manipulator)\b/i;
   if (banned.test(t.output_phrasing || "")) problems.push(`${fname}: output_phrasing contains a verdict word — describe the language, never the speaker`);
 
@@ -80,15 +91,17 @@ window.CAPTIONEER_LEXICON = ${JSON.stringify(payload)};
 `;
 writeFileSync(join(root, "public/lexicon.gen.js"), js);
 
-// stamp the versioned URL into index.html so HTML/lexicon cache skew is impossible
-const htmlPath = join(root, "public/index.html");
-const html = readFileSync(htmlPath, "utf8");
-const stamped = html.replace(/\/lexicon\.gen\.js(\?v=[^"']*)?/, `/lexicon.gen.js?v=${manifest.version}`);
-if (!stamped.includes(`/lexicon.gen.js?v=${manifest.version}`)) {
-  console.error("failed to stamp lexicon version into public/index.html");
-  process.exit(1);
+// stamp the versioned URL into every page so HTML/lexicon cache skew is impossible
+for (const page of ["public/index.html", "public/lexicon.html"]) {
+  const htmlPath = join(root, page);
+  const html = readFileSync(htmlPath, "utf8");
+  const stamped = html.replace(/\/lexicon\.gen\.js(\?v=[^"']*)?/g, `/lexicon.gen.js?v=${manifest.version}`);
+  if (!stamped.includes(`/lexicon.gen.js?v=${manifest.version}`)) {
+    console.error(`failed to stamp lexicon version into ${page}`);
+    process.exit(1);
+  }
+  if (stamped !== html) writeFileSync(htmlPath, stamped);
 }
-if (stamped !== html) writeFileSync(htmlPath, stamped);
 
 const live = techniques.filter(t => t.status === "live");
 const n = live.reduce((a, t) => a + ((t.realizations.en && t.realizations.en.patterns) || []).length, 0);

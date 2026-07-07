@@ -86,10 +86,57 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "And with all due respect, the fact is we had four dead Americans. Was it because of a protest or was it because of guys out for a walk one night who decided they would go kill some Americans? What difference, at this point, does it make?",
+      "speaker": "Hillary Clinton, U.S. Secretary of State",
+      "date": "2013-01-23",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-113shrg86780/html/CHRG-113shrg86780.htm"
+    },
+    {
+      "quote": "Our company was dishonest, with the EPA and the California Air Resources board, and with all of you and in my German words, we have totally screwed up.",
+      "speaker": "Michael Horn, President and CEO, Volkswagen Group of America",
+      "date": "2015-09-21",
+      "source": "https://www.cnbc.com/2015/09/21/volkswagen-us-ceo-screwed-up-on-eca-emissions-diesel-test-rigging.html",
+      "note": "The folksy intensifier performs maximal candor while reframing years of engineered defeat-device fraud as a blunder — 'totally screwed up' sounds more contrite than 'cheated' while admitting less."
+    },
+    {
+      "quote": "This is clearly a disappointing event for our company, and one that strikes at the heart of who we are and what we do.",
+      "speaker": "Richard F. Smith, Chairman and Chief Executive Officer, Equifax Inc.",
+      "date": "2017-09-07",
+      "source": "https://investor.equifax.com/news-events/press-releases/detail/240/equifax-announces-cybersecurity-incident-involving-consumer",
+      "note": "'Clearly' imports agreed-upon obviousness onto the euphemism 'disappointing event', grading a breach of 143 million people's data as a mood — and casting the company, not consumers, as the injured party."
+    },
+    {
+      "quote": "So we're going to be signing today, and registering, national emergency. And it's a great thing to do because we have an invasion of drugs, invasion of gangs, invasion of people, and it's unacceptable.",
+      "speaker": "Donald Trump, President of the United States",
+      "date": "2019-02-15",
+      "source": "https://www.presidency.ucsb.edu/documents/remarks-declaring-national-emergency-concerning-the-southern-border-the-united-states-and",
+      "note": "'Invasion', repeated three times, imports a military frame that makes the emergency feel self-evident by vocabulary alone — the loaded noun does the work the contested legal justification was being asked to do."
+    },
+    {
+      "quote": "I want to be clear at the outset: any allegation that Robinhood acted to help hedge funds or other special interests to the detriment of our customers is absolutely false and market-distorting rhetoric.",
+      "speaker": "Vladimir Tenev, co-founder and CEO, Robinhood Markets, Inc.",
+      "date": "2021-02-18",
+      "source": "https://www.congress.gov/117/meeting/house/111207/witnesses/HHRG-117-BA00-Wstate-TenevV-20210218.pdf",
+      "note": "'Absolutely false' plus the counter-label 'market-distorting rhetoric' delegitimizes the accusers before any evidence is weighed — intensity and name-calling stand in for the account of why buying was halted."
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Lakoff, G. (2004). Don't Think of an Elephant!",
     "Skinner, Q. — 'rhetorical redescription' (paradiastole scholarship)."
+  ],
+  "honest_twins": [
+    {
+      "text": "Make no mistake: the spillway is cracked, and the inspection report says it will not survive another flood season. Close the road below the dam today.",
+      "note": "The same preemptive intensifier is honest here because the urgency is earned and argued in the same breath — a checkable inspection report carries the claim, so the emotion matches the stakes instead of substituting for evidence.",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "The fact is this invoice was paid twice — here are both bank statements, dated three weeks apart.",
+      "note": "'The fact is' introduces something that actually is a documented fact, with the receipts attached in the same sentence; per the entry's benign reading, naming a wrong plainly is precision, because an argument — not the loaded frame — is doing the work.",
+      "attribution": "constructed example"
+    }
   ]
 }

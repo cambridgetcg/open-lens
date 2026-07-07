@@ -81,9 +81,50 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "I want you to listen to me. I'm going to say this again. I did not have sexual relations with that woman, Miss Lewinsky. I never told anybody to lie, not a single time—never.",
+      "speaker": "President Bill Clinton",
+      "date": "1998-01-26",
+      "source": "https://millercenter.org/the-presidency/presidential-speeches/january-26-1998-response-lewinsky-allegations",
+      "note": "The absolute 'never... not a single time—never' universalizes a denial he later admitted was misleading; the quantifier wears certainty the evidence could not support."
+    },
+    {
+      "quote": "Let me start by telling you this: I have never used steroids, period. I do not know how to say it any more clearly than that. Never.",
+      "speaker": "Rafael Palmeiro, Baltimore Orioles first baseman, sworn testimony to the House Committee on Government Reform",
+      "date": "2005-03-17",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-109hhrg23038/html/CHRG-109hhrg23038.htm",
+      "note": "The doubled, freestanding 'Never.' stakes total certainty under oath as a substitute for evidence; he tested positive for the steroid stanozolol about four months later."
+    },
+    {
+      "quote": "Now, I have to tell you, it's an unbelievably complex subject. Nobody knew that healthcare could be so complicated.",
+      "speaker": "President Donald Trump, remarks at a meeting with the National Governors Association",
+      "date": "2017-02-27",
+      "source": "https://trumpwhitehouse.archives.gov/briefings-statements/remarks-president-trump-meeting-national-governors-association/",
+      "note": "'Nobody knew' projects the speaker's own surprise onto everyone, converting a personal knowledge gap into a universal excuse for a stalled repeal effort."
+    },
+    {
+      "quote": "Senator, yes. There will always be a version of Facebook that is free. It is our mission to try to help connect everyone around the world and to bring the world closer together.",
+      "speaker": "Mark Zuckerberg, Facebook CEO, testimony (not under oath) before a joint hearing of the Senate Judiciary and Commerce Committees, answering Sen. Orrin Hatch",
+      "date": "2018-04-10",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-115shrg37801/html/CHRG-115shrg37801.htm",
+      "note": "An unfalsifiable forever-guarantee ('always... free') plus mission-scale 'everyone' deflects the pay-for-privacy question at the Cambridge Analytica hearing; no one can know a company's pricing forever."
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Hackenburg et al. (2025). The levers of political persuasion with conversational AI. Science."
+  ],
+  "honest_twins": [
+    {
+      "text": "I checked every single row in the export — all 1,240 of them have a timestamp.",
+      "note": "'Every single' is honest here because the speaker actually performed an exhaustive check of a small finite set; the universal quantifier reports completed verification the listener can redo, rather than certainty worn as a costume.",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "I promise I'll have the draft to you by Friday morning.",
+      "note": "'I promise' is honest as a first-person commitment: it binds the speaker's own future conduct, which they control and are accountable for, instead of asserting a fact about the world that no one could know with that certainty.",
+      "attribution": "constructed example"
+    }
   ]
 }

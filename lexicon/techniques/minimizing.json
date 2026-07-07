@@ -67,9 +67,55 @@
       "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
     }
   },
-  "specimens": [],
+  "specimens": [
+    {
+      "quote": "To my best knowledge today, the corporation in no Board meeting or no Supervisory Board meeting has authorized this, but this was a couple of software engineers who put this in, for whatever reasons.",
+      "speaker": "Michael Horn, President and CEO, Volkswagen Group of America",
+      "date": "2015-10-08",
+      "source": "https://www.govinfo.gov/content/pkg/CHRG-114hhrg99793/html/CHRG-114hhrg99793.htm"
+    },
+    {
+      "quote": "That same prison became a symbol of disgraceful conduct by a few American troops who dishonored our country and disregarded our values.",
+      "speaker": "President George W. Bush",
+      "date": "2004-05-24",
+      "source": "https://georgewbush-whitehouse.archives.gov/news/releases/2004/05/20040524-10.html",
+      "note": "'A few American troops' scales the Abu Ghraib abuse down to individual misconduct while official inquiries were tracing interrogation policy and command failures well up the chain."
+    },
+    {
+      "quote": "And again, when you have 15 people, and the 15 within a couple of days is going to be down to close to zero, that's a pretty good job we've done.",
+      "speaker": "President Donald Trump",
+      "date": "2020-02-26",
+      "source": "https://trumpwhitehouse.archives.gov/briefings-statements/remarks-president-trump-vice-president-pence-members-coronavirus-task-force-press-conference/"
+    },
+    {
+      "quote": "what appear to be Obama-Biden Administration records, including a small number of documents with classified markings",
+      "speaker": "Richard Sauber, Special Counsel to the President (White House statement)",
+      "date": "2023-01-09",
+      "source": "https://www.factcheck.org/2023/01/timeline-of-bidens-classified-documents/",
+      "note": "'A small number' pre-scales the security lapse downward in the administration's first official framing — issued only after press inquiries, and before further classified documents surfaced at additional locations in t…"
+    },
+    {
+      "quote": "In my mind, I've never crossed the line with anyone, but I didn't realize the extent to which the line has been redrawn. There are generational and cultural shifts that I just didn't fully appreciate, and I should have, no excuses.",
+      "speaker": "Gov. Andrew Cuomo (D-NY)",
+      "date": "2021-08-10",
+      "source": "https://www.rev.com/transcripts/ny-gov-andrew-cuomo-resigns-press-conference-transcript-announcing-resignation",
+      "note": "'Just didn't fully appreciate' reframes eleven substantiated harassment allegations as a mere failure to keep pace with shifting norms — the offense shrunk to a generational misunderstanding by the man answerable for it."
+    }
+  ],
   "counter_specimens": [],
   "citations": [
     "Allan, K. & Burridge, K. (1991). Euphemism and Dysphemism: Language Used as Shield and Weapon."
+  ],
+  "honest_twins": [
+    {
+      "text": "Please don't worry about the late reply — it's no big deal, the deadline isn't until Friday anyway.",
+      "note": "The minimizer is spoken by the person who absorbed the cost, kindly waiving a genuinely trivial harm and backing it with a checkable fact (the deadline). The entry's tell — a harm quietly shrunk by the person answerable for it — points the other way here.",
+      "attribution": "constructed example"
+    },
+    {
+      "text": "The review turned up just one issue, a minor typo in the footer — 'recieve' for 'receive'.",
+      "note": "'Just' and 'minor' report a verified count and a genuinely small defect, with the specific instance shown so the size claim is falsifiable; the speaker gains nothing by shrinking it, so the benign 'accurate minimizer' reading applies.",
+      "attribution": "constructed example"
+    }
   ]
 }
