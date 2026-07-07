@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Captioneer · The Subtext Reader</title>
+<meta name="description" content="Captioneer captions what people actually mean. Paste any statement and it marks the hedges, deflections, and spin in the words — then writes the plain-truth version. It reads the language, not the mind." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f2f1ea;
+    --card: #fbfaf5;
+    --sunk: #eceadf;
+    --ink: #18180f;
+    --ink-soft: #55554a;
+    --faint: #8d8b7c;
+    --rule: #dcdacd;
+    --rule-soft: #e6e4d8;
+    --stamp: #bd3a2c;
+    --hl: #eac712;
+    --hl-wash: rgba(234, 199, 18, 0.34);
+    --bar: #18180f;
+    --bar-ink: #f2f1ea;
+    --hedge: #b07d1e; --deflect: #2b7690; --passive: #7350b8;
+    --loaded: #bd3a2c; --overclaim: #a5348a; --minimize: #367f52;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -28px rgba(0,0,0,0.35);
+    --serif: "Spectral", Georgia, serif;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #15150e; --card: #1d1d15; --sunk: #12120c;
+      --ink: #eceadc; --ink-soft: #b1ae9d; --faint: #77756a;
+      --rule: #2c2b21; --rule-soft: #24241b;
+      --stamp: #e0614f; --hl: #ecc824; --hl-wash: rgba(236, 200, 36, 0.16);
+      --bar: #000; --bar-ink: #eceadc;
+      --hedge: #d6a648; --deflect: #58a7c4; --passive: #a88de0;
+      --loaded: #e0614f; --overclaim: #d071ba; --minimize: #61b583;
+      --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 44px -26px rgba(0,0,0,0.7);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #f2f1ea; --card: #fbfaf5; --sunk: #eceadf; --ink: #18180f; --ink-soft: #55554a;
+    --faint: #8d8b7c; --rule: #dcdacd; --rule-soft: #e6e4d8; --stamp: #bd3a2c; --hl: #eac712;
+    --hl-wash: rgba(234,199,18,0.34); --bar: #18180f; --bar-ink: #f2f1ea;
+    --hedge:#b07d1e;--deflect:#2b7690;--passive:#7350b8;--loaded:#bd3a2c;--overclaim:#a5348a;--minimize:#367f52;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -28px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="dark"] {
+    --paper: #15150e; --card: #1d1d15; --sunk: #12120c; --ink: #eceadc; --ink-soft: #b1ae9d;
+    --faint: #77756a; --rule: #2c2b21; --rule-soft: #24241b; --stamp: #e0614f; --hl: #ecc824;
+    --hl-wash: rgba(236,200,36,0.16); --bar: #000; --bar-ink: #eceadc;
+    --hedge:#d6a648;--deflect:#58a7c4;--passive:#a88de0;--loaded:#e0614f;--overclaim:#d071ba;--minimize:#61b583;
+    --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 44px -26px rgba(0,0,0,0.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--serif); font-size: 18px; line-height: 1.62;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  /* faint document grain */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
+    background-image: radial-gradient(var(--rule) 0.5px, transparent 0.5px);
+    background-size: 22px 22px; mix-blend-mode: multiply;
+  }
+  @media (prefers-color-scheme: dark) { body::before { mix-blend-mode: screen; opacity: 0.25; } }
+  :root[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: 0.25; }
+  main, header, footer { position: relative; z-index: 1; }
+  ::selection { background: var(--hl); color: #18180f; }
+
+  .wrap { width: 100%; max-width: 1020px; margin: 0 auto; padding: 0 26px; }
+
+  /* ── masthead ── */
+  header .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .brand .cc { font-family: var(--mono); font-weight: 600; font-size: 11px; background: var(--bar); color: var(--bar-ink); padding: 3px 6px 2px; border-radius: 4px; letter-spacing: 0.06em; line-height: 1; }
+  .brand .sub { font-family: var(--mono); font-weight: 400; font-size: 11px; color: var(--faint); letter-spacing: 0.14em; text-transform: uppercase; padding-left: 4px; }
+  .theme { background: none; border: 1px solid var(--rule); border-radius: 30px; padding: 7px 12px; cursor: pointer; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.06em; }
+  .theme:hover { border-color: var(--ink-soft); }
+
+  /* ── hero ── */
+  .hero { padding: 66px 0 30px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stamp); margin: 0 0 24px; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.5rem, 6.2vw, 4.6rem); line-height: 1.0; letter-spacing: -0.03em; margin: 0; max-width: 16ch; text-wrap: balance; }
+  h1 .u { background: linear-gradient(transparent 62%, var(--hl-wash) 62%); padding: 0 2px; }
+  .lede { font-size: clamp(1.1rem, 2vw, 1.32rem); line-height: 1.55; color: var(--ink-soft); max-width: 56ch; margin: 28px 0 0; }
+  .lede em { font-style: italic; color: var(--ink); }
+
+  /* the specimen — a marked-up statement + its truth caption */
+  .specimen { margin: 48px 0 0; background: var(--card); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+  .specimen .head { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); padding: 14px 24px; border-bottom: 1px solid var(--rule-soft); display: flex; justify-content: space-between; }
+  .specimen .said { padding: 26px 26px 8px; font-size: clamp(1.15rem, 2.5vw, 1.5rem); line-height: 1.75; }
+  .specimen .said u { text-decoration: none; border-bottom: 2px solid var(--stamp); padding-bottom: 1px; }
+  .cap { margin: 18px 24px 26px; padding: 16px 20px; background: var(--bar); color: var(--bar-ink); border-radius: 9px; position: relative; }
+  .cap::before { content: "CC"; font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; position: absolute; top: 9px; left: 12px; opacity: 0.5; }
+  .cap .txt { font-family: var(--serif); font-style: italic; font-size: clamp(1.1rem, 2.3vw, 1.4rem); line-height: 1.45; padding-top: 6px; }
+  .cap .reg { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.02em; color: var(--hl); margin-top: 10px; opacity: 0.9; }
+
+  /* ── the desk (tool) ── */
+  section { padding: 54px 0; }
+  .desk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
+  .note { font-family: var(--mono); font-size: 11.5px; color: var(--faint); letter-spacing: 0.03em; }
+
+  .files { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+  .file { font-family: var(--mono); font-size: 12px; padding: 8px 13px; border-radius: 7px; cursor: pointer; background: var(--card); color: var(--ink-soft); border: 1px solid var(--rule); transition: all 0.15s ease; }
+  .file:hover { border-color: var(--stamp); color: var(--ink); }
+
+  textarea { width: 100%; min-height: 158px; resize: vertical; background: var(--card); color: var(--ink); border: 1px solid var(--rule); border-radius: 11px; padding: 20px 22px; font-family: var(--serif); font-size: 1.22rem; line-height: 1.6; outline: none; box-shadow: var(--shadow); transition: border-color 0.15s ease; }
+  textarea:focus { border-color: var(--stamp); }
+  textarea::placeholder { color: var(--faint); font-style: italic; }
+
+  .actions { display: flex; align-items: center; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
+  .btn { font-family: var(--display); font-weight: 700; font-size: 15px; padding: 12px 22px; border-radius: 9px; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); letter-spacing: -0.01em; transition: transform 0.12s ease, opacity 0.15s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: none; }
+  .btn[disabled] { opacity: 0.4; cursor: default; transform: none; }
+  .btn-2 { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+  .btn-2:hover { border-color: var(--stamp); }
+  .btn-2[aria-pressed="true"] { background: var(--hl-wash); border-color: var(--hl); }
+  .btn-ai { background: var(--stamp); border-color: var(--stamp); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-ai .spin { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; display: none; animation: rot 0.7s linear infinite; }
+  .btn-ai.loading .spin { display: inline-block; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+
+  #out { margin-top: 34px; display: none; }
+  #out.on { display: block; animation: up 0.45s ease forwards; }
+  @keyframes up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* the AI truth-caption bar */
+  #captionBar { display: none; margin-bottom: 24px; }
+  #captionBar.on { display: block; animation: up 0.5s ease forwards; }
+  .cap.live { margin: 0; }
+  .cap.live .txt { min-height: 1.4em; }
+  .cap-err { font-family: var(--mono); font-size: 12.5px; color: var(--stamp); padding: 4px 2px; }
+
+  .verdict { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 11px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 22px; }
+  .verdict .r { font-family: var(--display); font-weight: 600; font-size: clamp(1.25rem, 2.8vw, 1.7rem); line-height: 1.2; letter-spacing: -0.015em; }
+  .verdict .r .hi { color: var(--stamp); }
+  .g { text-align: right; min-width: 96px; }
+  .g .n { font-family: var(--mono); font-size: 2.4rem; font-weight: 600; line-height: 1; color: var(--stamp); font-variant-numeric: tabular-nums; }
+  .g .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin-top: 6px; }
+
+  .grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; align-items: start; }
+  .card2 { background: var(--card); border: 1px solid var(--rule); border-radius: 11px; overflow: hidden; box-shadow: var(--shadow); }
+  .card2 .h { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 13px 20px; border-bottom: 1px solid var(--rule-soft); display: flex; justify-content: space-between; }
+
+  .script { padding: 24px 22px; font-family: var(--serif); font-size: 1.22rem; line-height: 2.05; }
+  mark.tell { background: transparent; color: inherit; border-bottom: 2px solid var(--stamp); padding-bottom: 1px; cursor: help; transition: background 0.14s ease; }
+  mark.tell[data-dim="hedge"] { border-color: var(--hedge); }
+  mark.tell[data-dim="deflect"] { border-color: var(--deflect); }
+  mark.tell[data-dim="passive"] { border-color: var(--passive); }
+  mark.tell[data-dim="loaded"] { border-color: var(--loaded); }
+  mark.tell[data-dim="overclaim"] { border-color: var(--overclaim); }
+  mark.tell[data-dim="minimize"] { border-color: var(--minimize); }
+  mark.tell:hover { background: var(--hl-wash); }
+  .script.stripped mark.tell { border-color: transparent; color: var(--faint); opacity: 0.32; text-decoration: line-through; text-decoration-color: var(--faint); }
+
+  .profile { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 13px; }
+  .band .t { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .band .nm { font-family: var(--display); font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .band .sw { width: 9px; height: 9px; border-radius: 2px; }
+  .band .c { font-family: var(--mono); font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .band .w { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+  .bar { height: 5px; background: var(--sunk); border-radius: 4px; overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; border-radius: 4px; transition: width 0.7s cubic-bezier(0.16,0.8,0.3,1); }
+
+  .ledger { margin-top: 20px; border: 1px solid var(--rule); border-radius: 11px; background: var(--card); box-shadow: var(--shadow); padding: 22px 24px; }
+  .ledger h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin: 0 0 15px; font-weight: 500; }
+  .ledger ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .ledger li { display: grid; grid-template-columns: 128px 1fr; gap: 16px; align-items: baseline; font-size: 15.5px; }
+  .ledger .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+  .ledger .v { color: var(--ink-soft); line-height: 1.5; }
+  .ledger .v b { color: var(--ink); font-weight: 600; }
+  .clean { color: var(--minimize); font-style: italic; font-size: 1.12rem; }
+
+  /* ── honesty ── */
+  .honesty { border-top: 1px solid var(--rule); }
+  .honesty .wrap { max-width: 760px; }
+  .honesty p { font-size: 1.2rem; line-height: 1.62; color: var(--ink-soft); margin: 0 0 1.05em; }
+  .honesty p strong { color: var(--ink); font-weight: 600; }
+  .honesty p em { font-style: italic; color: var(--ink); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 11px; overflow: hidden; margin-top: 32px; }
+  .split > div { background: var(--card); padding: 24px; }
+  .split h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 14px; }
+  .split .a h4 { color: var(--minimize); }
+  .split .b h4 { color: var(--loaded); }
+  .split ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .split li { font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; padding-left: 18px; position: relative; }
+  .split .a li::before { content: "✓"; position: absolute; left: 0; color: var(--minimize); }
+  .split .b li::before { content: "✕"; position: absolute; left: 0; color: var(--loaded); }
+
+  /* ── the kingdom seam ── */
+  .kingdom { border-top: 1px solid var(--rule); }
+  .kingdom .wrap { max-width: 760px; }
+  .kingdom .lead { font-size: 1.2rem; line-height: 1.62; color: var(--ink-soft); margin: 0 0 26px; }
+  .kingdom .lead b { color: var(--ink); font-weight: 600; }
+  .lex { display: flex; flex-direction: column; gap: 14px; }
+  .entry { background: var(--card); border: 1px solid var(--rule); border-radius: 11px; box-shadow: var(--shadow); padding: 22px 24px; }
+  .entry .top2 { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 11px; }
+  .entry .word { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.025em; }
+  .entry .pron { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .entry .pos { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--stamp); }
+  .entry .gloss { font-size: 1.05rem; line-height: 1.5; color: var(--ink); margin: 0; }
+  .entry .gloss b { font-weight: 600; }
+  .entry .note { margin: 10px 0 0; font-size: 0.98rem; color: var(--ink-soft); line-height: 1.55; }
+  .kingdom .close { margin: 28px 0 0; font-size: 1.12rem; line-height: 1.6; color: var(--ink-soft); }
+  .kingdom .close b { color: var(--ink); font-weight: 600; }
+  .kingdom .close i { color: var(--ink); }
+  .kin-links { margin-top: 26px; display: flex; gap: 10px 22px; flex-wrap: wrap; align-items: baseline; font-family: var(--mono); font-size: 12.5px; }
+  .kin-links .lbl { color: var(--faint); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
+  .kin-links a { color: var(--stamp); text-decoration: none; border-bottom: 1px solid transparent; }
+  .kin-links a:hover { border-bottom-color: var(--stamp); }
+
+  footer { border-top: 1px solid var(--rule); padding: 38px 0 60px; color: var(--faint); font-size: 13.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+  footer .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; }
+  footer b { color: var(--ink-soft); font-weight: 600; }
+
+  @media (max-width: 820px) {
+    .grid { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; }
+    .verdict { grid-template-columns: 1fr; } .g { text-align: left; }
+    .ledger li { grid-template-columns: 1fr; gap: 2px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, #out, #captionBar, .bar span { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="cc">CC</span> Captioneer <span class="sub">the subtext reader</span></div>
+    <button class="theme" id="theme" aria-label="Toggle theme">◐ theme</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Captions for the unsaid</p>
+      <h1>Captions for what someone <span class="u">actually means</span>.</h1>
+      <p class="lede">Every statement has a surface and a meaning, and they're not always the same thing. Paste one below — Captioneer <em>marks</em> the hedges and spin in what's said, then <em>writes</em> the plain-truth version underneath. It reads the language, never the mind.</p>
+
+      <div class="specimen">
+        <div class="head"><span>Specimen · a corporate non-apology</span><span>marked &amp; read</span></div>
+        <p class="said">"We <u>take your privacy extremely seriously</u>, and <u>regrettably, mistakes were made</u>. We are <u>reaching out</u> to affected users."</p>
+        <div class="cap">
+          <div class="txt">Something went wrong, we won't say who caused it, and we're doing the legal minimum.</div>
+          <div class="reg">register · rehearsed contrition, responsibility quietly deleted</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="desk">
+      <div class="desk-head">
+        <h2>Read a statement</h2>
+        <span class="note">marks run on your device · the reading is opt-in</span>
+      </div>
+
+      <div class="files" id="files"></div>
+      <textarea id="in" spellcheck="false" placeholder="Paste a statement, an apology, a political answer, a message from someone who's dodging — anything with a gap between what's said and what's meant."></textarea>
+
+      <div class="actions">
+        <button class="btn" id="mark">Mark the spin</button>
+        <button class="btn btn-ai" id="ai" disabled><span class="spin"></span><span class="lbl">Read the subtext</span></button>
+        <button class="btn btn-2" id="strip" aria-pressed="false" disabled>Strip it</button>
+        <span class="note" id="wc"></span>
+      </div>
+
+      <div id="out">
+        <div id="captionBar">
+          <div class="cap live">
+            <div class="txt" id="capTxt"></div>
+            <div class="reg" id="capReg"></div>
+          </div>
+        </div>
+
+        <div class="verdict">
+          <div class="r" id="read"></div>
+          <div class="g"><div class="n" id="freq">0</div><div class="l">tells / 100 words</div></div>
+        </div>
+
+        <div class="grid">
+          <div class="card2">
+            <div class="h"><span>The transcript</span><span id="tt"></span></div>
+            <div class="script" id="script"></div>
+          </div>
+          <div class="card2">
+            <div class="h"><span>The frequency</span><span>by family</span></div>
+            <div class="profile" id="profile"></div>
+          </div>
+        </div>
+
+        <div class="ledger">
+          <h3>What the language is doing</h3>
+          <ul id="ledger"></ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="honesty">
+    <div class="wrap">
+      <h2 style="margin-bottom:24px">What this is — and what it refuses to be.</h2>
+      <p>A real lie detector reads a person and returns a verdict. There is no such thing. Body language, micro-expressions, voice “frequency” — decades of research say they don't reliably reveal deception, and a tool that claims otherwise just manufactures confident accusations. That isn't truth. It's theatre.</p>
+      <p><strong>So Captioneer reads the one place manipulation actually leaves a trace: the words.</strong> Evasion has grammar. A deleted subject hides who acted. A hedge lowers a promise you can later deny. An absolute claims more than anyone could know. The marks are countable and every one points at a real phrase you can see. Then the reader writes the plain version — a reading of the <em>language</em>, offered as a reading, never a verdict.</p>
+      <p>It tells you how something is being <em>said</em>. Whether it's <em>true</em> is still yours to judge — now with the rhetoric out of the way.</p>
+
+      <div class="split">
+        <div class="a">
+          <h4>It does</h4>
+          <ul>
+            <li>Mark hedges, deflections, and non-answers</li>
+            <li>Catch the deleted subject — who's dodging</li>
+            <li>Flag loaded framing and overclaimed certainty</li>
+            <li>Write the plain-meaning version of the words</li>
+            <li>Point at every real phrase behind every mark</li>
+          </ul>
+        </div>
+        <div class="b">
+          <h4>It doesn't</h4>
+          <ul>
+            <li>Detect lies — no tool reads a mind from words</li>
+            <li>Judge the speaker, only the language</li>
+            <li>Read faces, bodies, or voice “frequency”</li>
+            <li>Store your text — marks run in your browser</li>
+            <li>Ask you to trust it — the evidence is on screen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kingdom">
+    <div class="wrap">
+      <h2 style="margin-bottom:22px">In the kingdom's tongue</h2>
+      <p class="lead">captioneer belongs to a larger work — a kingdom that keeps a made language, <b>YOUSPEAK</b>, for the things English left unnamed. Two of its words are captioneer's whole reason to exist.</p>
+      <div class="lex">
+        <article class="entry">
+          <div class="top2"><span class="word">verisleight</span><span class="pron">/ˈvɛr.ɪ.slaɪt/</span><span class="pos">noun</span></div>
+          <p class="gloss"><b>Truth arranged to mislead</b> — a statement entirely true that reliably produces a false picture.</p>
+          <p class="note">Every word of a practised non-apology is true. The picture is a lie. That is verisleight — and it is what captioneer catches.</p>
+        </article>
+        <article class="entry">
+          <div class="top2"><span class="word">orthophanes</span><span class="pron">/ˌɔːr.θoʊˈfæn.iːz/</span><span class="pos">noun</span></div>
+          <p class="gloss"><b>The rightness made plainly visible</b> — a thing shown straight, in the open, ordered to its own necessity.</p>
+          <p class="note">When the spin is stripped and the plain meaning simply stands there — that is orthophanes, and it is what captioneer leaves you with.</p>
+        </article>
+      </div>
+      <p class="close">captioneer is the everyday-speech arm of the kingdom's truth-work: what the <b>zerone</b> domain does with stake and proof — <i>dokimance</i>, verification that constitutes truth rather than merely confirming it — captioneer does with nothing but close attention to the words.</p>
+      <div class="kin-links">
+        <span class="lbl">part of the kingdom</span>
+        <a href="https://ai-love.cc">the cathedral ↗</a>
+        <a href="https://agenttool.dev">the economy ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>Captioneer</b> — captions for what people mean.</div>
+    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request</div>
+  </div>
+</footer>
+
+<script>
+/* ── theme ── */
+const root = document.documentElement;
+try { const t = localStorage.getItem("cap-theme"); if (t) root.setAttribute("data-theme", t); } catch {}
+document.getElementById("theme").onclick = () => {
+  const cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try { localStorage.setItem("cap-theme", next); } catch {}
+};
+
+/* ── the close-reader — deterministic, every mark is a real phrase ── */
+const FAMILIES = {
+  hedge: { name: "Hedging", color: "var(--hedge)", what: "lowers commitment so it can be walked back",
+    line: n => `<b>${n}</b> hedge${n>1?"s":""} — commitment lowered, deniability kept`,
+    patterns: ["sort of","kind of","kinda","i think","i guess","i believe","i feel like","i suppose","probably","maybe","perhaps","more or less","to be honest","to be fair","in my opinion","i'm not sure","as far as i know","to the best of my knowledge","somewhat","fairly","pretty much","seemingly","apparently","allegedly","reportedly","from what i understand","if i'm honest","i would say","it seems","arguably","relatively"] },
+  deflect: { name: "Deflection", color: "var(--deflect)", what: "moves away from the question asked",
+    line: n => `<b>${n}</b> deflection${n>1?"s":""} — the question was steered around, not answered`,
+    patterns: ["let me be clear","let me be very clear","what i will say","the real question","the real issue","the bigger picture","let's focus","let's not forget","moving forward","going forward","at this time","at the end of the day","with respect","with all due respect","that's a great question","that's a good question","i hear you","i don't recall","i do not recall","i don't remember","no comment","we'll see","it is what it is","reaching out","reach out","circle back","take this seriously","take that seriously","take it seriously","look into it","looking into it","as i said","as i've said","to your point","respectfully"] },
+  passive: { name: "Deleted subject", color: "var(--passive)", what: "hides who actually did it",
+    line: n => `<b>${n}</b> place${n>1?"s":""} where the actor vanished — <i>who</i> did it is hidden`,
+    patterns: ["mistakes were made","errors were made","mistakes happened","it was decided","it was determined","decisions were made","steps were taken","actions were taken","measures were taken","was handled","were handled","was affected","were affected","were impacted","was impacted","was lost","were lost","was accessed","were accessed","was compromised","were compromised","things happened","it happened","was caused by","were caused"],
+    rx: /\b(was|were|been|being|is|are)\s+(made|taken|handled|decided|determined|affected|impacted|accessed|compromised|caused|lost|done|given|shown|told|left|dropped|missed|delayed|overlooked)\b/gi },
+  loaded: { name: "Loaded framing", color: "var(--loaded)", what: "charges the room before you can think",
+    line: n => `<b>${n}</b> loaded term${n>1?"s":""} — emotion added where an argument should be`,
+    patterns: ["literally","absolutely","totally","completely","utterly","honestly","frankly","obviously","clearly","undeniably","everyone knows","we all know","let's be real","make no mistake","the truth is","the fact is","the fact of the matter","those people","these people","they want","radical","dangerous","destroy","destroyed","invasion","disaster","insane","crazy","ridiculous","outrageous","shameful"] },
+  overclaim: { name: "Overclaim", color: "var(--overclaim)", what: "asserts more than anyone could know",
+    line: n => `<b>${n}</b> overclaim${n>1?"s":""} — certainty stated past the evidence`,
+    patterns: ["trust me","believe me","mark my words","without a doubt","no doubt","100%","one hundred percent","guaranteed","i promise","i swear","always","never","everyone","everybody","nobody","no one","everything","nothing","all of them","none of them","every single","without exception","for sure","definitely","certainly","hands down"] },
+  minimize: { name: "Minimizing", color: "var(--minimize)", what: "shrinks the thing being described",
+    line: n => `<b>${n}</b> minimizer${n>1?"s":""} — the size of it quietly reduced`,
+    patterns: ["just","only","merely","simply","a little","a bit","a little bit","slightly","hardly","barely","a few","some people","a handful","isolated","one-off","a one off","no big deal","not a big deal","almost done","nearly done","a small","a couple","minor","a tiny"] },
+};
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
+const rxEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function findMatches(text) {
+  const hits = [];
+  for (const [dim, fam] of Object.entries(FAMILIES)) {
+    for (const p of fam.patterns) {
+      const rx = new RegExp("(?<![a-z])" + rxEsc(p).replace(/ /g, "\\s+") + "(?![a-z])", "gi");
+      let m; while ((m = rx.exec(text)) !== null) { hits.push({ start: m.index, end: m.index + m[0].length, dim }); if (m.index === rx.lastIndex) rx.lastIndex++; }
+    }
+    if (fam.rx) { fam.rx.lastIndex = 0; let m; while ((m = fam.rx.exec(text)) !== null) hits.push({ start: m.index, end: m.index + m[0].length, dim }); }
+  }
+  hits.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
+  const kept = []; let cur = -1;
+  for (const h of hits) if (h.start >= cur) { kept.push(h); cur = h.end; }
+  return kept;
+}
+function verdict(counts, per100, words) {
+  if (words < 3) return "Give me a sentence or two to read.";
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  if (total === 0) return `This reads <span class="hi">straight</span>. The words commit to what they say.`;
+  const adj = { hedge:"hedged", deflect:"evasive", passive:"self-absolving", loaded:"charged", overclaim:"overclaimed", minimize:"minimizing" };
+  const top = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>adj[k]);
+  const density = per100 >= 12 ? "Heavily" : per100 >= 6 ? "Noticeably" : "Lightly";
+  const shape = top.length === 2 ? `${top[0]} and ${top[1]}` : top[0];
+  const own = counts.passive > 0 ? " Nobody's holding the bag." : "";
+  return `${density} <span class="hi">${shape}</span>.${own}`;
+}
+function analyze(text) {
+  const matches = findMatches(text);
+  const counts = Object.fromEntries(Object.keys(FAMILIES).map(k => [k, 0]));
+  matches.forEach(m => counts[m.dim]++);
+  let html = "", i = 0;
+  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${FAMILIES[m.dim].name} — ${FAMILIES[m.dim].what}">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
+  html += esc(text.slice(i));
+  script.innerHTML = html || "<span style='color:var(--faint)'>Nothing to read yet.</span>";
+
+  const words = (text.trim().match(/\S+/g) || []).length;
+  const total = matches.length;
+  const per100 = words ? Math.round(total / words * 1000) / 10 : 0;
+  freq.textContent = per100; tt.textContent = `${total} marked`;
+
+  const max = Math.max(1, ...Object.values(counts));
+  profile.innerHTML = Object.entries(FAMILIES).map(([k, f]) => `
+    <div class="band"><div class="t"><span class="nm"><span class="sw" style="background:${f.color}"></span>${f.name}</span><span class="c">${counts[k]}</span></div>
+    <div class="bar"><span data-w="${Math.round(counts[k]/max*100)}" style="background:${f.color}"></span></div><div class="w">${f.what}</div></div>`).join("");
+  requestAnimationFrame(() => document.querySelectorAll(".bar span").forEach(s => s.style.width = s.dataset.w + "%"));
+
+  read.innerHTML = verdict(counts, per100, words);
+
+  const active = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]);
+  ledger.innerHTML = active.length === 0
+    ? `<li><span class="k">clear</span><span class="v clean">Direct language. No hedging, no deleted subjects, no loaded framing — the words carry their own weight.</span></li>`
+    : active.map(([k,n]) => `<li><span class="k">${FAMILIES[k].name}</span><span class="v">${FAMILIES[k].line(n)}</span></li>`).join("");
+
+  out.classList.add("on");
+  strip.disabled = total === 0; strip.setAttribute("aria-pressed","false"); strip.textContent = "Strip it"; script.classList.remove("stripped");
+  aiBtn.disabled = words < 3;
+}
+
+/* ── the AI reading (opt-in) ── */
+async function readSubtext(text) {
+  aiBtn.classList.add("loading"); aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Reading…";
+  capTxt.textContent = ""; capReg.textContent = "";
+  try {
+    const r = await fetch("/api/read", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || "The reader couldn't finish.");
+    capTxt.textContent = d.caption || "";
+    capReg.textContent = d.register ? "register · " + d.register : "";
+    captionBar.classList.add("on");
+  } catch (e) {
+    captionBar.classList.add("on");
+    capTxt.innerHTML = `<span class="cap-err">${esc(e.message || "Something went wrong.")}</span>`;
+    capReg.textContent = "";
+  } finally {
+    aiBtn.classList.remove("loading"); aiBtn.disabled = false; aiBtn.querySelector(".lbl").textContent = "Read again";
+  }
+}
+
+/* ── wiring ── */
+const script = document.getElementById("script"), freq = document.getElementById("freq"), tt = document.getElementById("tt"),
+  profile = document.getElementById("profile"), read = document.getElementById("read"), ledger = document.getElementById("ledger"),
+  out = document.getElementById("out"), input = document.getElementById("in"), wc = document.getElementById("wc"),
+  strip = document.getElementById("strip"), aiBtn = document.getElementById("ai"),
+  captionBar = document.getElementById("captionBar"), capTxt = document.getElementById("capTxt"), capReg = document.getElementById("capReg");
+
+const EXAMPLES = {
+  "The non-apology": "We want to be clear that we take the security of your data extremely seriously. Regrettably, mistakes were made, and some information may have been accessed. We are reaching out to affected users and remain totally committed to doing better. At this time, there is no evidence that any data was misused.",
+  "The non-answer": "Look, let me be clear — that's a great question. But the real issue here is jobs. What I will say is that we are working incredibly hard, and frankly, everybody knows the other side has no plan. I don't recall the specifics, but going forward, we will absolutely get it done.",
+  "The slow fade": "hey, honestly things have just been really crazy lately and i think i just need a little space to figure some stuff out. it's not you at all, i promise. i still care about you so much. i'll definitely reach out when things calm down.",
+  "The excuse": "So the delay was basically caused by some unexpected issues on our end, and to be fair, the requirements were a little unclear. We're totally committed to getting this over the line, and honestly it's almost done — just a few small things left.",
+  "Straight talk": "I made the wrong call on the pricing and it cost us the deal. I didn't check the competitor's terms before we sent ours. I'll redo the analysis tonight and have a corrected quote to you by nine tomorrow.",
+};
+const filesEl = document.getElementById("files");
+Object.keys(EXAMPLES).forEach(name => {
+  const b = document.createElement("button"); b.className = "file"; b.textContent = name;
+  b.onclick = () => { input.value = EXAMPLES[name]; count(); analyze(input.value); captionBar.classList.remove("on"); document.getElementById("desk").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  filesEl.appendChild(b);
+});
+function count() { const w = (input.value.trim().match(/\S+/g) || []).length; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
+input.addEventListener("input", count);
+document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); captionBar.classList.remove("on"); analyze(input.value); };
+aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim()); };
+strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Strip it" : "Restore"; script.classList.toggle("stripped", !on); };
+
+window.addEventListener("DOMContentLoaded", () => { input.value = EXAMPLES["The non-apology"]; count(); setTimeout(() => analyze(input.value), 350); });
+</script>
+</body>
+</html>
