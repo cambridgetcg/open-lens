@@ -1,0 +1,89 @@
+{
+  "id": "OL.OVERCLAIM",
+  "key": "overclaim",
+  "name": "Overclaim",
+  "family": "overclaim",
+  "status": "live",
+  "what": "asserts more than anyone could know",
+  "affordance": "asserts more than anyone could know — certainty as a costume",
+  "mechanism": "drops qualifiers and states certainty past the evidence; the LLM-era twist: confident factual barrage is the most persuasive and least accurate register (Science 2025)",
+  "benign_reading": "Strong claims are honest when the evidence really is strong; conviction is not a tell by itself. The tell is universal quantifiers and guarantees where no one could have the evidence.",
+  "ledger_line": "<b>{n}</b> overclaim{s} — certainty stated past the evidence",
+  "output_phrasing": "certainty is stated here past what the evidence could support",
+  "naming_events": [
+    {
+      "term": "secundum quid (dropping the qualifier)",
+      "lang": "grc",
+      "source": "Aristotle, Sophistical Refutations",
+      "when": "c. 350 BCE"
+    },
+    {
+      "term": "kuang ju — 'wild picking'",
+      "lang": "zh",
+      "source": "Mohist Canons B66 — arbitrary citing of features",
+      "when": "c. 300 BCE"
+    },
+    {
+      "term": "hyperbole — 'an elegant straining of the truth'",
+      "lang": "la",
+      "source": "Quintilian, Institutio Oratoria VIII.6.67",
+      "when": "c. 95 CE"
+    },
+    {
+      "term": "dayo violation",
+      "lang": "he",
+      "source": "Bava Kamma 25a — a conclusion may never outrun its premise (a named anti-overclaim rule)",
+      "when": "c. 200–500 CE"
+    },
+    {
+      "term": "stratagem #1 — the Extension",
+      "lang": "de",
+      "source": "Schopenhauer, Eristische Dialektik",
+      "when": "c. 1831"
+    }
+  ],
+  "universality": 4,
+  "crosswalk": {
+    "semeval2023": "Manipulative Wording: Exaggeration or Minimisation (exaggeration side)",
+    "ptc2019": "Exaggeration/Minimisation"
+  },
+  "realizations": {
+    "en": {
+      "match": "surface",
+      "patterns": [
+        "trust me",
+        "believe me",
+        "mark my words",
+        "without a doubt",
+        "no doubt",
+        "100%",
+        "one hundred percent",
+        "guaranteed",
+        "i promise",
+        "i swear",
+        "always",
+        "never",
+        "everyone",
+        "everybody",
+        "nobody",
+        "no one",
+        "everything",
+        "nothing",
+        "all of them",
+        "none of them",
+        "every single",
+        "without exception",
+        "for sure",
+        "definitely",
+        "certainly",
+        "hands down"
+      ],
+      "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
+    }
+  },
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Hackenburg et al. (2025). The levers of political persuasion with conversational AI. Science."
+  ]
+}

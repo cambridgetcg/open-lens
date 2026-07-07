@@ -1,0 +1,95 @@
+{
+  "id": "OL.LOADED",
+  "key": "loaded",
+  "name": "Loaded framing",
+  "family": "loaded framing",
+  "status": "live",
+  "what": "charges the room before you can think",
+  "affordance": "charges the room before you can think — the frame arrives inside the vocabulary",
+  "mechanism": "evaluative redescription: every word evokes a frame, and negating a frame activates it (Lakoff); frames shift judgment even about events people watched themselves",
+  "benign_reading": "Vivid language is not a crime, and naming a wrong plainly ('this was theft') can be precision, not spin. The tell is emotion doing the work an argument should do.",
+  "ledger_line": "<b>{n}</b> loaded term{s} — emotion added where an argument should be",
+  "output_phrasing": "this term imports a judgment the sentence never argues for",
+  "naming_events": [
+    {
+      "term": "san huo — the three delusions of naming",
+      "lang": "zh",
+      "source": "Xunzi, Zhengming chapter — the earliest systematic theory of loaded framing via names",
+      "when": "c. 250 BCE"
+    },
+    {
+      "term": "paradiastole",
+      "lang": "grc/la",
+      "source": "Quintilian; Peacham (1577): 'when by a mannerly interpretation, we doe excuse our own vices... by calling them vertues'",
+      "when": "c. 95 CE–1577"
+    },
+    {
+      "term": "stratagem #12 — favorable names and metaphors",
+      "lang": "de",
+      "source": "Schopenhauer, Eristische Dialektik",
+      "when": "c. 1831"
+    },
+    {
+      "term": "Name Calling; Glittering Generalities",
+      "lang": "en",
+      "source": "Institute for Propaganda Analysis, 'How to Detect Propaganda' (Clyde R. Miller)",
+      "when": "1937"
+    },
+    {
+      "term": "Loaded Language",
+      "lang": "en",
+      "source": "Da San Martino et al., EMNLP (PTC corpus, span-level); SemEval-2023 Task 3",
+      "when": "2019–2023"
+    }
+  ],
+  "universality": 4,
+  "crosswalk": {
+    "semeval2023": "Manipulative Wording: Loaded Language",
+    "ptc2019": "Loaded language; Name calling/Labeling"
+  },
+  "realizations": {
+    "en": {
+      "match": "surface",
+      "patterns": [
+        "literally",
+        "absolutely",
+        "totally",
+        "completely",
+        "utterly",
+        "honestly",
+        "frankly",
+        "obviously",
+        "clearly",
+        "undeniably",
+        "everyone knows",
+        "we all know",
+        "let's be real",
+        "make no mistake",
+        "the truth is",
+        "the fact is",
+        "the fact of the matter",
+        "those people",
+        "these people",
+        "they want",
+        "radical",
+        "dangerous",
+        "destroy",
+        "destroyed",
+        "invasion",
+        "disaster",
+        "insane",
+        "crazy",
+        "ridiculous",
+        "outrageous",
+        "shameful"
+      ],
+      "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
+    }
+  },
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Lakoff, G. (2004). Don't Think of an Elephant!",
+    "Skinner, Q. — 'rhetorical redescription' (paradiastole scholarship)."
+  ]
+}

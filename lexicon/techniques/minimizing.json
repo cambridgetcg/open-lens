@@ -1,0 +1,75 @@
+{
+  "id": "OL.MINIMIZE",
+  "key": "minimize",
+  "name": "Minimizing",
+  "family": "minimizing",
+  "status": "live",
+  "what": "shrinks the thing being described",
+  "affordance": "shrinks the thing being described — 'just', 'only', 'a few'",
+  "mechanism": "scales the referent down below its real size; euphemism's quieter sibling, with a built-in evolution model (the euphemism treadmill: every softened term reabsorbs the taint and gets replaced)",
+  "benign_reading": "Minimizers can be accurate ('a minor typo') or kind. The tell is the size of a harm quietly reduced by the person answerable for it.",
+  "ledger_line": "<b>{n}</b> minimizer{s} — the size of it quietly reduced",
+  "output_phrasing": "the size of it is quietly reduced here",
+  "naming_events": [
+    {
+      "term": "meiosis / tapinosis / litotes; euphemismos",
+      "lang": "grc",
+      "source": "classical figure catalogs",
+      "when": "antiquity"
+    },
+    {
+      "term": "prescribed minimization",
+      "lang": "zh",
+      "source": "Han Feizi ch. 12, 'Shui nan' — minimize what the ruler is ashamed of (manipulator's-manual stance)",
+      "when": "before 233 BCE"
+    },
+    {
+      "term": "the euphemism treadmill",
+      "lang": "en",
+      "source": "Pinker, S. (New York Times) — engineered terms have half-lives",
+      "when": "1994"
+    }
+  ],
+  "universality": 3,
+  "crosswalk": {
+    "semeval2023": "Manipulative Wording: Exaggeration or Minimisation (minimisation side)",
+    "ptc2019": "Exaggeration/Minimisation"
+  },
+  "realizations": {
+    "en": {
+      "match": "surface",
+      "patterns": [
+        "just",
+        "only",
+        "merely",
+        "simply",
+        "a little",
+        "a bit",
+        "a little bit",
+        "slightly",
+        "hardly",
+        "barely",
+        "a few",
+        "some people",
+        "a handful",
+        "isolated",
+        "one-off",
+        "a one off",
+        "no big deal",
+        "not a big deal",
+        "almost done",
+        "nearly done",
+        "a small",
+        "a couple",
+        "minor",
+        "a tiny"
+      ],
+      "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
+    }
+  },
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Allan, K. & Burridge, K. (1991). Euphemism and Dysphemism: Language Used as Shield and Weapon."
+  ]
+}

@@ -1,0 +1,18 @@
+Copyright 2026 Cambridge TCG and Open Lens contributors
+
+Open Lens — https://github.com/cambridgetcg/open-lens
+Reference reader: https://captioneer.io
+
+License split (Hunspell-style, deliberate):
+  - Engine and site code (public/, functions/, tools/): Apache-2.0 — see LICENSE
+  - Lexicon data (lexicon/): CC BY-SA 4.0 — see lexicon/LICENSE
+    ShareAlike is chosen specifically to prevent commercial enclosure of
+    community-contributed pattern data.
+  - Research corpus and specimen metadata (research/): CC BY 4.0
+
+public/lexicon.gen.js is GENERATED from lexicon/ and carries the lexicon's
+CC BY-SA 4.0 license.
+
+The charter (CHARTER.md) is part of the project's identity: outputs describe
+language, never speakers; no truth verdicts; no person profiles; no
+persuasion-generation mode.

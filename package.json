@@ -1,0 +1,11 @@
+{
+  "name": "open-lens",
+  "private": true,
+  "type": "module",
+  "description": "An open-source framework for reading how words manipulate. Marks the rhetoric, never reads the mind.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "node tools/build-lexicon.mjs",
+    "deploy": "npm run build && npx wrangler pages deploy --branch main"
+  }
+}

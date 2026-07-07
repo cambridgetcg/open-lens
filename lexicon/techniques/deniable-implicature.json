@@ -1,0 +1,57 @@
+{
+  "id": "OL.VERI",
+  "key": "verisleight",
+  "name": "Verisleight",
+  "family": "deniable implicature",
+  "status": "reference",
+  "what": "truth arranged to mislead — every word true, the picture false",
+  "affordance": "deniability: the false picture is installed by the hearer's own inference, so the speaker asserted nothing false",
+  "mechanism": "violates Grice's maxims of Quantity/Relation while observing Quality — misleading via implicature rather than assertion. Channel: implicated (cancellable; does not project under negation).",
+  "channel": "implicated",
+  "tests": {
+    "cancellable": true,
+    "projects_under_negation": false
+  },
+  "benign_reading": "Selective emphasis is normal speech; every answer curates. The tell is a direct question answered with a curated truth that predictably paints a false picture.",
+  "ledger_line": null,
+  "output_phrasing": "this statement is literally true and arranged to imply more than it says",
+  "naming_events": [
+    {
+      "term": "kināya",
+      "lang": "ar",
+      "source": "al-Jurjānī, Dalā'il al-I'jāz — three-type taxonomy of deniable implicature, 'more eloquent than plain statement' because deniable",
+      "when": "c. 1078"
+    },
+    {
+      "term": "false implicature",
+      "lang": "en",
+      "source": "post-Gricean philosophy of language (Grice 1975; Saul, Lying, Misleading, and What is Said, 2012)",
+      "when": "1975–2012"
+    },
+    {
+      "term": "paltering",
+      "lang": "en",
+      "source": "Rogers, Zeckhauser, Gino, Norton & Schweitzer, 'Artful Paltering', Journal of Personality and Social Psychology 112(3), 456–473",
+      "when": "2017"
+    },
+    {
+      "term": "verisleight",
+      "lang": "youspeak",
+      "source": "YOUSPEAK canon (unpublished, 2026 — the made language of ai-love.cc)",
+      "when": "2026"
+    }
+  ],
+  "universality": 3,
+  "crosswalk": {
+    "semeval2023": null,
+    "mafalda": null,
+    "note": "absent from the computational taxonomies — a genuinely novel detection target"
+  },
+  "realizations": {},
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Rogers, T. et al. (2017). Artful Paltering: The Risks and Rewards of Using Truthful Statements to Mislead Others. JPSP 112(3).",
+    "Saul, J. (2012). Lying, Misleading, and What is Said. OUP."
+  ]
+}

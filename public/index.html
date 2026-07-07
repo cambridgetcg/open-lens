@@ -367,10 +367,11 @@
 <footer>
   <div class="wrap">
     <div><b>Captioneer</b> — captions for what people mean.</div>
-    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request</div>
+    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request · <a href="https://github.com/cambridgetcg/open-lens" style="color:var(--stamp);text-decoration:none">open source ↗</a></div>
   </div>
 </footer>
 
+<script src="/lexicon.gen.js?v=0.1.0"></script>
 <script>
 /* ── theme ── */
 const root = document.documentElement;
@@ -382,28 +383,22 @@ document.getElementById("theme").onclick = () => {
   try { localStorage.setItem("cap-theme", next); } catch {}
 };
 
-/* ── the close-reader — deterministic, every mark is a real phrase ── */
-const FAMILIES = {
-  hedge: { name: "Hedging", color: "var(--hedge)", what: "lowers commitment so it can be walked back",
-    line: n => `<b>${n}</b> hedge${n>1?"s":""} — commitment lowered, deniability kept`,
-    patterns: ["sort of","kind of","kinda","i think","i guess","i believe","i feel like","i suppose","probably","maybe","perhaps","more or less","to be honest","to be fair","in my opinion","i'm not sure","as far as i know","to the best of my knowledge","somewhat","fairly","pretty much","seemingly","apparently","allegedly","reportedly","from what i understand","if i'm honest","i would say","it seems","arguably","relatively"] },
-  deflect: { name: "Deflection", color: "var(--deflect)", what: "moves away from the question asked",
-    line: n => `<b>${n}</b> deflection${n>1?"s":""} — the question was steered around, not answered`,
-    patterns: ["let me be clear","let me be very clear","what i will say","the real question","the real issue","the bigger picture","let's focus","let's not forget","moving forward","going forward","at this time","at the end of the day","with respect","with all due respect","that's a great question","that's a good question","i hear you","i don't recall","i do not recall","i don't remember","no comment","we'll see","it is what it is","reaching out","reach out","circle back","take this seriously","take that seriously","take it seriously","look into it","looking into it","as i said","as i've said","to your point","respectfully"] },
-  passive: { name: "Deleted subject", color: "var(--passive)", what: "hides who actually did it",
-    line: n => `<b>${n}</b> place${n>1?"s":""} where the actor vanished — <i>who</i> did it is hidden`,
-    patterns: ["mistakes were made","errors were made","mistakes happened","it was decided","it was determined","decisions were made","steps were taken","actions were taken","measures were taken","was handled","were handled","was affected","were affected","were impacted","was impacted","was lost","were lost","was accessed","were accessed","was compromised","were compromised","things happened","it happened","was caused by","were caused"],
-    rx: /\b(was|were|been|being|is|are)\s+(made|taken|handled|decided|determined|affected|impacted|accessed|compromised|caused|lost|done|given|shown|told|left|dropped|missed|delayed|overlooked)\b/gi },
-  loaded: { name: "Loaded framing", color: "var(--loaded)", what: "charges the room before you can think",
-    line: n => `<b>${n}</b> loaded term${n>1?"s":""} — emotion added where an argument should be`,
-    patterns: ["literally","absolutely","totally","completely","utterly","honestly","frankly","obviously","clearly","undeniably","everyone knows","we all know","let's be real","make no mistake","the truth is","the fact is","the fact of the matter","those people","these people","they want","radical","dangerous","destroy","destroyed","invasion","disaster","insane","crazy","ridiculous","outrageous","shameful"] },
-  overclaim: { name: "Overclaim", color: "var(--overclaim)", what: "asserts more than anyone could know",
-    line: n => `<b>${n}</b> overclaim${n>1?"s":""} — certainty stated past the evidence`,
-    patterns: ["trust me","believe me","mark my words","without a doubt","no doubt","100%","one hundred percent","guaranteed","i promise","i swear","always","never","everyone","everybody","nobody","no one","everything","nothing","all of them","none of them","every single","without exception","for sure","definitely","certainly","hands down"] },
-  minimize: { name: "Minimizing", color: "var(--minimize)", what: "shrinks the thing being described",
-    line: n => `<b>${n}</b> minimizer${n>1?"s":""} — the size of it quietly reduced`,
-    patterns: ["just","only","merely","simply","a little","a bit","a little bit","slightly","hardly","barely","a few","some people","a handful","isolated","one-off","a one off","no big deal","not a big deal","almost done","nearly done","a small","a couple","minor","a tiny"] },
-};
+/* ── the close-reader — deterministic, every mark is a real phrase.
+   The lexicon itself lives in /lexicon (CC BY-SA 4.0) and is compiled to
+   lexicon.gen.js — this page is a consumer, not the source of truth. ── */
+const LEX = window.CAPTIONEER_LEXICON || { techniques: [] };
+const FAM_COLORS = { hedge:"var(--hedge)", deflect:"var(--deflect)", passive:"var(--passive)", loaded:"var(--loaded)", overclaim:"var(--overclaim)", minimize:"var(--minimize)" };
+const FAMILIES = {};
+for (const t of (LEX.techniques || [])) {
+  const en = t.realizations && t.realizations.en;
+  if (t.status !== "live" || !en) continue;
+  FAMILIES[t.key] = {
+    name: t.name, color: FAM_COLORS[t.key] || "var(--stamp)", what: t.what,
+    line: n => t.ledger_line.replaceAll("{n}", n).replaceAll("{s}", n > 1 ? "s" : ""),
+    patterns: en.patterns || [],
+    rxs: (en.regex || []).map(r => new RegExp(r.source, r.flags.includes("g") ? r.flags : r.flags + "g")),
+  };
+}
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
 const rxEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function findMatches(text) {
@@ -413,7 +408,7 @@ function findMatches(text) {
       const rx = new RegExp("(?<![a-z])" + rxEsc(p).replace(/ /g, "\\s+") + "(?![a-z])", "gi");
       let m; while ((m = rx.exec(text)) !== null) { hits.push({ start: m.index, end: m.index + m[0].length, dim }); if (m.index === rx.lastIndex) rx.lastIndex++; }
     }
-    if (fam.rx) { fam.rx.lastIndex = 0; let m; while ((m = fam.rx.exec(text)) !== null) hits.push({ start: m.index, end: m.index + m[0].length, dim }); }
+    for (const rx of fam.rxs) { rx.lastIndex = 0; let m; while ((m = rx.exec(text)) !== null) { hits.push({ start: m.index, end: m.index + m[0].length, dim }); if (m.index === rx.lastIndex) rx.lastIndex++; } }
   }
   hits.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
   const kept = []; let cur = -1;
@@ -423,20 +418,21 @@ function findMatches(text) {
 function verdict(counts, per100, words) {
   if (words < 3) return "Give me a sentence or two to read.";
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (total === 0) return `This reads <span class="hi">straight</span>. The words commit to what they say.`;
+  if (total === 0) return `No marks from the ${Object.keys(FAMILIES).length} live families. <span class="hi">Unmarked is unchecked</span> — not endorsed.`;
   const adj = { hedge:"hedged", deflect:"evasive", passive:"self-absolving", loaded:"charged", overclaim:"overclaimed", minimize:"minimizing" };
-  const top = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>adj[k]);
+  const top = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k]) => adj[k] || FAMILIES[k].name.toLowerCase());
   const density = per100 >= 12 ? "Heavily" : per100 >= 6 ? "Noticeably" : "Lightly";
   const shape = top.length === 2 ? `${top[0]} and ${top[1]}` : top[0];
   const own = counts.passive > 0 ? " Nobody's holding the bag." : "";
   return `${density} <span class="hi">${shape}</span>.${own}`;
 }
 function analyze(text) {
+  if (!LEX_READY) return;
   const matches = findMatches(text);
   const counts = Object.fromEntries(Object.keys(FAMILIES).map(k => [k, 0]));
   matches.forEach(m => counts[m.dim]++);
   let html = "", i = 0;
-  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${FAMILIES[m.dim].name} — ${FAMILIES[m.dim].what}">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
+  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${esc(FAMILIES[m.dim].name)} — ${esc(FAMILIES[m.dim].what)}">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
   html += esc(text.slice(i));
   script.innerHTML = html || "<span style='color:var(--faint)'>Nothing to read yet.</span>";
 
@@ -447,15 +443,15 @@ function analyze(text) {
 
   const max = Math.max(1, ...Object.values(counts));
   profile.innerHTML = Object.entries(FAMILIES).map(([k, f]) => `
-    <div class="band"><div class="t"><span class="nm"><span class="sw" style="background:${f.color}"></span>${f.name}</span><span class="c">${counts[k]}</span></div>
-    <div class="bar"><span data-w="${Math.round(counts[k]/max*100)}" style="background:${f.color}"></span></div><div class="w">${f.what}</div></div>`).join("");
+    <div class="band"><div class="t"><span class="nm"><span class="sw" style="background:${f.color}"></span>${esc(f.name)}</span><span class="c">${counts[k]}</span></div>
+    <div class="bar"><span data-w="${Math.round(counts[k]/max*100)}" style="background:${f.color}"></span></div><div class="w">${esc(f.what)}</div></div>`).join("");
   requestAnimationFrame(() => document.querySelectorAll(".bar span").forEach(s => s.style.width = s.dataset.w + "%"));
 
   read.innerHTML = verdict(counts, per100, words);
 
   const active = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]);
   ledger.innerHTML = active.length === 0
-    ? `<li><span class="k">clear</span><span class="v clean">Direct language. No hedging, no deleted subjects, no loaded framing — the words carry their own weight.</span></li>`
+    ? `<li><span class="k">no marks</span><span class="v clean">Nothing matched the live families — that means <b>unchecked, not clean</b>. The lens only covers what it covers; it cannot certify honesty.</span></li>`
     : active.map(([k,n]) => `<li><span class="k">${FAMILIES[k].name}</span><span class="v">${FAMILIES[k].line(n)}</span></li>`).join("");
 
   out.classList.add("on");
@@ -490,6 +486,14 @@ const script = document.getElementById("script"), freq = document.getElementById
   strip = document.getElementById("strip"), aiBtn = document.getElementById("ai"),
   captionBar = document.getElementById("captionBar"), capTxt = document.getElementById("capTxt"), capReg = document.getElementById("capReg");
 
+const LEX_READY = Object.keys(FAMILIES).length > 0;
+if (!LEX_READY) {
+  wc.textContent = "the lexicon failed to load — marks unavailable. refresh, or check /lexicon.gen.js";
+  wc.style.color = "var(--stamp)";
+  document.getElementById("mark").disabled = true;
+  strip.disabled = true; aiBtn.disabled = true;
+}
+
 const EXAMPLES = {
   "The non-apology": "We want to be clear that we take the security of your data extremely seriously. Regrettably, mistakes were made, and some information may have been accessed. We are reaching out to affected users and remain totally committed to doing better. At this time, there is no evidence that any data was misused.",
   "The non-answer": "Look, let me be clear — that's a great question. But the real issue here is jobs. What I will say is that we are working incredibly hard, and frankly, everybody knows the other side has no plan. I don't recall the specifics, but going forward, we will absolutely get it done.",
@@ -503,13 +507,13 @@ Object.keys(EXAMPLES).forEach(name => {
   b.onclick = () => { input.value = EXAMPLES[name]; count(); analyze(input.value); captionBar.classList.remove("on"); document.getElementById("desk").scrollIntoView({ behavior: "smooth", block: "start" }); };
   filesEl.appendChild(b);
 });
-function count() { const w = (input.value.trim().match(/\S+/g) || []).length; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
+function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/\S+/g) || []).length; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
 input.addEventListener("input", count);
 document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); captionBar.classList.remove("on"); analyze(input.value); };
 aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim()); };
 strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Strip it" : "Restore"; script.classList.toggle("stripped", !on); };
 
-window.addEventListener("DOMContentLoaded", () => { input.value = EXAMPLES["The non-apology"]; count(); setTimeout(() => analyze(input.value), 350); });
+window.addEventListener("DOMContentLoaded", () => { input.value = EXAMPLES["The non-apology"]; if (!LEX_READY) return; count(); setTimeout(() => analyze(input.value), 350); });
 </script>
 </body>
 </html>

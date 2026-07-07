@@ -1,0 +1,16 @@
+{
+  "name": "captioneer-lexicon",
+  "version": "0.1.0",
+  "updated": "2026-07-07",
+  "license": "CC-BY-SA-4.0",
+  "description": "An open lexicon of verbal-manipulation techniques: definitions, mechanisms, naming history across traditions, per-language surface patterns, and benign readings. Every mark points at a visible phrase; valence is never a property of a technique, only of a use.",
+  "entries": [
+    "hedging.json",
+    "deflection.json",
+    "deleted-subject.json",
+    "loaded-framing.json",
+    "overclaim.json",
+    "minimizing.json",
+    "deniable-implicature.json"
+  ]
+}

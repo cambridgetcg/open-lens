@@ -1,0 +1,15 @@
+name: lexicon
+on: [push, pull_request]
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # zero-dependency build: validates the lexicon schema invariants and
+      # regenerates public/lexicon.gen.js — the diff check catches both a stale
+      # generated file and hand-edits that diverge from the CC BY-SA source.
+      - run: npm run build
+      - run: git diff --exit-code -- public

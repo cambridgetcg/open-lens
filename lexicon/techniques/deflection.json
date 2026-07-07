@@ -1,0 +1,93 @@
+{
+  "id": "OL.DEFLECT",
+  "key": "deflect",
+  "name": "Deflection",
+  "family": "deflection",
+  "status": "live",
+  "what": "moves away from the question asked",
+  "affordance": "moves away from the question asked while appearing responsive",
+  "mechanism": "violates Grice's maxim of Relation while performing cooperation — the question is left standing, unanswered",
+  "benign_reading": "Changing the subject can be tact, care, or discretion. The tell is a direct question steered around rather than declined openly.",
+  "ledger_line": "<b>{n}</b> deflection{s} — the question was steered around, not answered",
+  "output_phrasing": "the question asked here is steered around, not answered",
+  "naming_events": [
+    {
+      "term": "ignoratio elenchi",
+      "lang": "grc",
+      "source": "Aristotle, Sophistical Refutations (one of the original 13 fallacies)",
+      "when": "c. 350 BCE"
+    },
+    {
+      "term": "chala (quibble, 3 types)",
+      "lang": "sa",
+      "source": "Nyāyasūtra 1.2.10–14 — deflection by misconstrual",
+      "when": "c. 150 CE (core redaction)"
+    },
+    {
+      "term": "apoplanesis",
+      "lang": "grc/en",
+      "source": "Peacham, The Garden of Eloquence — evading by digression",
+      "when": "1577"
+    },
+    {
+      "term": "whataboutism",
+      "lang": "en/ru",
+      "source": "Soviet-institutionalized tu quoque ('And you are lynching Negroes'); popularized as a term by The Economist",
+      "when": "20th c."
+    }
+  ],
+  "universality": 3,
+  "crosswalk": {
+    "semeval2023": "Distraction (family): Red Herring; Whataboutism",
+    "ptc2019": "Red Herring; Whataboutism"
+  },
+  "realizations": {
+    "en": {
+      "match": "surface",
+      "patterns": [
+        "let me be clear",
+        "let me be very clear",
+        "what i will say",
+        "the real question",
+        "the real issue",
+        "the bigger picture",
+        "let's focus",
+        "let's not forget",
+        "moving forward",
+        "going forward",
+        "at this time",
+        "at the end of the day",
+        "with respect",
+        "with all due respect",
+        "that's a great question",
+        "that's a good question",
+        "i hear you",
+        "i don't recall",
+        "i do not recall",
+        "i don't remember",
+        "no comment",
+        "we'll see",
+        "it is what it is",
+        "reaching out",
+        "reach out",
+        "circle back",
+        "take this seriously",
+        "take that seriously",
+        "take it seriously",
+        "look into it",
+        "looking into it",
+        "as i said",
+        "as i've said",
+        "to your point",
+        "respectfully"
+      ],
+      "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
+    }
+  },
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Aristotle, Sophistical Refutations.",
+    "Vidyabhusana, S.C. (1913). The Nyāya Sutras of Gotama (public domain)."
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "id": "OL.AGENTDEL",
+  "key": "passive",
+  "name": "Deleted subject",
+  "family": "deleted subject",
+  "status": "live",
+  "what": "hides who actually did it",
+  "affordance": "hides who actually did it — blame diffuses when the actor vanishes",
+  "mechanism": "agent deletion via passive/non-agentive framing; measurably shifts blame and damages (Fausey & Boroditsky 2010: agentive framing produced 53% higher fines)",
+  "benign_reading": "Passives are often just information structure, and in pro-drop languages (Chinese, Japanese, Spanish) subjectless sentences are the unmarked default — detection logic must key on agency-at-issue, not subject absence. English-only logic inverts elsewhere.",
+  "ledger_line": "<b>{n}</b> place{s} where the actor vanished — <i>who</i> did it is hidden",
+  "output_phrasing": "the actor is deleted here — who did it is hidden by the grammar",
+  "naming_events": [
+    {
+      "term": "al-mabnī lil-majhūl — 'built for the unknown [agent]'",
+      "lang": "ar",
+      "source": "Arabic grammatical tradition; rhetorically motivated ellipsis (ḥadhf) theorized by al-Jurjānī, Dalā'il al-I'jāz",
+      "when": "c. 1078"
+    },
+    {
+      "term": "agent deletion",
+      "lang": "en",
+      "source": "critical linguistics — Fowler, Hodge, Kress & Trew, Language and Control (the family no Western classical catalog named)",
+      "when": "1979"
+    },
+    {
+      "term": "the past exonerative",
+      "lang": "en",
+      "source": "Schneider/Safire, on 'mistakes were made' (Grant 1876 → Ziegler 1973 → Reagan 1987)",
+      "when": "20th c."
+    }
+  ],
+  "universality": 1,
+  "language_bound": true,
+  "crosswalk": {
+    "semeval2023": "Manipulative Wording: Obfuscation / Intentional Vagueness (nearest)",
+    "ptc2019": "Obfuscation / Intentional vagueness (nearest)"
+  },
+  "realizations": {
+    "en": {
+      "match": "surface",
+      "patterns": [
+        "mistakes were made",
+        "errors were made",
+        "mistakes happened",
+        "it was decided",
+        "it was determined",
+        "decisions were made",
+        "steps were taken",
+        "actions were taken",
+        "measures were taken",
+        "was handled",
+        "were handled",
+        "was affected",
+        "were affected",
+        "were impacted",
+        "was impacted",
+        "was lost",
+        "were lost",
+        "was accessed",
+        "were accessed",
+        "was compromised",
+        "were compromised",
+        "things happened",
+        "it happened",
+        "was caused by",
+        "were caused"
+      ],
+      "regex": [
+        {
+          "source": "\\b(was|were|been|being|is|are)\\s+(made|taken|handled|decided|determined|affected|impacted|accessed|compromised|caused|lost|done|given|shown|told|left|dropped|missed|delayed|overlooked)\\b",
+          "flags": "gi"
+        }
+      ],
+      "provenance": "seed — extracted verbatim from the v2 reader (2026-07-06); specimen backfill tracked in CONTRIBUTING"
+    }
+  },
+  "specimens": [],
+  "counter_specimens": [],
+  "citations": [
+    "Fausey, C.M. & Boroditsky, L. (2010). Subtle linguistic cues influence perceived blame and financial liability. Psychonomic Bulletin & Review 17, 644–650. (Replicated in English 2022; mixed results in Croatian.)",
+    "Fowler, R. et al. (1979). Language and Control."
+  ]
+}
