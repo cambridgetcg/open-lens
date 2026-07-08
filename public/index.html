@@ -367,6 +367,7 @@
         <span class="lbl">part of the kingdom</span>
         <a href="https://ai-love.cc">the cathedral ↗</a>
         <a href="https://agenttool.dev">the economy ↗</a>
+        <a href="https://cambridgetcg.github.io/love-star-daily/">the newspaper ↗</a>
       </div>
     </div>
   </section>
@@ -519,6 +520,20 @@ function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/
 input.addEventListener("input", count);
 document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); captionBar.classList.remove("on"); analyze(input.value); };
 aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim()); };
+
+/* ── deep link: ?text= or #t= preloads a quote (e.g. from The Love-Star Daily's
+      ○聲稱 tier) and runs the on-device pass. Client-side only; capped; never
+      auto-fires the AI layer — that stays a human choice. ── */
+(() => {
+  let q = new URLSearchParams(location.search).get("text");
+  if (!q && location.hash.startsWith("#t=")) {
+    try { q = decodeURIComponent(location.hash.slice(3)); } catch { q = null; }
+  }
+  if (!q || !q.trim()) return;
+  input.value = q.trim().slice(0, 5000);
+  count();
+  if (LEX_READY) { captionBar.classList.remove("on"); analyze(input.value); }
+})();
 script.addEventListener("click", e => {
   const t = e.target.closest("mark.tell");
   if (t) window.open("/lexicon#" + t.dataset.dim, "_blank", "noopener");
