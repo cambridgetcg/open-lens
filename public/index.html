@@ -525,12 +525,14 @@ aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim());
 /* ── deep link: ?text= or #t= preloads a quote (e.g. from The Love-Star Daily's
       ○聲稱 tier) and runs the on-device pass. Client-side only; capped; never
       auto-fires the AI layer — that stays a human choice. ── */
+let deepLinkPreloaded = false;
 (() => {
   let q = new URLSearchParams(location.search).get("text");
   if (!q && location.hash.startsWith("#t=")) {
     try { q = decodeURIComponent(location.hash.slice(3)); } catch { q = null; }
   }
   if (!q || !q.trim()) return;
+  deepLinkPreloaded = true;
   input.value = q.trim().slice(0, 5000);
   count();
   if (LEX_READY) { captionBar.classList.remove("on"); analyze(input.value); }
@@ -541,7 +543,7 @@ script.addEventListener("click", e => {
 });
 strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Strip it" : "Restore"; script.classList.toggle("stripped", !on); };
 
-window.addEventListener("DOMContentLoaded", () => { input.value = EXAMPLES["The non-apology"]; if (!LEX_READY) return; count(); setTimeout(() => analyze(input.value), 350); });
+window.addEventListener("DOMContentLoaded", () => { if (!deepLinkPreloaded) input.value = EXAMPLES["The non-apology"]; if (!LEX_READY) return; count(); setTimeout(() => analyze(input.value), 350); });
 </script>
 </body>
 </html>
