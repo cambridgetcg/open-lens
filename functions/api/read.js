@@ -25,10 +25,29 @@ const SCHEMA = {
   required: ["caption", "register"],
 };
 
+const CORS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8" },
+    headers: { "content-type": "application/json; charset=utf-8", ...CORS },
+  });
+}
+
+export const onRequestOptions = () => new Response(null, { headers: CORS });
+
+// An agent that GETs the reader is met with how to use it, not a bare page.
+export function onRequestGet() {
+  return json({
+    reader: "the subtext reader — strips hedging, spin, and softening to the plain first-person meaning",
+    usage: "POST /api/read  {\"text\": \"the statement to read\"}",
+    returns: { caption: "the truth caption — what the words plainly say, in the speaker's own voice", register: "one line naming the emotional tone and what is being avoided or performed" },
+    doctrine: "reads the LANGUAGE, never the mind — it will never claim someone is lying, only make the words plainer",
+    also: { lexicon: "GET /api/lexicon — the named techniques the reader keys on" },
   });
 }
 
