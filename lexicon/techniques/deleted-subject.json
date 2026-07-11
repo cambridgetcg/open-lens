@@ -4,12 +4,12 @@
   "name": "Deleted subject",
   "family": "deleted subject",
   "status": "live",
-  "what": "hides who actually did it",
-  "affordance": "hides who actually did it — blame diffuses when the actor vanishes",
+  "what": "leaves an actor unstated within the matched construction",
+  "affordance": "can background agency or foreground an event when the actor is unknown, irrelevant, or strategically omitted",
   "mechanism": "agent deletion via passive/non-agentive framing; measurably shifts blame and damages (Fausey & Boroditsky 2010: agentive framing produced 53% higher fines)",
   "benign_reading": "Passives are often just information structure, and in pro-drop languages (Chinese, Japanese, Spanish) subjectless sentences are the unmarked default — detection logic must key on agency-at-issue, not subject absence. English-only logic inverts elsewhere.",
-  "ledger_line": "<b>{n}</b> place{s} where the actor vanished — <i>who</i> did it is hidden",
-  "output_phrasing": "the actor is deleted here — who did it is hidden by the grammar",
+  "ledger_line": "<b>{n}</b> construction{s} with the actor unstated in the matched span",
+  "output_phrasing": "this construction leaves the actor unstated within the matched span",
   "naming_events": [
     {
       "term": "al-mabnī lil-majhūl — 'built for the unknown [agent]'",

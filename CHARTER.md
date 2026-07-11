@@ -6,10 +6,10 @@ Rules below are standing commitments phrased in the present tense; the README's 
 
 ## It is
 
-1. **A lens.** Marks anchored to visible phrases, each naming its technique, its mechanism, and the question it dodges. The evidence is always on screen; the tool never asks to be trusted.
+1. **A lens.** Marks anchored to visible phrases, each naming its technique, its mechanism, and the communicative work it can perform. The evidence is always on screen; the tool never asks to be trusted.
 2. **A memory.** Every technique's names, origins, and evolution — across Greek, Indian, Chinese, Arabic, Hebrew, and modern traditions — as queryable data, not prose.
-3. **An atlas.** Languages cheat differently: what is a tell in English is unmarked grammar in Japanese, and some languages have tells English cannot express. Per-language packs are owned by native speakers and ship with their own false-positive notes.
-4. **A curriculum.** The lens is learnable — the trivium taught it for four centuries, and naming a technique measurably blunts it (Harsey & Freyd on DARVO). Teaching pairs every manipulative example with its honest twin, because device-spotting without a trust-building counterweight curdles into cynicism. **Sincerity preservation — no drop in trust of plain honest speech — is the headline metric.**
+3. **An atlas.** Languages realize rhetorical cues differently: what is marked wording in English may be unmarked grammar in Japanese, and some languages carry distinctions English cannot express. Per-language packs are owned by native speakers and ship with their own false-positive notes.
+4. **A curriculum.** The lens is learnable — the trivium taught it for four centuries, and naming a technique measurably blunts it (Harsey & Freyd on DARVO). Teaching pairs every adversarial example with a benign or direct counterpart, because device-spotting without a trust-building counterweight curdles into cynicism. **Trust preservation — no drop in trust of plain direct speech — is the headline metric.**
 5. **A commons.** Openly licensed, evidence-gated, built to outlive its founders. The first lens-of-clarity project (the IPA, 1937–1942) died of a single funder, pressure to exempt "our side," and political flak. Accordingly: forkable data, published inclusion criteria, symmetry across political sides audited and published.
 
 ## It refuses, permanently
@@ -19,7 +19,7 @@ Rules below are standing commitments phrased in the present tense; the README's 
 3. **Certifying cleanliness.** Marking some phrases implies the unmarked rest is clean (the implied-truth effect). Unmarked is *unchecked*. Zero-mark outputs must say so.
 4. **Generation toward manipulation.** The taxonomy is published for defenders, like MITRE ATT&CK. A "make this more persuasive/evasive" mode is the equivalent of weaponized exploit code and will not ship, in any form, ever.
 5. **Non-text inputs.** Text in, marks out. Voice tone and facial video would turn the register line into biometric emotion recognition — pseudoscience-adjacent and regulated as such. The boundary is enforced by schema, not policy.
-6. **Translation.** Other tools translate between languages. This one translates between what is said and what is meant — within any language it supports.
+6. **Mind-reading by paraphrase.** Other tools may translate between languages. This one maps wording to candidate cues and possible readings within a language; it never claims access to the one thing a speaker "really meant."
 
 ## The invariant
 
@@ -27,4 +27,4 @@ Rules below are standing commitments phrased in the present tense; the README's 
 
 ## Naming
 
-In YOUSPEAK, the kingdom's tongue: what this catches is **verisleight** — truth arranged to mislead, a statement entirely true that reliably produces a false picture. What it leaves you with is **orthophanes** — the rightness made plainly visible. Whether a statement is *true* remains yours to judge; the lens only gets the rhetoric out of the way.
+In YOUSPEAK, the kingdom's tongue: what this inspects is **verisleight** — truth arranged so that it can invite a false picture. Its aspirational counterpart is **orthophanes** — the rightness made plainly visible. Whether a statement is *true* remains yours to judge; the lens exposes wording and possible readings, not the world behind them.

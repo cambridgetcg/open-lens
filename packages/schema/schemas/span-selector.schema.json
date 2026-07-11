@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:open-lens:schema:span-selector:0.1.0",
+  "title": "Open Lens text selector",
+  "description": "An end-exclusive Unicode code-point position paired with exact quote context from the original, unnormalised text.",
+  "type": "object",
+  "required": ["position", "quote"],
+  "additionalProperties": false,
+  "properties": {
+    "position": {
+      "type": "object",
+      "required": ["start", "end", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 0 },
+        "unit": { "const": "unicode-code-point" }
+      }
+    },
+    "quote": {
+      "type": "object",
+      "required": ["exact", "prefix", "suffix"],
+      "additionalProperties": false,
+      "properties": {
+        "exact": { "type": "string", "minLength": 1 },
+        "prefix": { "type": "string" },
+        "suffix": { "type": "string" }
+      }
+    }
+  }
+}

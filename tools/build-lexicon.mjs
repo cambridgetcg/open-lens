@@ -1,14 +1,38 @@
-// Build: lexicon/*.json → public/lexicon.gen.js (+ version-stamps the script URL
-// in public/index.html so HTML and lexicon can't cache-skew silently).
-// The lexicon is the ground truth; the site is a consumer. Run `npm run build`
+// Build: lexicon/*.json → npm/browser packs (+ version-stamps browser imports so
+// HTML, engine, and lexicon cannot cache-skew silently).
+// The lexicon directory is the source of record; the site is a consumer. Run `npm run build`
 // after any lexicon change, then deploy. Validation here is the first, tiny
 // ancestor of the promotion gate described in CONTRIBUTING.md.
 import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SCHEMA_VERSION as schemaRuntimeVersion } from "../packages/schema/src/index.js";
+import {
+  ENGINE_VERSION as coreRuntimeVersion,
+  SCHEMA_VERSION as coreSchemaRuntimeVersion,
+} from "../packages/core/src/index.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(readFileSync(join(root, "lexicon/lexicon.json"), "utf8"));
+const schemaManifest = JSON.parse(readFileSync(join(root, "packages/schema/package.json"), "utf8"));
+const coreManifest = JSON.parse(readFileSync(join(root, "packages/core/package.json"), "utf8"));
+
+// Package versions are public protocol data. Keep npm manifests, runtime
+// constants, and declaration literals in lockstep so a release cannot claim
+// one version while executing or typing another.
+const versionProblems = [];
+checkVersion("@open-lens/schema package.json ↔ runtime", schemaManifest.version, schemaRuntimeVersion);
+checkVersion("@open-lens/schema package.json ↔ declarations", schemaManifest.version, declarationVersion("packages/schema/src/index.d.ts", "SCHEMA_VERSION"));
+checkVersion("@open-lens/core package.json ↔ runtime", coreManifest.version, coreRuntimeVersion);
+checkVersion("@open-lens/core package.json ↔ declarations", coreManifest.version, declarationVersion("packages/core/src/index.d.ts", "ENGINE_VERSION"));
+checkVersion("@open-lens/core schema runtime ↔ @open-lens/schema", coreSchemaRuntimeVersion, schemaManifest.version);
+checkVersion("@open-lens/core schema declarations ↔ @open-lens/schema", declarationVersion("packages/core/src/index.d.ts", "SCHEMA_VERSION"), schemaManifest.version);
+checkVersion("@open-lens/core dependency ↔ @open-lens/schema", coreManifest.dependencies?.["@open-lens/schema"], schemaManifest.version);
+if (versionProblems.length) {
+  console.error("package version validation failed:\n  " + versionProblems.join("\n  "));
+  process.exit(1);
+}
 
 const REQUIRED = ["id", "key", "name", "family", "status", "what", "affordance", "mechanism", "benign_reading", "output_phrasing", "naming_events", "citations"];
 // Fields that reach the page's DOM (title attributes, innerHTML) — no markup
@@ -84,25 +108,146 @@ if (problems.length) {
   process.exit(1);
 }
 
-const payload = { version: manifest.version, updated: manifest.updated, license: manifest.license, techniques };
+const payload = {
+  name: manifest.name,
+  version: manifest.version,
+  updated: manifest.updated,
+  license: manifest.license,
+  description: manifest.description,
+  source: "https://github.com/cambridgetcg/open-lens",
+  note: "An open taxonomy of rhetorical constructions. Matches are candidate cues, not verdicts; every entry includes a benign reading. Read language, never minds.",
+  count: techniques.length,
+  techniques,
+};
 const js = `/* GENERATED from lexicon/ v${manifest.version} — do not edit by hand; run \`npm run build\`.
  * Data license: ${manifest.license}. Every mark points at a visible phrase. */
 window.CAPTIONEER_LEXICON = ${JSON.stringify(payload)};
 `;
 writeFileSync(join(root, "public/lexicon.gen.js"), js);
+writeFileSync(join(root, "public/lexicon.json"), JSON.stringify(payload, null, 2) + "\n");
 
-// stamp the versioned URL into every page so HTML/lexicon cache skew is impossible
-for (const page of ["public/index.html", "public/lexicon.html"]) {
+// Build the reusable English data pack separately from the Apache engine. Rule
+// IDs are content-addressed so inserting another rule never renumbers existing
+// provenance. A changed rule receives a changed ID, as it should.
+const englishRules = [];
+const ruleIds = new Set();
+for (const technique of techniques) {
+  const realization = technique.realizations && technique.realizations.en;
+  if (!realization) continue;
+  const provenance = realization.provenance || "Open Lens lexicon (provenance not supplied)";
+  for (const source of realization.patterns || []) {
+    const rule = makeRule({ techniqueId: technique.id, language: "en", kind: "surface", source, flags: "giu", provenance });
+    if (ruleIds.has(rule.id)) problems.push(`${technique.id}: duplicate generated rule ID ${rule.id}`);
+    ruleIds.add(rule.id);
+    englishRules.push(rule);
+  }
+  for (const expression of realization.regex || []) {
+    const rule = makeRule({ techniqueId: technique.id, language: "en", kind: "regex", source: expression.source, flags: expression.flags, provenance });
+    if (ruleIds.has(rule.id)) problems.push(`${technique.id}: duplicate generated rule ID ${rule.id}`);
+    ruleIds.add(rule.id);
+    englishRules.push(rule);
+  }
+}
+
+if (problems.length) {
+  console.error("lexicon validation failed:\n  " + problems.join("\n  "));
+  process.exit(1);
+}
+
+const packageManifestPath = join(root, "packages/lexicon-en/package.json");
+const packageManifest = JSON.parse(readFileSync(packageManifestPath, "utf8"));
+if (packageManifest.version !== manifest.version) {
+  console.error(`packages/lexicon-en version ${packageManifest.version} must equal lexicon version ${manifest.version}`);
+  process.exit(1);
+}
+
+const englishPack = {
+  object: "language-pack",
+  schema_version: "0.1.0",
+  id: "open-lens/en",
+  name: "Open Lens English",
+  version: manifest.version,
+  updated: manifest.updated,
+  license: manifest.license,
+  languages: ["en"],
+  techniques,
+  rules: englishRules,
+};
+const packJson = JSON.stringify(englishPack, null, 2) + "\n";
+writeFileSync(join(root, "packages/lexicon-en/pack.json"), packJson);
+
+const packModule = `/* GENERATED from lexicon/ v${manifest.version} — do not edit by hand; run \`npm run build\`.
+ * Open Lens English data pack. License: ${manifest.license}. */
+export const PACK_ID = "open-lens/en";
+export const PACK_VERSION = ${JSON.stringify(manifest.version)};
+export const english = ${JSON.stringify(englishPack)};
+export default english;
+`;
+writeFileSync(join(root, "packages/lexicon-en/src/generated.js"), packModule);
+
+// Dependency-free ESM artifacts for static hosts. They remain separate files
+// because the engine is Apache-2.0 and the language data is CC-BY-SA-4.0.
+const coreSource = readFileSync(join(root, "packages/core/src/index.js"), "utf8");
+writeFileSync(join(root, "public/open-lens.core.gen.js"), `/* GENERATED from packages/core/src/index.js — Apache-2.0. */\n${coreSource}`);
+writeFileSync(join(root, "public/open-lens.lexicon-en.gen.js"), packModule);
+
+// npm publishes workspaces independently, so each tarball must carry its own
+// correct license text rather than relying on the repository root.
+const apacheLicense = readFileSync(join(root, "LICENSE"), "utf8");
+const lexiconLicense = readFileSync(join(root, "lexicon/LICENSE"), "utf8");
+writeFileSync(join(root, "packages/schema/LICENSE"), apacheLicense);
+writeFileSync(join(root, "packages/core/LICENSE"), apacheLicense);
+writeFileSync(join(root, "packages/lexicon-en/LICENSE"), lexiconLicense);
+
+// The field guide still consumes the classic data artifact.
+stampAsset("public/lexicon.html", /\/lexicon\.gen\.js(\?v=[^"']*)?/g, `/lexicon.gen.js?v=${manifest.version}`);
+
+// The reader consumes separate engine and data ESM files so their licenses and
+// release cadences remain explicit.
+stampAsset("public/index.html", /\/open-lens\.core\.gen\.js(\?v=[^"']*)?/g, `/open-lens.core.gen.js?v=${coreManifest.version}`);
+stampAsset("public/index.html", /\/open-lens\.lexicon-en\.gen\.js(\?v=[^"']*)?/g, `/open-lens.lexicon-en.gen.js?v=${manifest.version}`);
+
+const live = techniques.filter(t => t.status === "live");
+const n = live.reduce((a, t) => a + ((t.realizations.en && t.realizations.en.patterns) || []).length, 0);
+console.log(`lexicon.gen.js + @open-lens/lexicon-en: v${manifest.version} — ${techniques.length} techniques (${live.length} live), ${n} en patterns, ${englishRules.length} rules`);
+
+function makeRule({ techniqueId, language, kind, source, flags, provenance }) {
+  const digest = createHash("sha256")
+    .update(`${language}\0${kind}\0${source}\0${flags}`)
+    .digest("hex")
+    .slice(0, 12);
+  return {
+    id: `${techniqueId}.${language}.${kind}.${digest}`,
+    technique_id: techniqueId,
+    language,
+    kind,
+    source,
+    flags,
+    provenance,
+  };
+}
+
+function stampAsset(page, pattern, expected) {
   const htmlPath = join(root, page);
   const html = readFileSync(htmlPath, "utf8");
-  const stamped = html.replace(/\/lexicon\.gen\.js(\?v=[^"']*)?/g, `/lexicon.gen.js?v=${manifest.version}`);
-  if (!stamped.includes(`/lexicon.gen.js?v=${manifest.version}`)) {
-    console.error(`failed to stamp lexicon version into ${page}`);
+  const stamped = html.replace(pattern, expected);
+  if (!stamped.includes(expected)) {
+    console.error(`failed to stamp ${expected} into ${page}`);
     process.exit(1);
   }
   if (stamped !== html) writeFileSync(htmlPath, stamped);
 }
 
-const live = techniques.filter(t => t.status === "live");
-const n = live.reduce((a, t) => a + ((t.realizations.en && t.realizations.en.patterns) || []).length, 0);
-console.log(`lexicon.gen.js: v${manifest.version} — ${techniques.length} techniques (${live.length} live), ${n} en patterns`);
+function declarationVersion(relativePath, exportName) {
+  const source = readFileSync(join(root, relativePath), "utf8");
+  const match = source.match(new RegExp(`export\\s+const\\s+${exportName}\\s*:\\s*["']([^"']+)["']\\s*;`));
+  if (!match) {
+    versionProblems.push(`${relativePath}: missing literal declaration for ${exportName}`);
+    return undefined;
+  }
+  return match[1];
+}
+
+function checkVersion(label, actual, expected) {
+  if (actual !== expected) versionProblems.push(`${label}: ${JSON.stringify(actual)} != ${JSON.stringify(expected)}`);
+}

@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Captioneer · The Subtext Reader</title>
-<meta name="description" content="Captioneer captions what people actually mean. Paste any statement and it marks the hedges, deflections, and spin in the words — then writes the plain-truth version. It reads the language, not the mind." />
+<meta name="description" content="Captioneer marks observable rhetorical cues in a statement and offers an optional plain-language reading grounded in the words. It reads language, not minds, and does not determine truth." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
 <style>
   :root {
     --paper: #f2f1ea;
@@ -93,7 +93,7 @@
   .lede { font-size: clamp(1.1rem, 2vw, 1.32rem); line-height: 1.55; color: var(--ink-soft); max-width: 56ch; margin: 28px 0 0; }
   .lede em { font-style: italic; color: var(--ink); }
 
-  /* the specimen — a marked-up statement + its truth caption */
+  /* the specimen — a marked-up statement + one possible reading */
   .specimen { margin: 48px 0 0; background: var(--card); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
   .specimen .head { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); padding: 14px 24px; border-bottom: 1px solid var(--rule-soft); display: flex; justify-content: space-between; }
   .specimen .said { padding: 26px 26px 8px; font-size: clamp(1.15rem, 2.5vw, 1.5rem); line-height: 1.75; }
@@ -134,12 +134,16 @@
   #out.on { display: block; animation: up 0.45s ease forwards; }
   @keyframes up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  /* the AI truth-caption bar */
+  /* the optional AI reading bar */
   #captionBar { display: none; margin-bottom: 24px; }
   #captionBar.on { display: block; animation: up 0.5s ease forwards; }
   .cap.live { margin: 0; }
   .cap.live .txt { min-height: 1.4em; }
   .cap-err { font-family: var(--mono); font-size: 12.5px; color: var(--stamp); padding: 4px 2px; }
+  .cap-evidence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18); }
+  .cap-evidence h4 { margin: 0 0 5px; font: 600 10px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--hl); }
+  .cap-evidence ul { margin: 0; padding-left: 17px; font: 11px/1.45 var(--mono); color: var(--bar-ink); opacity: 0.82; }
+  .cap-evidence li + li { margin-top: 4px; }
 
   .verdict { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 11px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 22px; }
   .verdict .r { font-family: var(--display); font-weight: 600; font-size: clamp(1.25rem, 2.8vw, 1.7rem); line-height: 1.2; letter-spacing: -0.015em; }
@@ -227,6 +231,7 @@
   @media (max-width: 820px) {
     .grid { grid-template-columns: 1fr; }
     .split { grid-template-columns: 1fr; }
+    .cap-evidence { grid-template-columns: 1fr; }
     .verdict { grid-template-columns: 1fr; } .g { text-align: left; }
     .ledger li { grid-template-columns: 1fr; gap: 2px; }
   }
@@ -248,15 +253,15 @@
   <div class="wrap">
     <section class="hero">
       <p class="eyebrow">Captions for the unsaid</p>
-      <h1>Captions for what someone <span class="u">actually means</span>.</h1>
-      <p class="lede">Every statement has a surface and a meaning, and they're not always the same thing. Paste one below — Captioneer <em>marks</em> the hedges and spin in what's said, then <em>writes</em> the plain-truth version underneath. It reads the language, never the mind.</p>
+      <h1>See how words <span class="u">steer meaning</span>.</h1>
+      <p class="lede">Every statement has a surface, a context, and more than one possible reading. Paste one below — Captioneer <em>marks</em> observable rhetorical cues, then can offer <em>one</em> plain-language interpretation alongside the original. It reads the language, never the mind; neither marks nor readings determine truth.</p>
 
       <div class="specimen">
         <div class="head"><span>Specimen · a corporate non-apology</span><span>marked &amp; read</span></div>
         <p class="said">"We <u>take your privacy extremely seriously</u>, and <u>regrettably, mistakes were made</u>. We are <u>reaching out</u> to affected users."</p>
         <div class="cap">
-          <div class="txt">Something went wrong, we won't say who caused it, and we're doing the legal minimum.</div>
-          <div class="reg">register · rehearsed contrition, responsibility quietly deleted</div>
+          <div class="txt">Something went wrong. This statement does not name who made the mistakes; it says affected users are being contacted.</div>
+          <div class="reg">rhetorical register · formal apology language, actor left unstated</div>
         </div>
       </div>
     </section>
@@ -264,16 +269,16 @@
     <section id="desk">
       <div class="desk-head">
         <h2>Read a statement</h2>
-        <span class="note">marks run on your device · the reading is opt-in</span>
+        <span class="note">scan runs on your device · optional AI sends text only when you ask</span>
       </div>
 
       <div class="files" id="files"></div>
-      <textarea id="in" spellcheck="false" placeholder="Paste a statement, an apology, a political answer, a message from someone who's dodging — anything with a gap between what's said and what's meant."></textarea>
+      <textarea id="in" spellcheck="false" placeholder="Paste a statement, an apology, a political answer, or any message whose wording you want to inspect closely."></textarea>
 
       <div class="actions">
-        <button class="btn" id="mark">Mark the spin</button>
-        <button class="btn btn-ai" id="ai" disabled><span class="spin"></span><span class="lbl">Read the subtext</span></button>
-        <button class="btn btn-2" id="strip" aria-pressed="false" disabled>Strip it</button>
+        <button class="btn" id="mark">Scan rhetorical cues</button>
+        <button class="btn btn-ai" id="ai" disabled><span class="spin"></span><span class="lbl">Explore a reading</span></button>
+        <button class="btn btn-2" id="strip" aria-pressed="false" disabled>Dim matched cues</button>
         <span class="note" id="wc"></span>
       </div>
 
@@ -282,12 +287,13 @@
           <div class="cap live">
             <div class="txt" id="capTxt"></div>
             <div class="reg" id="capReg"></div>
+            <div class="cap-evidence" id="capMeta"></div>
           </div>
         </div>
 
         <div class="verdict">
           <div class="r" id="read"></div>
-          <div class="g"><div class="n" id="freq">0</div><div class="l">tells / 100 words</div></div>
+          <div class="g"><div class="n" id="freq">0</div><div class="l">candidate cues</div></div>
         </div>
 
         <div class="grid">
@@ -296,7 +302,7 @@
             <div class="script" id="script"></div>
           </div>
           <div class="card2">
-            <div class="h"><span>The frequency</span><span>by family</span></div>
+            <div class="h"><span>Matched cues</span><span>by family</span></div>
             <div class="profile" id="profile"></div>
           </div>
         </div>
@@ -313,28 +319,29 @@
     <div class="wrap">
       <h2 style="margin-bottom:24px">What this is — and what it refuses to be.</h2>
       <p>A real lie detector reads a person and returns a verdict. There is no such thing. Body language, micro-expressions, voice “frequency” — decades of research say they don't reliably reveal deception, and a tool that claims otherwise just manufactures confident accusations. That isn't truth. It's theatre.</p>
-      <p><strong>So Captioneer reads the one place manipulation actually leaves a trace: the words.</strong> Evasion has grammar. A deleted subject hides who acted. A hedge lowers a promise you can later deny. An absolute claims more than anyone could know. The marks are countable and every one points at a real phrase you can see. Then the reader writes the plain version — a reading of the <em>language</em>, offered as a reading, never a verdict.</p>
-      <p>It tells you how something is being <em>said</em>. Whether it's <em>true</em> is still yours to judge — now with the rhetoric out of the way.</p>
+      <p><strong>So Captioneer stays with what can actually be observed: the words.</strong> A deleted subject leaves the actor unstated. A hedge lowers expressed commitment. An absolute extends certainty. The matches are countable and every one points at a real phrase you can see — but context decides whether a use is careful, ordinary, evasive, or something else. The optional reader offers a possible plain version of the <em>language</em>, never a verdict on the person.</p>
+      <p>It helps you inspect how something is being <em>said</em>. Whether a claim is <em>true</em> still requires evidence beyond its rhetoric.</p>
 
       <div class="split">
         <div class="a">
           <h4>It does</h4>
           <ul>
-            <li>Mark hedges, deflections, and non-answers</li>
-            <li>Catch the deleted subject — who's dodging</li>
-            <li>Flag loaded framing and overclaimed certainty</li>
-            <li>Write the plain-meaning version of the words</li>
-            <li>Point at every real phrase behind every mark</li>
+            <li>Mark candidate hedges, deflections, and non-answers</li>
+            <li>Show where a construction leaves the actor unstated</li>
+            <li>Surface loaded framing and expanded certainty</li>
+            <li>Offer an optional plain-language interpretation</li>
+            <li>Point at the visible phrase behind every matched cue</li>
           </ul>
         </div>
         <div class="b">
           <h4>It doesn't</h4>
           <ul>
             <li>Detect lies — no tool reads a mind from words</li>
-            <li>Judge the speaker, only the language</li>
+            <li>Infer a speaker's belief, motive, emotion, or intent</li>
+            <li>Treat a matched phrase as proof of manipulation</li>
             <li>Read faces, bodies, or voice “frequency”</li>
-            <li>Store your text — marks run in your browser</li>
-            <li>Ask you to trust it — the evidence is on screen</li>
+            <li>Send local-scan text anywhere — optional AI transmits it to Cloudflare only when you click</li>
+            <li>Certify unmarked text as honest or true</li>
           </ul>
         </div>
       </div>
@@ -349,7 +356,7 @@
         <article class="entry">
           <div class="top2"><span class="word">verisleight</span><span class="pron">/ˈvɛr.ɪ.slaɪt/</span><span class="pos">noun</span></div>
           <p class="gloss"><b>Truth arranged to mislead</b> — a statement entirely true that reliably produces a false picture.</p>
-          <p class="note">Every word of a practised non-apology is true. The picture is a lie. That is verisleight — and it is what captioneer catches.</p>
+          <p class="note">Every word of a practised non-apology can be true while the resulting picture misleads. That is verisleight — and it is what captioneer helps you inspect.</p>
         </article>
         <article class="entry">
           <div class="top2"><span class="word">slipsooth</span><span class="pron">/ˈslɪp.suːθ/</span><span class="pos">noun</span></div>
@@ -359,10 +366,10 @@
         <article class="entry">
           <div class="top2"><span class="word">orthophanes</span><span class="pron">/ˌɔːr.θoʊˈfæn.iːz/</span><span class="pos">noun</span></div>
           <p class="gloss"><b>The rightness made plainly visible</b> — a thing shown straight, in the open, ordered to its own necessity.</p>
-          <p class="note">When the spin is stripped and the plain meaning simply stands there — that is orthophanes, and it is what captioneer leaves you with.</p>
+          <p class="note">When the cues are visible and a plainer reading stands beside the original — that is the direction of orthophanes, without pretending one reading exhausts the words.</p>
         </article>
       </div>
-      <p class="close">captioneer is the everyday-speech arm of the kingdom's truth-work: what the <b>zerone</b> domain does with stake and proof — <i>dokimance</i>, verification that constitutes truth rather than merely confirming it — captioneer does with nothing but close attention to the words. The lens reads a sentence; its sibling <a href="https://cambridgetcg.github.io/open-press/"><b>the press</b></a> reads the world — an open framework for evidence-tiered, signed newspapers anyone can generate, with this lens baked in as the instrument of record.</p>
+      <p class="close">captioneer is the everyday-speech arm of the kingdom's clarity-work: close attention to wording, openly separated from claims about the world. The lens reads a sentence; its sibling <a href="https://cambridgetcg.github.io/open-press/"><b>the press</b></a> reads evidence — an open framework for evidence-tiered, signed newspapers anyone can generate, with this lens available as an instrument for examining rhetoric.</p>
       <div class="kin-links">
         <span class="lbl">part of the kingdom</span>
         <a href="https://ai-love.cc">the cathedral ↗</a>
@@ -376,13 +383,15 @@
 
 <footer>
   <div class="wrap">
-    <div><b>Captioneer</b> — captions for what people mean.</div>
-    <div class="mono">marks: on-device · reading: cloudflare workers ai, on request · <a href="/lexicon" style="color:var(--stamp);text-decoration:none">the lexicon</a> · <a href="https://github.com/cambridgetcg/open-lens" style="color:var(--stamp);text-decoration:none">open source ↗</a></div>
+    <div><b>Captioneer</b> — inspect how words steer meaning.</div>
+    <div class="mono">cue scan: on-device · optional reading: text sent to cloudflare workers ai only on request · <a href="/lexicon" style="color:var(--stamp);text-decoration:none">the lexicon</a> · <a href="https://github.com/cambridgetcg/open-lens" style="color:var(--stamp);text-decoration:none">open source ↗</a></div>
   </div>
 </footer>
 
-<script src="/lexicon.gen.js?v=0.2.0"></script>
-<script>
+<script type="module">
+import { createLens, selectNonOverlappingAnnotations } from "/open-lens.core.gen.js?v=0.1.0";
+import englishPack from "/open-lens.lexicon-en.gen.js?v=0.2.0";
+
 /* ── theme ── */
 const root = document.documentElement;
 try { const t = localStorage.getItem("cap-theme"); if (t) root.setAttribute("data-theme", t); } catch {}
@@ -394,9 +403,12 @@ document.getElementById("theme").onclick = () => {
 };
 
 /* ── the close-reader — deterministic, every mark is a real phrase.
-   The lexicon itself lives in /lexicon (CC BY-SA 4.0) and is compiled to
-   lexicon.gen.js — this page is a consumer, not the source of truth. ── */
-const LEX = window.CAPTIONEER_LEXICON || { techniques: [] };
+   The lexicon itself lives in /lexicon (CC BY-SA 4.0) and is compiled into
+   the English pack module — this page is a consumer, not the source of record. ── */
+const LEX = englishPack || { techniques: [] };
+const LENS = createLens({ packs: [LEX] });
+const MAX_DEEP_LINK_CODE_POINTS = 12_000;
+let lastAnalyzedText = "", readingEpoch = 0;
 const FAM_COLORS = { hedge:"var(--hedge)", deflect:"var(--deflect)", passive:"var(--passive)", loaded:"var(--loaded)", overclaim:"var(--overclaim)", minimize:"var(--minimize)" };
 const FAMILIES = {};
 for (const t of (LEX.techniques || [])) {
@@ -405,51 +417,40 @@ for (const t of (LEX.techniques || [])) {
   FAMILIES[t.key] = {
     name: t.name, color: FAM_COLORS[t.key] || "var(--stamp)", what: t.what,
     line: n => t.ledger_line.replaceAll("{n}", n).replaceAll("{s}", n > 1 ? "s" : ""),
-    patterns: en.patterns || [],
-    rxs: (en.regex || []).map(r => new RegExp(r.source, r.flags.includes("g") ? r.flags : r.flags + "g")),
   };
 }
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
-const rxEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-function findMatches(text) {
-  const hits = [];
-  for (const [dim, fam] of Object.entries(FAMILIES)) {
-    for (const p of fam.patterns) {
-      const rx = new RegExp("(?<![a-z])" + rxEsc(p).replace(/ /g, "\\s+") + "(?![a-z])", "gi");
-      let m; while ((m = rx.exec(text)) !== null) { hits.push({ start: m.index, end: m.index + m[0].length, dim }); if (m.index === rx.lastIndex) rx.lastIndex++; }
-    }
-    for (const rx of fam.rxs) { rx.lastIndex = 0; let m; while ((m = rx.exec(text)) !== null) { hits.push({ start: m.index, end: m.index + m[0].length, dim }); if (m.index === rx.lastIndex) rx.lastIndex++; } }
-  }
-  hits.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
-  const kept = []; let cur = -1;
-  for (const h of hits) if (h.start >= cur) { kept.push(h); cur = h.end; }
-  return kept;
-}
-function verdict(counts, per100, words) {
+function summary(counts, words) {
   if (words < 3) return "Give me a sentence or two to read.";
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (total === 0) return `No marks from the ${Object.keys(FAMILIES).length} live families. <span class="hi">Unmarked is unchecked</span> — not endorsed.`;
-  const adj = { hedge:"hedged", deflect:"evasive", passive:"self-absolving", loaded:"charged", overclaim:"overclaimed", minimize:"minimizing" };
-  const top = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k]) => adj[k] || FAMILIES[k].name.toLowerCase());
-  const density = per100 >= 12 ? "Heavily" : per100 >= 6 ? "Noticeably" : "Lightly";
+  if (total === 0) return `No candidate cues matched from the ${Object.keys(FAMILIES).length} live families. <span class="hi">Unmarked is unchecked</span> — not endorsed.`;
+  const top = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k]) => FAMILIES[k].name.toLowerCase());
   const shape = top.length === 2 ? `${top[0]} and ${top[1]}` : top[0];
-  const own = counts.passive > 0 ? " Nobody's holding the bag." : "";
-  return `${density} <span class="hi">${shape}</span>.${own}`;
+  return `<span class="hi">${total} candidate cue${total === 1 ? "" : "s"}</span> matched across ${shape}. Inspect each in context; a match is not a verdict.`;
 }
 function analyze(text) {
   if (!LEX_READY) return;
-  const matches = findMatches(text);
+  const analysis = LENS.analyze({ text, language: "en", normalization: "none" });
+  // The open framework retains every overlap. This compact reference UI uses
+  // the exported compatibility projection until it grows a layered renderer.
+  const matches = selectNonOverlappingAnnotations(analysis);
   const counts = Object.fromEntries(Object.keys(FAMILIES).map(k => [k, 0]));
-  matches.forEach(m => counts[m.dim]++);
+  matches.forEach(m => counts[m.technique_key]++);
+  const points = Array.from(text);
   let html = "", i = 0;
-  for (const m of matches) { html += esc(text.slice(i, m.start)); html += `<mark class="tell" data-dim="${m.dim}" title="${esc(FAMILIES[m.dim].name)} — ${esc(FAMILIES[m.dim].what)} · click for the lexicon">${esc(text.slice(m.start, m.end))}</mark>`; i = m.end; }
-  html += esc(text.slice(i));
+  for (const m of matches) {
+    const { start, end } = m.selector.position;
+    const dim = m.technique_key;
+    html += esc(points.slice(i, start).join(""));
+    html += `<mark class="tell" data-dim="${dim}" title="${esc(FAMILIES[dim].name)} — ${esc(FAMILIES[dim].what)} · candidate cue, click for context">${esc(points.slice(start, end).join(""))}</mark>`;
+    i = end;
+  }
+  html += esc(points.slice(i).join(""));
   script.innerHTML = html || "<span style='color:var(--faint)'>Nothing to read yet.</span>";
 
   const words = (text.trim().match(/\S+/g) || []).length;
   const total = matches.length;
-  const per100 = words ? Math.round(total / words * 1000) / 10 : 0;
-  freq.textContent = per100; tt.textContent = `${total} marked`;
+  freq.textContent = total; tt.textContent = `${total} cue${total === 1 ? "" : "s"} matched`;
 
   const max = Math.max(1, ...Object.values(counts));
   profile.innerHTML = Object.entries(FAMILIES).map(([k, f]) => `
@@ -457,35 +458,54 @@ function analyze(text) {
     <div class="bar"><span data-w="${Math.round(counts[k]/max*100)}" style="background:${f.color}"></span></div><div class="w">${esc(f.what)}</div></div>`).join("");
   requestAnimationFrame(() => document.querySelectorAll(".bar span").forEach(s => s.style.width = s.dataset.w + "%"));
 
-  read.innerHTML = verdict(counts, per100, words);
+  read.innerHTML = summary(counts, words);
 
   const active = Object.entries(counts).filter(([,n]) => n>0).sort((a,b)=>b[1]-a[1]);
   ledger.innerHTML = active.length === 0
-    ? `<li><span class="k">no marks</span><span class="v clean">Nothing matched the live families — that means <b>unchecked, not clean</b>. The lens only covers what it covers; it cannot certify honesty.</span></li>`
+    ? `<li><span class="k">no matches</span><span class="v clean">No candidate cues matched the live families — that means <b>unchecked, not clean</b>. The lens only covers what it covers; it cannot certify honesty.</span></li>`
     : active.map(([k,n]) => `<li><span class="k">${FAMILIES[k].name}</span><span class="v">${FAMILIES[k].line(n)}</span></li>`).join("");
 
   out.classList.add("on");
-  strip.disabled = total === 0; strip.setAttribute("aria-pressed","false"); strip.textContent = "Strip it"; script.classList.remove("stripped");
+  lastAnalyzedText = text;
+  strip.disabled = total === 0; strip.setAttribute("aria-pressed","false"); strip.textContent = "Dim matched cues"; script.classList.remove("stripped");
   aiBtn.disabled = words < 3;
 }
 
 /* ── the AI reading (opt-in) ── */
 async function readSubtext(text) {
+  const epoch = ++readingEpoch;
   aiBtn.classList.add("loading"); aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Reading…";
-  capTxt.textContent = ""; capReg.textContent = "";
+  capTxt.textContent = ""; capReg.textContent = ""; capMeta.textContent = "";
   try {
-    const r = await fetch("/api/read", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) });
+    const r = await fetch("/v1/readings", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text, language: "en" }) });
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error || "The reader couldn't finish.");
-    capTxt.textContent = d.caption || "";
-    capReg.textContent = d.register ? "register · " + d.register : "";
+    if (!r.ok) throw new Error(d.detail || d.error || "The reader couldn't finish.");
+    if (epoch !== readingEpoch || input.value !== text) return;
+    capTxt.textContent = d.text || "";
+    const basisCount = Array.isArray(d.basis) ? d.basis.length : 0;
+    const register = d.register ? `rhetorical register · ${d.register} · ` : "";
+    capReg.textContent = `${register}basis · ${basisCount} cited cue${basisCount === 1 ? "" : "s"} · interpretation, not verdict`;
+    const annotations = new Map((d.analysis?.annotations || []).map(annotation => [annotation.id, annotation]));
+    const cited = (d.basis || []).map(id => annotations.get(id)).filter(Boolean).map(annotation =>
+      `${annotation.selector?.quote?.exact || annotation.id} · ${annotation.technique_id}`);
+    if (cited.length === 0) cited.push("No matched cue; this reading rests on the supplied wording as a whole.");
+    const assumptions = Array.isArray(d.assumptions) ? d.assumptions : [];
+    const alternatives = Array.isArray(d.alternatives) ? d.alternatives.map(alternative =>
+      `${alternative.text}${alternative.condition ? ` — ${alternative.condition}` : ""}`) : [];
+    const detail = (title, items) => `<div><h4>${esc(title)}</h4><ul>${items.map(item => `<li>${esc(String(item))}</li>`).join("")}</ul></div>`;
+    capMeta.innerHTML = detail("Cited cues", cited) + detail("Assumptions", assumptions) + detail("Other plausible readings", alternatives);
     captionBar.classList.add("on");
   } catch (e) {
+    if (epoch !== readingEpoch || input.value !== text) return;
     captionBar.classList.add("on");
     capTxt.innerHTML = `<span class="cap-err">${esc(e.message || "Something went wrong.")}</span>`;
-    capReg.textContent = "";
+    capReg.textContent = ""; capMeta.textContent = "";
   } finally {
-    aiBtn.classList.remove("loading"); aiBtn.disabled = false; aiBtn.querySelector(".lbl").textContent = "Read again";
+    if (epoch === readingEpoch) {
+      aiBtn.classList.remove("loading");
+      aiBtn.disabled = input.value !== lastAnalyzedText || !input.value.trim();
+      aiBtn.querySelector(".lbl").textContent = "Explore again";
+    }
   }
 }
 
@@ -494,11 +514,20 @@ const script = document.getElementById("script"), freq = document.getElementById
   profile = document.getElementById("profile"), read = document.getElementById("read"), ledger = document.getElementById("ledger"),
   out = document.getElementById("out"), input = document.getElementById("in"), wc = document.getElementById("wc"),
   strip = document.getElementById("strip"), aiBtn = document.getElementById("ai"),
-  captionBar = document.getElementById("captionBar"), capTxt = document.getElementById("capTxt"), capReg = document.getElementById("capReg");
+  captionBar = document.getElementById("captionBar"), capTxt = document.getElementById("capTxt"), capReg = document.getElementById("capReg"), capMeta = document.getElementById("capMeta");
+
+function invalidateAnalysis() {
+  readingEpoch += 1;
+  lastAnalyzedText = "";
+  out.classList.remove("on"); captionBar.classList.remove("on");
+  aiBtn.classList.remove("loading"); aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Explore a reading";
+  strip.disabled = true; strip.setAttribute("aria-pressed", "false"); strip.textContent = "Dim matched cues";
+  script.classList.remove("stripped");
+}
 
 const LEX_READY = Object.keys(FAMILIES).length > 0;
 if (!LEX_READY) {
-  wc.textContent = "the lexicon failed to load — marks unavailable. refresh, or check /lexicon.gen.js?v=0.2.0";
+  wc.textContent = "the lexicon failed to load — marks unavailable. refresh, or check /open-lens.lexicon-en.gen.js?v=0.2.0";
   wc.style.color = "var(--stamp)";
   document.getElementById("mark").disabled = true;
   strip.disabled = true; aiBtn.disabled = true;
@@ -514,36 +543,39 @@ const EXAMPLES = {
 const filesEl = document.getElementById("files");
 Object.keys(EXAMPLES).forEach(name => {
   const b = document.createElement("button"); b.className = "file"; b.textContent = name;
-  b.onclick = () => { input.value = EXAMPLES[name]; count(); analyze(input.value); captionBar.classList.remove("on"); document.getElementById("desk").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  b.onclick = () => { invalidateAnalysis(); input.value = EXAMPLES[name]; count(); analyze(input.value); document.getElementById("desk").scrollIntoView({ behavior: "smooth", block: "start" }); };
   filesEl.appendChild(b);
 });
-function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/\S+/g) || []).length; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
-input.addEventListener("input", count);
-document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); captionBar.classList.remove("on"); analyze(input.value); };
-aiBtn.onclick = () => { if (input.value.trim()) readSubtext(input.value.trim()); };
+function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/\S+/g) || []).length; wc.style.color = ""; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
+input.addEventListener("input", () => { count(); invalidateAnalysis(); });
+document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); invalidateAnalysis(); analyze(input.value); };
+aiBtn.onclick = () => { if (input.value.trim() && input.value === lastAnalyzedText) readSubtext(input.value); };
 
-/* ── deep link: ?text= or #t= preloads a quote (e.g. from The Love-Star Daily's
-      ○聲稱 tier) and runs the on-device pass. Client-side only; capped; never
-      auto-fires the AI layer — that stays a human choice. ── */
+/* ── private deep link: #t= preloads a quote without sending it in the HTTP
+      request URL. Query-string text is deliberately unsupported because URLs
+      can enter server/CDN logs. Never auto-fire the remote AI layer. ── */
 let deepLinkPreloaded = false;
 (() => {
-  let q = new URLSearchParams(location.search).get("text");
-  if (!q && location.hash.startsWith("#t=")) {
-    try { q = decodeURIComponent(location.hash.slice(3)); } catch { q = null; }
-  }
+  let q = null;
+  if (location.hash.startsWith("#t=")) try { q = decodeURIComponent(location.hash.slice(3)); } catch { q = null; }
   if (!q || !q.trim()) return;
   deepLinkPreloaded = true;
-  input.value = q.trim().slice(0, 5000);
+  const text = q.trim();
+  if (Array.from(text).length > MAX_DEEP_LINK_CODE_POINTS) {
+    wc.textContent = `deep-link text exceeds ${MAX_DEEP_LINK_CODE_POINTS.toLocaleString()} code points — nothing loaded`;
+    wc.style.color = "var(--stamp)";
+    return;
+  }
+  input.value = text;
   count();
-  if (LEX_READY) { captionBar.classList.remove("on"); analyze(input.value); }
 })();
 script.addEventListener("click", e => {
   const t = e.target.closest("mark.tell");
   if (t) window.open("/lexicon#" + t.dataset.dim, "_blank", "noopener");
 });
-strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Strip it" : "Restore"; script.classList.toggle("stripped", !on); };
+strip.onclick = () => { const on = strip.getAttribute("aria-pressed") === "true"; strip.setAttribute("aria-pressed", String(!on)); strip.textContent = on ? "Dim matched cues" : "Restore matched cues"; script.classList.toggle("stripped", !on); };
 
-window.addEventListener("DOMContentLoaded", () => { if (!deepLinkPreloaded) input.value = EXAMPLES["The non-apology"]; if (!LEX_READY) return; count(); setTimeout(() => analyze(input.value), 350); });
+window.addEventListener("DOMContentLoaded", () => { if (!deepLinkPreloaded) input.value = EXAMPLES["The non-apology"]; if (!LEX_READY || !input.value.trim()) return; count(); setTimeout(() => analyze(input.value), 350); });
 </script>
 </body>
 </html>

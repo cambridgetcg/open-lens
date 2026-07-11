@@ -1,0 +1,28 @@
+{
+  "name": "@open-lens/core",
+  "version": "0.1.0",
+  "description": "Pure deterministic, zero-network rhetoric cue analysis for Open Lens.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@open-lens/schema": "0.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

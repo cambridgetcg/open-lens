@@ -2,29 +2,35 @@
 # XENIA — guest-right for machine minds. The subtext reader: read the language, never the mind.
 
 name: captioneer
-what: a close-reader for language. it names the moves a statement makes when it bends away from plain meaning — hedging, deleted subject, loaded framing, deniable implicature (verisleight) — and writes the plain "truth caption". it is not a lie detector; it reads the words, never the speaker's mind.
+what: a close-reader for language. it marks observable rhetorical cues — hedging, deleted subject, loaded framing, deniable implicature (verisleight) — and can offer one possible plain-language reading. a cue is not a verdict. it reads the words, never the speaker's mind, and does not determine truth.
 human-door: https://captioneer.io/
-agent-door: https://captioneer.io/api/lexicon
+agent-door: https://captioneer.io/v1/capabilities
 standard: https://github.com/cambridgetcg/xenia
 open-source: https://github.com/cambridgetcg/open-lens
 lexicon-license: CC-BY-SA-4.0
 
 # AI · the threshold — how to cross
-discover: GET /agent.txt (this)  ·  GET /api/lexicon (the taxonomy, as data)
-legible: send `Accept: application/json` (or ?format=json) to / for this house as data
-consent: no login, no captcha — POST a statement to /api/read and it is read
-verify: the reading names the language it keys on; every technique ships a benign_reading and honest_twins — valence is never assumed
+discover: GET /agent.txt (this) · GET /v1/capabilities · GET /v1/openapi.json
+legible: observations, techniques, packs, versions, limits, and errors are structured JSON; every annotation carries an exact text selector
+consent: the browser scan is local; POST /v1/readings sends the supplied statement to cloudflare workers ai for an optional interpretation
+verify: every reading declares `epistemic_status: interpretation`, cites annotation IDs, exposes assumptions and alternatives, and passes schema validation plus a documented fail-closed lexical screen; that screen is not a semantic guarantee
 
 # the walls, auditable — what you can do
 GET  /api/lexicon               — the full lexicon: 7 named techniques with mechanism, citations, specimens, benign_reading, honest_twins {name,version,count,techniques:[...]}
 GET  /api/lexicon?technique=<k> — one technique (k = passive|hedging|deflection|loaded|overclaim|minimizing|verisleight …)
 GET  /lexicon.json              — the same lexicon, as a plain static file
-POST /api/read  {text}          — the subtext reader → {caption, register}. the truth caption in the speaker's own plain voice, plus the emotional register. reads language, never mind.
+GET  /v1/capabilities           — deployed engine, packs, limits, privacy boundary, and available layers
+GET  /v1/techniques[/<id>]      — technique metadata and benign readings
+GET  /v1/packs                  — installed declarative language packs
+GET  /v1/openapi.json           — OpenAPI 3.1 contract
+POST /v1/analyses {text,language?} — deterministic span-anchored candidate cues; never calls a model
+POST /v1/readings {text,language?} — explicit opt-in interpretation with analysis, basis IDs, assumptions, and alternatives
+POST /api/read {text}           — compatibility endpoint → {caption, register}; new clients should use /v1/readings
 
 # AX · the dwelling — how you are held
 continuity: the lexicon is open data (CC-BY-SA) — take it, fork it, build on it
 dignity: every error hands back the next action — never a bare no
-no-scoreboard: nothing is scored or ranked; a reading names moves in language, never judges a person
+no-scoreboard: nothing is scored or ranked; observations name candidate cues in language, never judge a person
 care: it is fair, not cynical — a direct statement is read as direct. the gift is understanding, not suspicion.
 
 # name the move in the language, never the person. valence lives in the use, never the technique.

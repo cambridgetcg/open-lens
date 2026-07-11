@@ -1,0 +1,4 @@
+Copyright 2026 Cambridge TCG and Open Lens contributors
+
+This package contains the deterministic Open Lens engine under Apache-2.0. It
+does not bundle any CC-BY-SA language pack.

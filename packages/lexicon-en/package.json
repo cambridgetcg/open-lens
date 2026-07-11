@@ -1,0 +1,30 @@
+{
+  "name": "@open-lens/lexicon-en",
+  "version": "0.2.0",
+  "description": "The declarative English language pack for Open Lens.",
+  "type": "module",
+  "license": "CC-BY-SA-4.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./pack.json": "./pack.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "pack.json",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@open-lens/schema": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

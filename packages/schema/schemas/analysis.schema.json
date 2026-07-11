@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:open-lens:schema:analysis:0.1.0",
+  "title": "Open Lens deterministic analysis",
+  "type": "object",
+  "required": ["object", "schema_version", "language", "input", "annotations", "metrics", "notices", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "object": { "const": "analysis" },
+    "schema_version": { "const": "0.1.0" },
+    "language": { "type": "string", "minLength": 1 },
+    "input": {
+      "type": "object",
+      "required": ["normalization", "length"],
+      "additionalProperties": false,
+      "properties": {
+        "normalization": { "const": "none" },
+        "length": {
+          "type": "object",
+          "required": ["code_points", "utf16_code_units"],
+          "additionalProperties": false,
+          "properties": {
+            "code_points": { "type": "integer", "minimum": 0 },
+            "utf16_code_units": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "items": { "$ref": "urn:open-lens:schema:annotation:0.1.0" }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["annotation_count", "token_count", "by_technique"],
+      "additionalProperties": false,
+      "properties": {
+        "annotation_count": { "type": "integer", "minimum": 0 },
+        "token_count": { "type": "integer", "minimum": 0 },
+        "by_technique": {
+          "type": "object",
+          "propertyNames": { "minLength": 1 },
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "notices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["code", "message"],
+        "additionalProperties": false,
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["engine", "packs"],
+      "additionalProperties": false,
+      "properties": {
+        "engine": {
+          "type": "object",
+          "required": ["id", "version"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "const": "@open-lens/core" },
+            "version": { "type": "string", "minLength": 1 }
+          }
+        },
+        "packs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "version", "updated", "license", "languages"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "version": { "type": "string", "minLength": 1 },
+              "updated": { "type": "string", "minLength": 1 },
+              "license": { "type": "string", "minLength": 1 },
+              "languages": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

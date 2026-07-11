@@ -4,14 +4,17 @@ Open Lens — https://github.com/cambridgetcg/open-lens
 Reference reader: https://captioneer.io
 
 License split (Hunspell-style, deliberate):
-  - Engine and site code (public/, functions/, tools/): Apache-2.0 — see LICENSE
+  - Engine and site code (public/, functions/, tools/): Apache-2.0 — see LICENSE,
+    except for the generated lexicon artifacts named below
   - Lexicon data (lexicon/): CC BY-SA 4.0 — see lexicon/LICENSE
     ShareAlike is chosen specifically to prevent commercial enclosure of
     community-contributed pattern data.
   - Research corpus and specimen metadata (research/): CC BY 4.0
 
-public/lexicon.gen.js is GENERATED from lexicon/ and carries the lexicon's
-CC BY-SA 4.0 license.
+public/lexicon.gen.js, public/lexicon.json, and
+public/open-lens.lexicon-en.gen.js are GENERATED from lexicon/ and carry the
+lexicon's CC BY-SA 4.0 license. public/open-lens.core.gen.js is generated from
+the Apache-2.0 engine and remains Apache-2.0.
 
 The charter (CHARTER.md) is part of the project's identity: outputs describe
 language, never speakers; no truth verdicts; no person profiles; no

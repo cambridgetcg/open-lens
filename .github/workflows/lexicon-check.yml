@@ -8,8 +8,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # zero-dependency build: validates the lexicon schema invariants and
-      # regenerates public/lexicon.gen.js — the diff check catches both a stale
-      # generated file and hand-edits that diverge from the CC BY-SA source.
+      # Zero-dependency build validates the lexicon and regenerates both npm and
+      # browser artifacts. The diff check catches stale or hand-edited output.
       - run: npm run build
-      - run: git diff --exit-code -- public
+      - run: npm test
+      - run: npx --yes wrangler@4.110.0 pages functions build functions --outdir /tmp/open-lens-functions
+      - run: git diff --exit-code -- public packages/lexicon-en

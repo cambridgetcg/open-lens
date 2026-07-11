@@ -2,11 +2,15 @@
   "name": "open-lens",
   "private": true,
   "type": "module",
-  "description": "An open-source framework for reading how words manipulate. Marks the rhetoric, never reads the mind.",
+  "description": "An open-source framework for inspecting observable rhetorical cues. Marks language, never reads minds.",
   "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "node tools/build-lexicon.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "deploy": "npm run build && npx wrangler pages deploy --branch main"
+    "test": "node --test tests/*.test.mjs packages/schema/test/*.test.mjs packages/core/test/*.test.mjs",
+    "test:core": "node --test packages/schema/test/*.test.mjs packages/core/test/*.test.mjs",
+    "deploy": "npm run build && node tools/check-deploy.mjs && npx wrangler@4.110.0 pages deploy --branch main"
   }
 }

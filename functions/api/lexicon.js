@@ -1,16 +1,15 @@
 /** GET /api/lexicon — the subtext lexicon, as data.
  *
- *  Captioneer's gift is a taxonomy: the named moves language makes when it
- *  bends away from plain meaning — hedging, deleted subject, loaded framing,
- *  deniable implicature (verisleight), and the rest. The page renders it for
- *  eyes; this serves it to machines, so an agent can read the world the same
- *  way the reader does.
+ *  Captioneer exposes a taxonomy of rhetorical constructions — hedging,
+ *  unstated actors, loaded framing, deniable implicature (verisleight), and
+ *  the rest. The page renders it for eyes; this endpoint serves the same
+ *  source data to machines.
  *
  *  Doctrine carried in the data: valence is never a property of a technique,
  *  only of a use — every entry ships a benign_reading and honest_twins. Read
  *  the LANGUAGE, never the mind.
  *
- *  Canonical source: /lexicon.json (this wraps it with CORS + an envelope).
+ *  Generated public artifact: /lexicon.json (this wraps it with CORS).
  */
 
 import LEXICON from "../../public/lexicon.json";

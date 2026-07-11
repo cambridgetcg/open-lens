@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:open-lens:schema:annotation:0.1.0",
+  "title": "Open Lens annotation",
+  "type": "object",
+  "required": [
+    "id",
+    "technique_id",
+    "technique_key",
+    "family",
+    "selector",
+    "observation",
+    "benign_reading",
+    "detector",
+    "provenance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^ann_[0-9]{6,}$" },
+    "technique_id": { "type": "string", "minLength": 1 },
+    "technique_key": { "type": "string", "minLength": 1 },
+    "family": { "type": "string", "minLength": 1 },
+    "selector": { "$ref": "urn:open-lens:schema:span-selector:0.1.0" },
+    "observation": { "type": "string", "minLength": 1 },
+    "benign_reading": { "type": "string", "minLength": 1 },
+    "detector": {
+      "type": "object",
+      "required": ["kind", "rule_id", "language", "source", "flags", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["surface", "regex"] },
+        "rule_id": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "flags": { "type": "string", "minLength": 1 },
+        "provenance": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["pack_id", "pack_version", "technique_id", "rule_id"],
+      "additionalProperties": false,
+      "properties": {
+        "pack_id": { "type": "string", "minLength": 1 },
+        "pack_version": { "type": "string", "minLength": 1 },
+        "technique_id": { "type": "string", "minLength": 1 },
+        "rule_id": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

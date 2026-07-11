@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "updated": "2026-07-07",
   "license": "CC-BY-SA-4.0",
-  "description": "An open lexicon of verbal-manipulation techniques: definitions, mechanisms, naming history across traditions, per-language surface patterns, and benign readings. Every mark points at a visible phrase; valence is never a property of a technique, only of a use.",
+  "description": "An open lexicon of rhetorical constructions: definitions, mechanisms, comparative history, per-language surface patterns, and benign readings. Every mark points at a visible phrase; valence is never a property of a technique, only of a use.",
   "entries": [
     "hedging.json",
     "deflection.json",

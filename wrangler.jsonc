@@ -2,7 +2,7 @@
   "name": "captioneer-read",
   "compatibility_date": "2026-07-01",
   "pages_build_output_dir": "./public",
-  // The subtext reader — a Workers AI model writes the plain-meaning "truth
-  // caption" on top of the deterministic close-reader. Always remote.
+  // Optional interpretation layer. It runs only after an explicit request and
+  // stays separate from the deterministic, browser-local cue analysis.
   "ai": { "binding": "AI" }
 }

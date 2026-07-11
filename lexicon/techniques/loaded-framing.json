@@ -4,12 +4,12 @@
   "name": "Loaded framing",
   "family": "loaded framing",
   "status": "live",
-  "what": "charges the room before you can think",
-  "affordance": "charges the room before you can think — the frame arrives inside the vocabulary",
+  "what": "marks an intensifier or evaluatively charged term from the English pack",
+  "affordance": "can make an evaluation or frame salient through the vocabulary itself",
   "mechanism": "evaluative redescription: every word evokes a frame, and negating a frame activates it (Lakoff); frames shift judgment even about events people watched themselves",
   "benign_reading": "Vivid language is not a crime, and naming a wrong plainly ('this was theft') can be precision, not spin. The tell is emotion doing the work an argument should do.",
-  "ledger_line": "<b>{n}</b> loaded term{s} — emotion added where an argument should be",
-  "output_phrasing": "this term imports a judgment the sentence never argues for",
+  "ledger_line": "<b>{n}</b> intensifier or evaluatively charged term{s} matched",
+  "output_phrasing": "this span contains an intensifier or evaluatively charged term from the English pack",
   "naming_events": [
     {
       "term": "san huo — the three delusions of naming",

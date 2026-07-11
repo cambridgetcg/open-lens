@@ -4,12 +4,12 @@
   "name": "Minimizing",
   "family": "minimizing",
   "status": "live",
-  "what": "shrinks the thing being described",
-  "affordance": "shrinks the thing being described — 'just', 'only', 'a few'",
-  "mechanism": "scales the referent down below its real size; euphemism's quieter sibling, with a built-in evolution model (the euphemism treadmill: every softened term reabsorbs the taint and gets replaced)",
+  "what": "marks a scalar-down or smallness expression",
+  "affordance": "can present a referent as limited, small, simple, or close to completion",
+  "mechanism": "uses downward scalar language; euphemism's quieter sibling, with a built-in evolution model (the euphemism treadmill: softened terms can reabsorb a stigma and be replaced)",
   "benign_reading": "Minimizers can be accurate ('a minor typo') or kind. The tell is the size of a harm quietly reduced by the person answerable for it.",
-  "ledger_line": "<b>{n}</b> minimizer{s} — the size of it quietly reduced",
-  "output_phrasing": "the size of it is quietly reduced here",
+  "ledger_line": "<b>{n}</b> scalar-down or smallness cue{s} matched",
+  "output_phrasing": "this span contains a scalar-down or smallness expression",
   "naming_events": [
     {
       "term": "meiosis / tapinosis / litotes; euphemismos",

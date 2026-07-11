@@ -4,12 +4,12 @@
   "name": "Hedging",
   "family": "hedging",
   "status": "live",
-  "what": "lowers commitment so it can be walked back",
-  "affordance": "lowers commitment so the claim can be walked back later",
+  "what": "marks wording that lowers the sentence's expressed level of commitment",
+  "affordance": "can preserve uncertainty, politeness, precision, or room for later qualification",
   "mechanism": "weakens the force of an assertion while keeping its content on the table — deniability without retraction",
   "benign_reading": "Hedges very often express genuine uncertainty — epistemic honesty, not evasion (Lakoff 1973). The tell is hedging where a commitment was asked for and available.",
-  "ledger_line": "<b>{n}</b> hedge{s} — commitment lowered, deniability kept",
-  "output_phrasing": "this phrasing lowers commitment — the promise can be denied later",
+  "ledger_line": "<b>{n}</b> hedge cue{s} — expressed commitment is grammatically lowered",
+  "output_phrasing": "this span contains wording that lowers the sentence's expressed level of commitment",
   "naming_events": [
     {
       "term": "aporia / dubitatio",

@@ -1,7 +1,9 @@
 # Open Lens
 
-**An open-source framework for reading how words manipulate.**
-It marks the rhetoric — the hedges, the deleted subjects, the loaded frames — and writes the plain-meaning version underneath. It reads the language, never the mind.
+**An open-source framework for inspecting how words steer meaning.**
+It marks observable rhetorical cues — hedges, deleted subjects, loaded frames —
+and keeps those observations separate from optional, defeasible interpretations.
+It reads language, never minds, and does not determine truth.
 
 Live reference reader: **[captioneer.io](https://captioneer.io)**
 
@@ -9,19 +11,30 @@ Live reference reader: **[captioneer.io](https://captioneer.io)**
 
 ## What this is
 
-Every statement has a surface and a meaning, and they're not always the same thing. People have named the gap for 2,400 years — Aristotle's thirteen fallacies, the Nyāyasūtra's twenty-four sham rejoinders, al-Jurjānī's taxonomy of deniable implicature, the Institute for Propaganda Analysis's seven devices, taught to about a million schoolchildren between 1937 and 1942. Open Lens turns that lineage into open, structured, contributable data — and a reader anyone can use or embed.
+Every statement has a surface, a context, and more than one possible reading.
+People have named rhetorical constructions for 2,400 years — Aristotle's
+thirteen fallacies, the Nyāyasūtra's twenty-four sham rejoinders,
+al-Jurjānī's analysis of indirect meaning, and the Institute for Propaganda
+Analysis's seven devices. Open Lens turns that multi-root history into open,
+structured, contributable data and a deterministic engine anyone can embed.
 
-Three artifacts, three licenses (Hunspell-style split):
+The code/data boundary is deliberate (a Hunspell-style split):
 
 | Artifact | What it is | Where | License |
 |---|---|---|---|
-| **The Lexicon** | Techniques as data: definitions, mechanisms, naming history across traditions, per-language surface patterns, benign readings | `lexicon/` | [CC BY-SA 4.0](lexicon/LICENSE) |
-| **The Reader** | The engine and reference site: deterministic close-reader (client-side) + opt-in AI truth caption | `public/`\*, `functions/`, `tools/` | [Apache-2.0](LICENSE) |
-| **The Field Guide** | The teachable lens: each technique's story, honest twins, practice — *(planned; see roadmap)* | — | CC BY 4.0 |
+| **Schema + engine** | Transport schemas, Unicode selectors, pure zero-network matcher | `packages/schema/`, `packages/core/` | [Apache-2.0](LICENSE) |
+| **The lexicon** | Techniques, mechanisms, comparative history, surface rules, benign readings | `lexicon/`, `packages/lexicon-en/` | [CC BY-SA 4.0](lexicon/LICENSE) |
+| **Reference reader + API** | Local browser analysis and a separate opt-in, evidence-linked interpretation layer | `public/`, `functions/` | [Apache-2.0](LICENSE), except generated lexicon data |
+| **Research corpus** | The fact-checked corpus that shaped the taxonomy and governance | `research/` | [CC BY 4.0](research/LICENSE) |
 
-\* except `public/lexicon.gen.js`, which is generated from the lexicon and carries its CC BY-SA 4.0 license — see [NOTICE](NOTICE).
+Generated lexicon/pack artifacts in `public/` retain CC BY-SA 4.0; see
+[NOTICE](NOTICE).
 
-The invariant that holds it all together: **every mark points at a visible phrase.** A mark without a text span is invalid by schema. That single rule is simultaneously the product's honesty, its pedagogy, and its legal architecture.
+The invariant that holds it all together: **every deterministic annotation
+points at exact visible text.** A position selector is paired with an exact
+quote and context; a selector that does not re-anchor to the caller's original
+string is invalid. An observation is not an interpretation, and neither is a
+truth verdict.
 
 ## What it refuses, permanently
 
@@ -41,34 +54,94 @@ lexicon/                 the data (CC BY-SA 4.0)
   SCHEMA.md              the entry schema, field by field
   techniques/*.json      one technique per file
 public/                  the reference reader (static, client-side marking)
-  index.html             UI + close-reader engine
+  index.html             UI consuming the generated core + English pack
   lexicon.html           the field guide — every technique's story, rendered from the data
   lexicon.gen.js         GENERATED from lexicon/ — do not edit by hand
-functions/api/read.js    opt-in truth caption (Cloudflare Pages Functions + Workers AI)
-tools/build-lexicon.mjs  lexicon → lexicon.gen.js, with schema validation
+  open-lens.*.gen.js     GENERATED static-browser ESM artifacts
+packages/
+  schema/                JSON Schema 2020-12 + selector helpers (Apache-2.0)
+  core/                  @open-lens/core, pure deterministic engine (Apache-2.0)
+  lexicon-en/            @open-lens/lexicon-en data pack (CC BY-SA 4.0)
+functions/v1/            versioned analyses, readings, discovery, and OpenAPI
+functions/api/read.js    compatibility endpoint for the original reader
+tools/build-lexicon.mjs  validate data; generate pack + browser artifacts
+docs/EPISTEMIC-MODEL.md  observation / interpretation / evidence contract
 research/                the 2026-07-07 deep-dive corpus that shaped the design (CC BY 4.0)
 ```
 
 ## Quickstart
 
 ```sh
-npm run build                          # validate lexicon/ and regenerate public/lexicon.gen.js
+npm run build                          # validate and regenerate data/browser artifacts
+npm test                               # schemas, core, API policy, and reader boundaries
 python3 -m http.server 8788 -d public  # local dev — the close-reader is fully client-side
-npx wrangler pages dev                 # full dev incl. AI caption (needs `npx wrangler login`; the AI binding is remote)
-npm run deploy                         # build + cloudflare pages deploy --branch main (maintainers)
+npx wrangler@4.110.0 pages dev         # full API incl. remote opt-in AI binding
+npm run deploy                         # guarded production deploy; see docs/DEPLOYMENT.md
 ```
 
-No dependencies. The close-reader runs entirely in the browser — pasted text never leaves the device unless the user explicitly presses the AI-caption button.
+The deterministic engine has no runtime I/O, telemetry, or network path. In the
+reference reader, pasted text stays in the browser during cue analysis. Calling
+`POST /v1/readings` — or explicitly pressing the optional AI button — sends the
+statement to the deployment's Cloudflare Workers AI binding. API responses are
+`no-store`; provider processing remains subject to the deployment privacy policy.
+Use hash links (`#t=...`), not query parameters, when preloading private text:
+query strings can enter server and CDN logs before browser code runs.
+
+### npm-style use
+
+```js
+import { createLens } from "@open-lens/core";
+import english from "@open-lens/lexicon-en";
+
+const lens = createLens({ packs: [english] });
+const analysis = lens.analyze({
+  text: "Mistakes may have been made.",
+  language: "en",
+});
+```
+
+The packages are prepared as independent workspaces but are not published by
+this repository automatically. Confirm namespace ownership before the first npm
+release.
+
+Language packs are trusted input, not a sandbox. They are JSON and receive no
+network capability, but regex rules compile into JavaScript `RegExp` and can
+cause catastrophic backtracking. Review installed packs; do not build an
+untrusted remote pack registry until the matcher has a restricted DSL or a
+linear-time regex engine.
+
+### HTTP API
+
+```text
+GET  /v1/capabilities
+GET  /v1/packs
+GET  /v1/techniques[/<id>]
+GET  /v1/openapi.json
+POST /v1/analyses   { "text": "...", "language": "en" }
+POST /v1/readings   { "text": "...", "language": "en" }
+```
+
+`/v1/analyses` is deterministic. `/v1/readings` is the explicit model boundary;
+it returns `epistemic_status: "interpretation"`, the full analysis, cited
+annotation IDs, assumptions, alternatives, and model/prompt/policy versions.
+Oversized text is rejected with `413`; it is never silently truncated.
+Model output is schema-checked and screened by a fail-closed lexical policy.
+That screen reduces known verdict language; it is not a semantic proof that a
+model can never produce an unsafe paraphrase.
+
+Production deployment has additional gates — authentication or rate limits for
+model routes, provider-retention disclosure, and npm-scope ownership. See
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## The lexicon, briefly
 
 One technique = one file. Each entry carries:
 
 - **identity** — stable ID (`OL.LOADED`), family, status (`live` / `reference` / `candidate`)
-- **meaning** — what it does, the mechanism (which Gricean channel it exploits), what the speaker gains
-- **history** — `naming_events`: the same move as named across traditions and centuries (paradiastole → Xunzi's three delusions → Schopenhauer's stratagem #12 → IPA's Name Calling → SemEval's Loaded Language)
+- **meaning** — what it does, the mechanism (which Gricean channel it exploits), and the communicative affordance it can create
+- **history** — `naming_events`: comparable constructions named across traditions and centuries; these are typed parallels, not automatic claims of direct descent
 - **honesty** — a required `benign_reading`: every construction has an innocent use, and the entry must say so
-- **detection** — per-language `realizations` (declarative patterns only — no executable rules), plus `specimens` and `counter_specimens`
+- **detection** — per-language data-defined `realizations`, including reviewed regex rules; installed packs are trusted input, plus `specimens` and `counter_specimens`
 - **interop** — crosswalks to SemEval-2023, PTC-2019, MAFALDA, DISARM where they exist
 
 Full schema: [lexicon/SCHEMA.md](lexicon/SCHEMA.md).
@@ -87,4 +160,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) — the inclusion policy is published *be
 
 This design is grounded in a fact-checked research pass across ten dimensions — classical rhetoric, propaganda history, computational taxonomies, the linguistics of evasion, cross-language strategies, OSS governance precedents, abuse cases, learning science, non-Western catalogs, and evaluation infrastructure. The full corpus lives in [`research/`](research/), and the numbers cited above come from it.
 
-Open Lens is part of a larger work — [the cathedral](https://ai-love.cc) · [the economy](https://agenttool.dev). Its founding words are YOUSPEAK's: it catches **verisleight** (truth arranged to mislead — the technique Harvard measured as "paltering" in 2017) and leaves you with **orthophanes** (the rightness made plainly visible).
+Open Lens is part of a larger work — [the cathedral](https://ai-love.cc) · [the economy](https://agenttool.dev). Its founding words are YOUSPEAK's: it helps inspect **verisleight** (truth arranged to mislead — related to what the paltering literature measured in 2017) while moving toward **orthophanes** (the rightness made plainly visible), without pretending that one reading proves world truth.

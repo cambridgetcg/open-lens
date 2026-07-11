@@ -4,12 +4,12 @@
   "name": "Overclaim",
   "family": "overclaim",
   "status": "live",
-  "what": "asserts more than anyone could know",
-  "affordance": "asserts more than anyone could know — certainty as a costume",
+  "what": "marks an absolute, universal, or guarantee-form expression",
+  "affordance": "can extend a claim's expressed scope or certainty",
   "mechanism": "drops qualifiers and states certainty past the evidence; the LLM-era twist: confident factual barrage is the most persuasive and least accurate register (Science 2025)",
   "benign_reading": "Strong claims are honest when the evidence really is strong; conviction is not a tell by itself. The tell is universal quantifiers and guarantees where no one could have the evidence.",
-  "ledger_line": "<b>{n}</b> overclaim{s} — certainty stated past the evidence",
-  "output_phrasing": "certainty is stated here past what the evidence could support",
+  "ledger_line": "<b>{n}</b> absolute, universal, or guarantee-form cue{s} matched",
+  "output_phrasing": "this span contains an absolute, universal, or guarantee-form expression",
   "naming_events": [
     {
       "term": "secundum quid (dropping the qualifier)",

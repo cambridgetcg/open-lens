@@ -5,7 +5,8 @@ import vm from "node:vm";
 
 const html = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
 const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
-const readerScript = scripts.map((match) => match[1]).find((source) => source.includes("deep link: ?text="));
+const readerModule = scripts.map((match) => match[1]).find((source) => source.includes("private deep link: #t="));
+const readerScript = readerModule?.replace(/^\s*import\s+[^;]+;\s*$/gm, "");
 
 assert.ok(readerScript, "reader inline script not found");
 
@@ -43,7 +44,6 @@ function bootReader({ search = "", hash = "" } = {}) {
   };
 
   vm.runInNewContext(readerScript, {
-    URLSearchParams,
     document: {
       documentElement,
       createElement: () => makeElement(),
@@ -55,22 +55,36 @@ function bootReader({ search = "", hash = "" } = {}) {
     location: { search, hash },
     matchMedia: () => ({ matches: false }),
     requestAnimationFrame: (callback) => callback(),
+    createLens: () => ({ analyze: () => ({ annotations: [] }) }),
+    selectNonOverlappingAnnotations: () => [],
+    englishPack: { techniques: [] },
     setTimeout: (callback) => callback(),
     window,
   });
 
   listeners.get("DOMContentLoaded")?.();
-  return element("in").value;
+  return { value: element("in").value, status: element("wc").textContent };
 }
 
-test("query-string deep links survive default-example initialization", () => {
-  assert.equal(bootReader({ search: "?text=From%20the%20paper" }), "From the paper");
+test("query-string text is not treated as a private deep link", () => {
+  assert.match(bootReader({ search: "?text=From%20the%20paper" }).value, /^We want to be clear/);
 });
 
 test("hash deep links survive default-example initialization", () => {
-  assert.equal(bootReader({ hash: "#t=Hash%20quote" }), "Hash quote");
+  assert.equal(bootReader({ hash: "#t=Hash%20quote" }).value, "Hash quote");
+});
+
+test("hash deep links preserve astral Unicode without UTF-16 truncation", () => {
+  const text = `start ${"🙂".repeat(3000)} end`;
+  assert.equal(bootReader({ hash: `#t=${encodeURIComponent(text)}` }).value, text);
+});
+
+test("oversized hash links are rejected rather than silently truncated", () => {
+  const result = bootReader({ hash: `#t=${"x".repeat(12_001)}` });
+  assert.equal(result.value, "");
+  assert.match(result.status, /exceeds 12,000 code points — nothing loaded/);
 });
 
 test("the default example still loads without a deep link", () => {
-  assert.match(bootReader(), /^We want to be clear/);
+  assert.match(bootReader().value, /^We want to be clear/);
 });

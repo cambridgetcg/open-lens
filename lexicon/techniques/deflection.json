@@ -4,12 +4,12 @@
   "name": "Deflection",
   "family": "deflection",
   "status": "live",
-  "what": "moves away from the question asked",
-  "affordance": "moves away from the question asked while appearing responsive",
+  "what": "marks wording often used to manage a response or shift its topic",
+  "affordance": "can redirect attention or manage a transition while retaining the form of a response",
   "mechanism": "violates Grice's maxim of Relation while performing cooperation — the question is left standing, unanswered",
   "benign_reading": "Changing the subject can be tact, care, or discretion. The tell is a direct question steered around rather than declined openly.",
-  "ledger_line": "<b>{n}</b> deflection{s} — the question was steered around, not answered",
-  "output_phrasing": "the question asked here is steered around, not answered",
+  "ledger_line": "<b>{n}</b> response-management or topic-shift cue{s} matched",
+  "output_phrasing": "this span matches an English response-management or topic-shift cue",
   "naming_events": [
     {
       "term": "ignoratio elenchi",

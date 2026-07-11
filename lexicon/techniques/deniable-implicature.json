@@ -4,8 +4,8 @@
   "name": "Verisleight",
   "family": "deniable implicature",
   "status": "reference",
-  "what": "truth arranged to mislead — every word true, the picture false",
-  "affordance": "deniability: the false picture is installed by the hearer's own inference, so the speaker asserted nothing false",
+  "what": "describes a possible gap between literal content and a contextually invited inference",
+  "affordance": "can preserve deniability because an invited inference is not identical to what was asserted",
   "mechanism": "violates Grice's maxims of Quantity/Relation while observing Quality — misleading via implicature rather than assertion. Channel: implicated (cancellable; does not project under negation).",
   "channel": "implicated",
   "tests": {
@@ -14,7 +14,7 @@
   },
   "benign_reading": "Selective emphasis is normal speech; every answer curates. The tell is a direct question answered with a curated truth that predictably paints a false picture.",
   "ledger_line": null,
-  "output_phrasing": "this statement is literally true and arranged to imply more than it says",
+  "output_phrasing": "this category concerns a possible gap between literal content and a contextually invited inference",
   "naming_events": [
     {
       "term": "kināya",
