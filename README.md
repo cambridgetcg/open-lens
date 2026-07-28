@@ -7,6 +7,13 @@ It reads language, never minds, and does not determine truth.
 
 Live reference reader: **[captioneer.io](https://captioneer.io)**
 
+> **Canon note:** Open Lens is the canonical framework of this family.
+> [RhetorLint](https://github.com/cambridgetcg/rhetorlint-spec) (MIT) is its
+> portable implementation profile — a minimal spec-plus-engines expression of
+> the same SemEval-2023-aligned taxonomy. New lexicon and research work lands
+> here; RhetorLint tracks the portable subset. One framework, two engines —
+> by design, not fragmentation.
+
 ---
 
 ## What this is
