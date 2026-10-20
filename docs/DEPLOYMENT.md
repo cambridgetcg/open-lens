@@ -130,3 +130,41 @@ To re-enable readings: meet those three gates, restore
 with the same three variables set for `tools/check-deploy.mjs`. A deploy from
 `wrangler.jsonc` makes that file the source of truth for bindings, so a binding
 added only in the dashboard does not survive the next deploy.
+
+### Release record, 2026-10-20
+
+- **Approver:** Yu, who chose "latest, model off" in a Claude Code session on
+  2026-10-20. Claude Code (an agent) ran the deploy and the checks below.
+- **Deployed:** commit `1ae0177` (`origin/main` at the time), via
+  `npm run deploy` with the three variables set to the `wrangler.jsonc` values.
+  The result is deployment `198080d0` (production, branch `main`), replacing
+  `717afa3c` (`c0c8031`, 2026-07-11).
+- **Before deploying:**
+  - `npm test`: 72/72.
+  - `npm run build`: leaves the tree clean, with the lexicon and engine
+    byte-identical to `c926d88`.
+  - Functions: "Compiled Worker successfully" (wrangler 4.110.0).
+  - `tools/check-deploy.mjs`: unchanged, and refuses with no environment.
+- **After deploying**, checked on https://captioneer.io with no model run:
+  - `GET /v1/capabilities`: `readings.available: false` and
+    `production_ready: false`, with both `vars`.
+  - `GET /v1/openapi.json`: 200.
+  - `POST /v1/analyses`: 4 annotations for a short text, and 413 for an
+    80 KB body.
+  - `OPTIONS` preflight: 204 with the CORS headers. `X-Request-ID` is echoed,
+    and API responses carry `cache-control: no-store, max-age=0`.
+  - `POST /v1/readings` and `POST /api/read`: 503.
+  - `/`, `/lexicon` and an unknown path (404) all carry the CSP.
+  - www., read. and captioneer-read.pages.dev all report readings off.
+- **Headless Chrome 155 on the live site:**
+  - Nowhere did a page show a CSP violation, a console message or an
+    exception.
+  - The reader renders its 5 marks, and its button reads "Readings off on this
+    deployment" with no POST sent.
+  - The `#t=` deep link preloads its text.
+  - `/lexicon` renders 7 entries.
+  - With capabilities unreachable, the button reads "Readings unavailable" and
+    sends no POST.
+  - With readings mocked on, a click sends exactly one POST.
+- **Still open:** the earlier production deployments listed above keep their
+  AI binding at their own addresses. Do not roll back past `198080d0`.
