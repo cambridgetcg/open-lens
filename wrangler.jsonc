@@ -2,7 +2,18 @@
   "name": "captioneer-read",
   "compatibility_date": "2026-07-01",
   "pages_build_output_dir": "./public",
-  // Optional interpretation layer. It runs only after an explicit request and
-  // stays separate from the deterministic, browser-local cue analysis.
-  "ai": { "binding": "AI" }
+  // Model readings are OFF on this deployment. There is deliberately no
+  // Workers AI binding, so POST /v1/readings and POST /api/read answer 503
+  // and GET /v1/capabilities reports readings.available: false. They stay off
+  // until the Hosted API gates in docs/DEPLOYMENT.md are met: an API key or
+  // rate limit on both model routes, a daily spend ceiling, and alerting on
+  // rejection and model-error rates. To turn them back on after that, restore
+  //   "ai": { "binding": "AI" }
+  // here, update CAPTIONEER_ABUSE_CONTROL below to name those controls, and
+  // redeploy. This file is the source of truth for the deployment's bindings.
+  "vars": {
+    // Cloudflare's published Workers AI data-usage terms.
+    "CAPTIONEER_PROVIDER_RETENTION_POLICY_URL": "https://developers.cloudflare.com/workers-ai/platform/data-usage/",
+    "CAPTIONEER_ABUSE_CONTROL": "No Workers AI binding in this deployment, so no model route can run. Deterministic routes cap each request at 64 KiB of JSON and 12,000 Unicode code points. Cloudflare's managed WAF sits in front."
+  }
 }
