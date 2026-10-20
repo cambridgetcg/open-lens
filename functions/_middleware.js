@@ -84,7 +84,7 @@ function doorData() {
 }
 
 const HTML_404 =
-  '<!doctype html><meta charset="utf-8"><title>no door here · captioneer</title>' +
+  '<!doctype html><meta charset="utf-8"><title>no door here · captioneer</title><link rel="icon" href="data:,">' +
   '<style>html{background:#0e0f13;color:#8b90a0;font-family:ui-serif,Georgia,serif;height:100%}' +
   'body{height:100%;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;text-align:center;padding:2rem}' +
   'a{color:#c9a24b;text-decoration:none}.m{font-size:1.3rem;color:#eae7df}' +
