@@ -258,7 +258,7 @@
       <p class="lede">Every statement has a surface, a context, and more than one possible reading. Paste one below — Captioneer <em>marks</em> observable rhetorical cues, then, where this deployment enables readings, can offer <em>one</em> plain-language interpretation alongside the original. It reads the language, never the mind; neither marks nor readings determine truth.</p>
 
       <div class="specimen">
-        <div class="head"><span>Specimen · a corporate non-apology</span><span>marked &amp; read</span></div>
+        <div class="head"><span>Specimen · a corporate non-apology</span><span>marked &amp; read (example)</span></div>
         <p class="said">"We <u>take your privacy extremely seriously</u>, and <u>regrettably, mistakes were made</u>. We are <u>reaching out</u> to affected users."</p>
         <div class="cap">
           <div class="txt">Something went wrong. This statement does not name who made the mistakes; it says affected users are being contacted.</div>
@@ -555,14 +555,17 @@ aiBtn.onclick = () => { if (readingsOn === true && input.value.trim() && input.v
 
 /* ── readings are this deployment's choice. GET /v1/capabilities decides
       whether the button is offered; if it says no, or cannot be reached, the
-      button stays off and no text is ever POSTed for a reading. ── */
+      button stays off and no text is ever POSTed for a reading. Only the
+      deployment's own "no" is reported as "off". ── */
 fetch("/v1/capabilities", { headers: { accept: "application/json" } })
-  .then(r => r.ok ? r.json() : null).then(d => d?.readings?.available === true, () => false)
-  .then(on => {
-    readingsOn = on;
-    if (!on) {
-      aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Readings off on this deployment";
-      aiBtn.title = "Model readings are off on this deployment (see GET /v1/capabilities). The cue scan still runs on your device.";
+  .then(r => r.ok ? r.json() : null).then(d => d?.readings?.available, () => undefined)
+  .then(available => {
+    readingsOn = available === true;
+    if (!readingsOn) {
+      const off = available === false;
+      aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = off ? "Readings off on this deployment" : "Readings unavailable";
+      aiBtn.title = (off ? "Model readings are off on this deployment (see GET /v1/capabilities)."
+        : "Could not confirm readings via GET /v1/capabilities.") + " The cue scan still runs on your device.";
     } else if (lastAnalyzedText && input.value === lastAnalyzedText) {
       aiBtn.disabled = (lastAnalyzedText.trim().match(/\S+/g) || []).length < 3;
     }

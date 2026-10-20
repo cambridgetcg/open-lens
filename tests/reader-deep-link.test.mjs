@@ -85,12 +85,19 @@ function capabilitiesFetch(available, calls) {
   return async (url, init = {}) => {
     calls.push(`${init.method || "GET"} ${url}`);
     if (available === undefined) throw new Error("offline");
+    if (available === 404) return { ok: false, status: 404, json: async () => { throw new SyntaxError("not JSON"); } };
     return { ok: true, json: async () => ({ readings: { available } }) };
   };
 }
 
 test("readings stay off and nothing is POSTed unless /v1/capabilities says they are available", async (t) => {
-  for (const [name, available] of [["readings.available: false", false], ["capabilities unreachable", undefined]]) {
+  // Only the deployment's own `available: false` is reported as "off"; a failed
+  // or missing capabilities answer fails closed without claiming to know why.
+  for (const [name, available, label, title] of [
+    ["readings.available: false", false, "Readings off on this deployment", /readings are off on this deployment/],
+    ["capabilities unreachable", undefined, "Readings unavailable", /Could not confirm readings/],
+    ["capabilities not served (static dev server)", 404, "Readings unavailable", /Could not confirm readings/],
+  ]) {
     await t.test(name, async () => {
       const calls = [];
       const { ai } = bootReader({ pack: LIVE_PACK, fetch: capabilitiesFetch(available, calls) });
@@ -98,8 +105,8 @@ test("readings stay off and nothing is POSTed unless /v1/capabilities says they 
       ai.onclick();
       await settle();
       assert.equal(ai.disabled, true);
-      assert.equal(ai.querySelector(".lbl").textContent, "Readings off on this deployment");
-      assert.match(ai.title, /readings are off on this deployment/);
+      assert.equal(ai.querySelector(".lbl").textContent, label);
+      assert.match(ai.title, title);
       assert.deepEqual(calls, ["GET /v1/capabilities"]);
     });
   }

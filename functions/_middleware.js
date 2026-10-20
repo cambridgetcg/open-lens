@@ -16,7 +16,7 @@ const CORS = {
 // from public/*.html, so editing an inline script without updating this list
 // fails the tests instead of silently breaking the page.
 const INLINE_SCRIPT_HASHES = [
-  "'sha256-nN9y8Zph8KGP8mHYJRjtT6egN7pZa1g1LqhVUgEZtjo='",
+  "'sha256-x4n+vJG4OM6nRB2jSqSQeiWy4iTPXNuIjSNxrMyeT5M='",
   "'sha256-AOEDK4hGePlnFcTrUjRNro3xy/4soOfy3Fkv3WEfN2U='",
 ];
 const CSP = [
