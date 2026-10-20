@@ -82,14 +82,16 @@ research/                the 2026-07-07 deep-dive corpus that shaped the design 
 npm run build                          # validate and regenerate data/browser artifacts
 npm test                               # schemas, core, API policy, and reader boundaries
 python3 -m http.server 8788 -d public  # local dev — the close-reader is fully client-side
-npx wrangler@4.110.0 pages dev         # full API incl. remote opt-in AI binding
+npx wrangler@4.110.0 pages dev         # full API; readings need an AI binding, which wrangler.jsonc omits (docs/DEPLOYMENT.md)
 npm run deploy                         # guarded production deploy; see docs/DEPLOYMENT.md
 ```
 
 The deterministic engine has no runtime I/O, telemetry, or network path. In the
 reference reader, pasted text stays in the browser during cue analysis. Calling
 `POST /v1/readings` — or explicitly pressing the optional AI button — sends the
-statement to the deployment's Cloudflare Workers AI binding. API responses are
+statement to the deployment's Cloudflare Workers AI binding, where it has one
+(`GET /v1/capabilities` says; this repository's `wrangler.jsonc` declares
+none, so the button stays disabled and the route answers `503`). API responses are
 `no-store`; provider processing remains subject to the deployment privacy policy.
 Use hash links (`#t=...`), not query parameters, when preloading private text:
 query strings can enter server and CDN logs before browser code runs.

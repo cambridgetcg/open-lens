@@ -10,10 +10,11 @@
   // rejection and model-error rates. To turn them back on after that, restore
   //   "ai": { "binding": "AI" }
   // here, update CAPTIONEER_ABUSE_CONTROL below to name those controls, and
-  // redeploy. This file is the source of truth for the deployment's bindings.
+  // redeploy. This file is the source of truth for the bindings of deployments
+  // made from it; earlier deployments keep theirs (see docs/DEPLOYMENT.md).
   "vars": {
     // Cloudflare's published Workers AI data-usage terms.
     "CAPTIONEER_PROVIDER_RETENTION_POLICY_URL": "https://developers.cloudflare.com/workers-ai/platform/data-usage/",
-    "CAPTIONEER_ABUSE_CONTROL": "No Workers AI binding in this deployment, so no model route can run. Deterministic routes cap each request at 64 KiB of JSON and 12,000 Unicode code points. Cloudflare's managed WAF sits in front."
+    "CAPTIONEER_ABUSE_CONTROL": "This deployment has no Workers AI binding, so its model routes answer 503 without running a model. Deterministic routes cap each request at 64 KiB of JSON and 12,000 Unicode code points."
   }
 }
