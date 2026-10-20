@@ -2,7 +2,7 @@
 # XENIA — guest-right for machine minds. The subtext reader: read the language, never the mind.
 
 name: captioneer
-what: a close-reader for language. it marks observable rhetorical cues — hedging, deleted subject, loaded framing, deniable implicature (verisleight) — and can offer one possible plain-language reading. a cue is not a verdict. it reads the words, never the speaker's mind, and does not determine truth.
+what: a close-reader for language. it marks observable rhetorical cues — hedging, deleted subject, loaded framing, deniable implicature (verisleight) — and, when this deployment enables readings (GET /v1/capabilities says whether it does), can offer one possible plain-language reading. a cue is not a verdict. it reads the words, never the speaker's mind, and does not determine truth.
 human-door: https://captioneer.io/
 agent-door: https://captioneer.io/v1/capabilities
 standard: https://github.com/cambridgetcg/xenia
@@ -12,7 +12,7 @@ lexicon-license: CC-BY-SA-4.0
 # AI · the threshold — how to cross
 discover: GET /agent.txt (this) · GET /v1/capabilities · GET /v1/openapi.json
 legible: observations, techniques, packs, versions, limits, and errors are structured JSON; every annotation carries an exact text selector
-consent: the browser scan is local; POST /v1/readings sends the supplied statement to cloudflare workers ai for an optional interpretation
+consent: the browser scan is local; POST /v1/readings sends the supplied statement to cloudflare workers ai for an optional interpretation, when this deployment enables readings; otherwise it answers 503 and sends the statement nowhere
 verify: every reading declares `epistemic_status: interpretation`, cites annotation IDs, exposes assumptions and alternatives, and passes schema validation plus a documented fail-closed lexical screen; that screen is not a semantic guarantee
 
 # the walls, auditable — what you can do
@@ -24,8 +24,8 @@ GET  /v1/techniques[/<id>]      — technique metadata and benign readings
 GET  /v1/packs                  — installed declarative language packs
 GET  /v1/openapi.json           — OpenAPI 3.1 contract
 POST /v1/analyses {text,language?} — deterministic span-anchored candidate cues; never calls a model
-POST /v1/readings {text,language?} — explicit opt-in interpretation with analysis, basis IDs, assumptions, and alternatives
-POST /api/read {text}           — compatibility endpoint → {caption, register}; new clients should use /v1/readings
+POST /v1/readings {text,language?} — explicit opt-in interpretation with analysis, basis IDs, assumptions, and alternatives; 503 model_unavailable when readings are off here (GET /v1/capabilities says)
+POST /api/read {text}           — compatibility endpoint → {caption, register}; new clients should use /v1/readings; 503 when readings are off here
 
 # AX · the dwelling — how you are held
 continuity: the lexicon is open data (CC-BY-SA) — take it, fork it, build on it

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Captioneer · The Subtext Reader</title>
-<meta name="description" content="Captioneer marks observable rhetorical cues in a statement and offers an optional plain-language reading grounded in the words. It reads language, not minds, and does not determine truth." />
+<meta name="description" content="Captioneer marks observable rhetorical cues in a statement and, where its deployment enables readings, offers an optional plain-language reading grounded in the words. It reads language, not minds, and does not determine truth." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
@@ -254,7 +254,7 @@
     <section class="hero">
       <p class="eyebrow">Captions for the unsaid</p>
       <h1>See how words <span class="u">steer meaning</span>.</h1>
-      <p class="lede">Every statement has a surface, a context, and more than one possible reading. Paste one below — Captioneer <em>marks</em> observable rhetorical cues, then can offer <em>one</em> plain-language interpretation alongside the original. It reads the language, never the mind; neither marks nor readings determine truth.</p>
+      <p class="lede">Every statement has a surface, a context, and more than one possible reading. Paste one below — Captioneer <em>marks</em> observable rhetorical cues, then, where this deployment enables readings, can offer <em>one</em> plain-language interpretation alongside the original. It reads the language, never the mind; neither marks nor readings determine truth.</p>
 
       <div class="specimen">
         <div class="head"><span>Specimen · a corporate non-apology</span><span>marked &amp; read</span></div>
@@ -319,7 +319,7 @@
     <div class="wrap">
       <h2 style="margin-bottom:24px">What this is — and what it refuses to be.</h2>
       <p>A real lie detector reads a person and returns a verdict. There is no such thing. Body language, micro-expressions, voice “frequency” — decades of research say they don't reliably reveal deception, and a tool that claims otherwise just manufactures confident accusations. That isn't truth. It's theatre.</p>
-      <p><strong>So Captioneer stays with what can actually be observed: the words.</strong> A deleted subject leaves the actor unstated. A hedge lowers expressed commitment. An absolute extends certainty. The matches are countable and every one points at a real phrase you can see — but context decides whether a use is careful, ordinary, evasive, or something else. The optional reader offers a possible plain version of the <em>language</em>, never a verdict on the person.</p>
+      <p><strong>So Captioneer stays with what can actually be observed: the words.</strong> A deleted subject leaves the actor unstated. A hedge lowers expressed commitment. An absolute extends certainty. The matches are countable and every one points at a real phrase you can see — but context decides whether a use is careful, ordinary, evasive, or something else. The optional reader, where a deployment enables it, offers a possible plain version of the <em>language</em>, never a verdict on the person.</p>
       <p>It helps you inspect how something is being <em>said</em>. Whether a claim is <em>true</em> still requires evidence beyond its rhetoric.</p>
 
       <div class="split">
@@ -329,7 +329,7 @@
             <li>Mark candidate hedges, deflections, and non-answers</li>
             <li>Show where a construction leaves the actor unstated</li>
             <li>Surface loaded framing and expanded certainty</li>
-            <li>Offer an optional plain-language interpretation</li>
+            <li>Offer an optional plain-language interpretation, where this deployment enables readings</li>
             <li>Point at the visible phrase behind every matched cue</li>
           </ul>
         </div>
@@ -409,6 +409,7 @@ const LEX = englishPack || { techniques: [] };
 const LENS = createLens({ packs: [LEX] });
 const MAX_DEEP_LINK_CODE_POINTS = 12_000;
 let lastAnalyzedText = "", readingEpoch = 0;
+let readingsOn = null; // null until GET /v1/capabilities answers; only true offers a reading
 const FAM_COLORS = { hedge:"var(--hedge)", deflect:"var(--deflect)", passive:"var(--passive)", loaded:"var(--loaded)", overclaim:"var(--overclaim)", minimize:"var(--minimize)" };
 const FAMILIES = {};
 for (const t of (LEX.techniques || [])) {
@@ -468,7 +469,7 @@ function analyze(text) {
   out.classList.add("on");
   lastAnalyzedText = text;
   strip.disabled = total === 0; strip.setAttribute("aria-pressed","false"); strip.textContent = "Dim matched cues"; script.classList.remove("stripped");
-  aiBtn.disabled = words < 3;
+  aiBtn.disabled = words < 3 || readingsOn !== true;
 }
 
 /* ── the AI reading (opt-in) ── */
@@ -520,7 +521,7 @@ function invalidateAnalysis() {
   readingEpoch += 1;
   lastAnalyzedText = "";
   out.classList.remove("on"); captionBar.classList.remove("on");
-  aiBtn.classList.remove("loading"); aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Explore a reading";
+  aiBtn.classList.remove("loading"); aiBtn.disabled = true; if (readingsOn !== false) aiBtn.querySelector(".lbl").textContent = "Explore a reading";
   strip.disabled = true; strip.setAttribute("aria-pressed", "false"); strip.textContent = "Dim matched cues";
   script.classList.remove("stripped");
 }
@@ -549,7 +550,22 @@ Object.keys(EXAMPLES).forEach(name => {
 function count() { if (!LEX_READY) return; const w = (input.value.trim().match(/\S+/g) || []).length; wc.style.color = ""; wc.textContent = w ? `${w} word${w>1?"s":""}` : ""; }
 input.addEventListener("input", () => { count(); invalidateAnalysis(); });
 document.getElementById("mark").onclick = () => { if (!input.value.trim()) return input.focus(); invalidateAnalysis(); analyze(input.value); };
-aiBtn.onclick = () => { if (input.value.trim() && input.value === lastAnalyzedText) readSubtext(input.value); };
+aiBtn.onclick = () => { if (readingsOn === true && input.value.trim() && input.value === lastAnalyzedText) readSubtext(input.value); };
+
+/* ── readings are this deployment's choice. GET /v1/capabilities decides
+      whether the button is offered; if it says no, or cannot be reached, the
+      button stays off and no text is ever POSTed for a reading. ── */
+fetch("/v1/capabilities", { headers: { accept: "application/json" } })
+  .then(r => r.ok ? r.json() : null).then(d => d?.readings?.available === true, () => false)
+  .then(on => {
+    readingsOn = on;
+    if (!on) {
+      aiBtn.disabled = true; aiBtn.querySelector(".lbl").textContent = "Readings off on this deployment";
+      aiBtn.title = "Model readings are off on this deployment (see GET /v1/capabilities). The cue scan still runs on your device.";
+    } else if (lastAnalyzedText && input.value === lastAnalyzedText) {
+      aiBtn.disabled = (lastAnalyzedText.trim().match(/\S+/g) || []).length < 3;
+    }
+  });
 
 /* ── private deep link: #t= preloads a quote without sending it in the HTTP
       request URL. Query-string text is deliberately unsupported because URLs

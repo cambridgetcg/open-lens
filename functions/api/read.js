@@ -67,7 +67,7 @@ export const onRequestOptions = ({ request }) => new Response(null, {
 export function onRequestGet({ request } = {}) {
   const requestId = requestIdFor(request);
   return json({
-    reader: "the legacy language reader — offers one possible plain-language interpretation",
+    reader: "the legacy language reader — offers one possible plain-language interpretation when this deployment enables readings (GET /v1/capabilities says whether it does)",
     usage: "POST /api/read  {\"text\": \"the statement to read\"}",
     returns: { caption: "a possible plain-language interpretation", register: "one line naming observable rhetorical properties" },
     doctrine: "reads the LANGUAGE, never the mind — no truth, intent, emotion, character, or sincerity verdicts",

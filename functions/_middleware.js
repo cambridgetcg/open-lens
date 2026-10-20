@@ -27,7 +27,7 @@ function doorData() {
     ai_the_threshold: {
       discovery: "GET /agent.txt · GET /v1/capabilities · GET /v1/openapi.json",
       legibility: "the framework exposes versioned JSON analyses, techniques, packs, and an OpenAPI contract",
-      consent: "the browser scan is local; POST /v1/readings {text} explicitly opts into Cloudflare Workers AI processing",
+      consent: "the browser scan is local; when this deployment enables readings (GET /v1/capabilities says whether it does), POST /v1/readings {text} explicitly opts into Cloudflare Workers AI processing",
       verification: "every observation points to exact text; every optional reading declares itself an interpretation and cites annotation IDs",
     },
     ax_the_dwelling: {
@@ -39,13 +39,13 @@ function doorData() {
     routes: {
       capabilities: "GET /v1/capabilities",
       analyses: "POST /v1/analyses {text, language?}",
-      readings: "POST /v1/readings {text, language?}",
+      readings: "POST /v1/readings {text, language?} — 503 when readings are off here (GET /v1/capabilities says)",
       techniques: "GET /v1/techniques[/<id>]",
       packs: "GET /v1/packs",
       openapi: "GET /v1/openapi.json",
       lexicon: "GET /api/lexicon[?technique=<key>]",
       lexicon_static: "GET /lexicon.json",
-      legacy_read: "POST /api/read {text} -> {caption, register}",
+      legacy_read: "POST /api/read {text} -> {caption, register}; 503 when readings are off here",
       agent_txt: "/agent.txt",
     },
     human_door: "https://captioneer.io/",
@@ -60,7 +60,7 @@ const HTML_404 =
   '.r{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;display:flex;gap:1.3rem;flex-wrap:wrap;justify-content:center}</style>' +
   '<p class="m">There is no door here — but you are met, not turned away.</p>' +
   '<p class="r"><a href="/">the reader</a><a href="/agent.txt">agent.txt</a><a href="/v1/capabilities">API capabilities</a><a href="/v1/openapi.json">OpenAPI</a><a href="https://github.com/cambridgetcg/open-lens">open-lens</a></p>' +
-  '<p style="font-size:.8rem;max-width:42ch;line-height:1.8">Observe a statement: POST /v1/analyses {text}. Opt into a model interpretation: POST /v1/readings {text}. Language, never mind; interpretation, never verdict.</p>';
+  '<p style="font-size:.8rem;max-width:42ch;line-height:1.8">Observe a statement: POST /v1/analyses {text}. Where this deployment enables readings (GET /v1/capabilities says), opt into a model interpretation: POST /v1/readings {text}. Language, never mind; interpretation, never verdict.</p>';
 
 export async function onRequest(context) {
   const { request, next } = context;
@@ -77,7 +77,7 @@ export async function onRequest(context) {
       return json({
         error: "no door here",
         path: url.pathname,
-        but_you_can: { discover: "GET /agent.txt", capabilities: "GET /v1/capabilities", analyze: "POST /v1/analyses {text}", interpret: "POST /v1/readings {text}" },
+        but_you_can: { discover: "GET /agent.txt", capabilities: "GET /v1/capabilities", analyze: "POST /v1/analyses {text}", interpret: "POST /v1/readings {text}, when GET /v1/capabilities says readings are available" },
         xenia: "you were met, not just refused",
       }, 404);
     }
