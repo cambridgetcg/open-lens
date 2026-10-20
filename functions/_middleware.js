@@ -40,7 +40,7 @@ function withCsp(res) {
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 
-const json =(obj, status = 200) =>
+const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj, null, 2), { status, headers: { "content-type": "application/json; charset=utf-8", "Vary": "Accept", ...CORS } });
 
 function wantsJson(request, url) {

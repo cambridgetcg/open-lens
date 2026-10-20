@@ -55,6 +55,22 @@ test("the CSP allows exactly the inline scripts in public/*.html", async () => {
   assert.deepEqual(policy.get("connect-src"), ["'self'"]);
 });
 
+// script-src lists hashes without 'unsafe-hashes', so the browser blocks inline
+// event handlers and javascript: URLs; neither may appear in a served page.
+test("no served page uses an inline event handler or a javascript: URL", async () => {
+  const notFound = await through(html("not found", 404), "/no-such-door", { accept: "text/html" });
+  const pages = readdirSync(publicDir).filter((name) => name.endsWith(".html"))
+    .map((name) => [`public/${name}`, readFileSync(new URL(name, publicDir), "utf8")]);
+  pages.push(["the middleware's HTML 404", await notFound.text()]);
+
+  for (const [name, source] of pages) {
+    const markup = source.replace(/(<(script|style)\b[^>]*>)[\s\S]*?<\/\2>/gi, "$1");
+    const handler = markup.match(/<[a-z][^>]*\son[a-z]+\s*=/i);
+    assert.equal(handler, null, `${name} has an inline event handler (${handler?.[0]}); the CSP blocks it, so attach it from the inline script`);
+    assert.doesNotMatch(markup, /javascript:/i, `${name} has a javascript: URL; the CSP blocks it`);
+  }
+});
+
 test("the middleware adds CSP to HTML, including immutable static responses, and never to JSON or JS", async () => {
   const page = html("<!doctype html><p>reader</p>");
   // Static asset responses can carry immutable headers; the middleware must copy them.
