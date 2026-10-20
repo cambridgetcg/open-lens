@@ -2,6 +2,7 @@
  *  Makes captioneer practise the standard it lives near:
  *   · legibility — an agent that asks for / as JSON gets the house as data
  *   · dignity   — a wrong door is answered with the next action, never a bare 404
+ *   · safety    — every text/html response carries a Content-Security-Policy
  *  It leaves /api/* and /v1/* responses to their route handlers. */
 
 const CORS = {
@@ -9,7 +10,37 @@ const CORS = {
   "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type,X-Request-ID",
 };
-const json = (obj, status = 200) =>
+
+// The hashes pin the inline <script> of public/index.html (the reader) and
+// public/lexicon.html (the field guide). tests/csp.test.mjs recomputes them
+// from public/*.html, so editing an inline script without updating this list
+// fails the tests instead of silently breaking the page.
+const INLINE_SCRIPT_HASHES = [
+  "'sha256-nN9y8Zph8KGP8mHYJRjtT6egN7pZa1g1LqhVUgEZtjo='",
+  "'sha256-AOEDK4hGePlnFcTrUjRNro3xy/4soOfy3Fkv3WEfN2U='",
+];
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' ${INLINE_SCRIPT_HASHES.join(" ")}`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'none'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+// Static asset responses can have immutable headers, so copy before setting.
+function withCsp(res) {
+  if (!(res.headers.get("content-type") || "").toLowerCase().startsWith("text/html")) return res;
+  const headers = new Headers(res.headers);
+  headers.set("Content-Security-Policy", CSP);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+}
+
+const json =(obj, status = 200) =>
   new Response(JSON.stringify(obj, null, 2), { status, headers: { "content-type": "application/json; charset=utf-8", "Vary": "Accept", ...CORS } });
 
 function wantsJson(request, url) {
@@ -81,8 +112,8 @@ export async function onRequest(context) {
         xenia: "you were met, not just refused",
       }, 404);
     }
-    return new Response(HTML_404, { status: 404, headers: { "content-type": "text/html; charset=utf-8", ...CORS } });
+    return new Response(HTML_404, { status: 404, headers: { "content-type": "text/html; charset=utf-8", "Content-Security-Policy": CSP, ...CORS } });
   }
 
-  return res;
+  return withCsp(res);
 }
