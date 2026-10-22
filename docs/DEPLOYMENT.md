@@ -91,15 +91,14 @@ model-error rates. Until they exist, the missing binding is the control, and
 it covers only deployments made from this config.
 `production_ready` in `/v1/capabilities` stays `false` while readings are off.
 
-**Earlier deployments keep their binding.** Pages attaches bindings per
-deployment. Every `wrangler.jsonc` in this repository up to `c926d88` declares
-the AI binding, and the project's production settings carried it on
-2026-10-20. Production deployments made before this release keep it, stay
-reachable at their own `<id>.captioneer-read.pages.dev` address until deleted
-or put behind Cloudflare Access, and remain rollback targets: rolling back to
-one puts unmetered readings back on captioneer.io. Do not roll back past the
-readings-off deploy. Deleting or gating the older deployments is the project
-owner's call.
+**Earlier deployments are retired.** Pages attaches bindings per deployment.
+Every `wrangler.jsonc` in this repository up to `c926d88` declares the AI
+binding, so each production deployment made before this release carried it at
+its own `<id>.captioneer-read.pages.dev` address and was a rollback target that
+would put unmetered readings back on captioneer.io. All 16 were deleted on
+2026-10-20 (see the release record), so the project has no rollback target
+older than the readings-off deploy. To go back to an older build, deploy its
+commit with this repository's current `wrangler.jsonc`, not a rollback.
 
 **Deploying this release.** `npm run deploy` deploys with `--branch main`, the
 project's production branch (project settings, read 2026-10-20).
@@ -166,5 +165,20 @@ added only in the dashboard does not survive the next deploy.
   - With capabilities unreachable, the button reads "Readings unavailable" and
     sends no POST.
   - With readings mocked on, a click sends exactly one POST.
-- **Still open:** the earlier production deployments listed above keep their
-  AI binding at their own addresses. Do not roll back past `198080d0`.
+- **Older deployments retired, 2026-10-20.** Yu asked for the older captioneer
+  deployments to be removed and retired. Claude Code (an agent) deleted all 16
+  of them through the Pages API (`DELETE …/deployments/<id>?force=true`), using
+  wrangler's login. `198080d0` was the canonical deployment at that point and
+  was kept. The 16 ran from 2026-07-06 to 2026-07-11:
+  - `717afa3c` (`c0c8031`), `1ff9b624` and `fed84ff8` (`c98626b`),
+    `73f0a6b0` (`1bca159`), `52498fca` (`7c8a8b6`), `238375a5` (`b63646d`)
+    and `8b9ca662` (`d5dffea`);
+  - nine direct uploads with no commit recorded: `8af45040`, `fb78580c`,
+    `1f295d63`, `b91a04b7`, `b72703bc`, `666757bb`, `e1a145a7`, `c63882fd`
+    and `1f13ac43`.
+
+  Before deleting, each served an older Captioneer reader. Afterwards:
+  - the API answered "does not exist" for them and listed only `198080d0`;
+  - their hostnames kept serving from Cloudflare's edge for at least 35 minutes;
+  - by 2026-10-22 all 16 answered 404 "Deployment Not Found";
+  - the four production hostnames still report readings off.
