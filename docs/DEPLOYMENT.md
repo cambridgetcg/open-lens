@@ -182,3 +182,18 @@ added only in the dashboard does not survive the next deploy.
   - their hostnames kept serving from Cloudflare's edge for at least 35 minutes;
   - by 2026-10-22 all 16 answered 404 "Deployment Not Found";
   - the four production hostnames still report readings off.
+
+### Release record, 2026-10-26: robots.txt
+
+- **Approver:** Yu, numbered yes item 10 of the Quiet Doors design. Claude Code (an agent) ran the deploy and the checks below.
+- **Deployed:** commit `bf22bbc` via `npm run deploy` with the three variables set to the `wrangler.jsonc` values. The change adds `public/robots.txt` (`User-agent: *`, `Allow: /`) and its test; no binding changed.
+- **Before deploying:** `npm test`: 74/74. `npm run build`: leaves the tree clean.
+- **After deploying**, checked on https://captioneer.io with no model run:
+  - `/robots.txt`: 200 text/plain with exactly those two lines.
+  - `GET /v1/capabilities`: `readings.available: false`, `readings.production_ready: false`, with both `vars` values.
+  - `GET /v1/openapi.json`: 200.
+  - `POST /v1/analyses`: 3 annotations for a short text, and 413 for an 80 KB body.
+  - `OPTIONS` preflight: 204 with the CORS headers. `X-Request-ID` is echoed, and API responses carry `cache-control: no-store, max-age=0`.
+  - `POST /v1/readings`: 503. `POST /api/read` with `{"text":"hi"}`: 400 ("Give me a sentence to read."), because the route checks its input before its binding; the previous deployment `198080d0` answers the same. With a full sentence it answers 503.
+  - `/`, `/lexicon` and an unknown path (404) all carry the CSP.
+  - The served page contains "Readings off on this deployment". It was not rendered in a headless browser for this release, because the change is one static file.
